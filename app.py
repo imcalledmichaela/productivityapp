@@ -14,7 +14,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100, 'pool_recycle': 280
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-class ProductivityApp(db.Model):
+# class ProductivityApp(db.Model):
     
 
 # sanity check route
