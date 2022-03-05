@@ -8,7 +8,7 @@ DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vaviwhocxsnomz:c274c35a9cb7d6c8bd8418ffbcda4431d407ffafca6d5e59ef2018e37aec61ef@ec2-34-230-110-100.compute-1.amazonaws.com:5432/d3ug8s7afnkd2o'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://vaviwhocxsnomz:c274c35a9cb7d6c8bd8418ffbcda4431d407ffafca6d5e59ef2018e37aec61ef@ec2-34-230-110-100.compute-1.amazonaws.com:5432/d3ug8s7afnkd2o'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100, 'pool_recycle': 280}
 
@@ -126,3 +126,171 @@ def ping_pong():
 
 if __name__ == '__main__':
     app.run()
+
+# EVENTS
+# Creating and sending an event to the database
+@app.route("/events", methods=['POST'])
+def new_event():
+    try:
+        data = request.get_json()
+        event = Event(**event)
+        db.session.add(event)
+        db.session.commit()
+    except Exception as e:
+        return jsonify(
+            {
+                "message": "An error has occured while creating an event",
+                "error": str(e)
+            }
+        ), 500
+    
+    return jsonify(
+        {
+            "data": event.to_dict()
+        }
+    ), 201
+
+# Retreiving events from the database
+@app.route("/events")
+def get_all_events():
+    event_list = Event.query.all()
+    if len(event_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "events": [event.to_dict() for event in event_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No events found."
+        }
+    )
+
+# TASKS
+# Creating and sending a task to the database
+@app.route("/tasks", methods=['POST'])
+def new_task():
+    try:
+        data = request.get_json()
+        task = Task(**task)
+        db.session.add(task)
+        db.session.commit()
+    except Exception as e:
+        return jsonify(
+            {
+                "message": "An error has occured while creating an task",
+                "error": str(e)
+            }
+        ), 500
+    
+    return jsonify(
+        {
+            "data": task.to_dict()
+        }
+    ), 201
+
+# Retreiving tasks from the database
+@app.route("/tasks")
+def get_all_tasks():
+    task_list = Task.query.all()
+    if len(task_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "tasks": [task.to_dict() for task in task_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No tasks found."
+        }
+    )
+
+
+# CATEGORIES
+# Creating and sending a category to the database
+@app.route("/categories", methods=['POST'])
+def new_category():
+    try:
+        data = request.get_json()
+        category = Category(**category)
+        db.session.add(category)
+        db.session.commit()
+    except Exception as e:
+        return jsonify(
+            {
+                "message": "An error has occured while creating a category",
+                "error": str(e)
+            }
+        ), 500
+    
+    return jsonify(
+        {
+            "data": category.to_dict()
+        }
+    ), 201
+
+# Retreiving categories from the database
+@app.route("/categories")
+def get_all_categories():
+    category_list = Category.query.all()
+    if len(category_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "categories": [category.to_dict() for category in category_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No categories found."
+        }
+    )
+
+
+# SUBCATEGORIES
+# Creating and sending a subcategory to the database
+@app.route("/subcategories", methods=['POST'])
+def new_subcategory():
+    try:
+        data = request.get_json()
+        subcategory = Subcategory(**subcategory)
+        db.session.add(subcategory)
+        db.session.commit()
+    except Exception as e:
+        return jsonify(
+            {
+                "message": "An error has occured while creating a subcategory",
+                "error": str(e)
+            }
+        ), 500
+    
+    return jsonify(
+        {
+            "data": subcategory.to_dict()
+        }
+    ), 201
+
+# Retreiving subcategories from the database
+@app.route("/subcategories")
+def get_all_subcategories():
+    subcategory_list = Subcategory.query.all()
+    if len(subcategory_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "subcategories": [subcategory.to_dict() for subcategory in subcategory_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No subcategories found."
+        }
+    )
+
+
