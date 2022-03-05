@@ -12,6 +12,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://vaviwhocxsnomz:c274c35a9cb7d
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100, 'pool_recycle': 280}
 
+db = SQLAlchemy(app)
+
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
@@ -20,7 +22,7 @@ class Event(db.Model):
 
     event_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), nullable = False)
-    subcategory_id = db.Column(db.Integer, ForeignKey("subcategory.subcategory.id"), nullable = False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory.id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
     start_time = db.Column(db.Integer, nullable = False)
     end_time = db.Column(db.Integer, nullable = False)
@@ -53,7 +55,7 @@ class Task(db.Model):
 
     task_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), nullable = False)
-    subcategory_id = db.Column(db.Integer, ForeignKey("subcategory.subcategory_id"), nullable = False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
     duration = db.Column(db.Date, nullable = False)
     end_time = db.Column(db.Integer, nullable = False)
@@ -98,7 +100,7 @@ class Subcategory(db.Model):
 
     subcategory_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), nullable = False)
-    cateogry_id = db.Column(db.Integer, ForeignKey("category.category_id"), nullable = False)
+    cateogry_id = db.Column(db.Integer, db.ForeignKey("category.category_id"), nullable = False)
     color = db.Column(db.String(64))
 
     def __init__(self, name, category_id, color):
