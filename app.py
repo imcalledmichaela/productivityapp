@@ -22,7 +22,7 @@ class Event(db.Model):
 
     event_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), nullable = False)
-    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory.id"), nullable = False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
     start_time = db.Column(db.Integer, nullable = False)
     end_time = db.Column(db.Integer, nullable = False)
@@ -122,10 +122,6 @@ class Subcategory(db.Model):
 @app.route('/ping', methods=['GET'])
 def ping_pong():
     return jsonify('pong!')
-
-
-if __name__ == '__main__':
-    app.run()
 
 # EVENTS
 # Creating and sending an event to the database
@@ -293,4 +289,6 @@ def get_all_subcategories():
         }
     )
 
-
+if __name__ == '__main__':
+    db.create_all()
+    app.run()
