@@ -126,10 +126,11 @@ def ping_pong():
 # EVENTS
 # Creating and sending an event to the database
 @app.route("/events", methods=['POST'])
-def new_event():
+def addEvent():
     try:
         data = request.get_json()
-        event = Event(**event)
+        print(data)
+        event = Event(**data)
         db.session.add(event)
         db.session.commit()
     except Exception as e:
@@ -148,7 +149,7 @@ def new_event():
 
 # Retreiving events from the database
 @app.route("/events")
-def get_all_events():
+def getEvents():
     event_list = Event.query.all()
     if len(event_list) != 0:
         return jsonify(
@@ -167,7 +168,7 @@ def get_all_events():
 # TASKS
 # Creating and sending a task to the database
 @app.route("/tasks", methods=['POST'])
-def new_task():
+def addTask():
     try:
         data = request.get_json()
         task = Task(**task)
@@ -189,7 +190,7 @@ def new_task():
 
 # Retreiving tasks from the database
 @app.route("/tasks")
-def get_all_tasks():
+def getTasks():
     task_list = Task.query.all()
     if len(task_list) != 0:
         return jsonify(
@@ -209,7 +210,7 @@ def get_all_tasks():
 # CATEGORIES
 # Creating and sending a category to the database
 @app.route("/categories", methods=['POST'])
-def new_category():
+def addCategory():
     try:
         data = request.get_json()
         category = Category(**category)
@@ -231,7 +232,7 @@ def new_category():
 
 # Retreiving categories from the database
 @app.route("/categories")
-def get_all_categories():
+def getCategories():
     category_list = Category.query.all()
     if len(category_list) != 0:
         return jsonify(
@@ -251,7 +252,7 @@ def get_all_categories():
 # SUBCATEGORIES
 # Creating and sending a subcategory to the database
 @app.route("/subcategories", methods=['POST'])
-def new_subcategory():
+def addSubcategory():
     try:
         data = request.get_json()
         subcategory = Subcategory(**subcategory)
@@ -273,7 +274,7 @@ def new_subcategory():
 
 # Retreiving subcategories from the database
 @app.route("/subcategories")
-def get_all_subcategories():
+def getSubcategories():
     subcategory_list = Subcategory.query.all()
     if len(subcategory_list) != 0:
         return jsonify(
