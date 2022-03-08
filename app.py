@@ -173,10 +173,11 @@ def getEvents():
 def addTask():
     try:
         data = request.get_json()
-        task = Task(**task)
+        task = Task(**data)
         db.session.add(task)
         db.session.commit()
     except Exception as e:
+        print(str(e))
         return jsonify(
             {
                 "message": "An error has occured while creating an task",

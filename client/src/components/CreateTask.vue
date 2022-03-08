@@ -2,10 +2,10 @@
   <div>
     <b-container md="auto">
       <b-form @submit="onSubmit" v-if="show">
-        <b-jumbotron header="Create Event">
+        <b-jumbotron header="Create Task">
           <b-row class="name">
             <b-col sm="3">
-              <label id="input-group-1" label-for="input-1">Event Name:</label>
+              <label id="input-group-1" label-for="input-1">Task Name:</label>
             </b-col>
             <b-col sm="9">
               <b-form-input
@@ -13,7 +13,7 @@
                 id="input-1"
                 v-model="form.name"
                 type="name"
-                placeholder="Enter event name"
+                placeholder="Enter Task Name"
                 required
               ></b-form-input>
             </b-col>
@@ -38,7 +38,7 @@
               <label id="input-group-3" label-for="input-3">Date:</label>
             </b-col>
 
-            <b-col sm="9">
+            <b-col sm="4">
               <b-input-group>
                 <b-form-input
                   id="example-input"
@@ -61,8 +61,24 @@
             </b-col>
           </b-row>
 
-          <b-row class="time" style="padding-top: 15px">
-            <!--Start Time-->
+          <b-row class="duration" style="padding-top: 15px">
+            <b-col sm="3">
+              <label id="input-group-5" label-for="input-5">Duration:</label>
+            </b-col>
+            <b-col sm="4">
+              <b-form-input
+                sm="auto"
+                id="input-1"
+                v-model="form.duration"
+                type="name"
+                placeholder="Enter Duration in Minutes"
+                required
+              ></b-form-input>
+            </b-col>
+          </b-row>
+
+        
+          <b-row class="start_time" style="padding-top: 15px">
             <b-col sm="3">
               <label id="input-group-4" label-for="input-4">Start:</label>
             </b-col>
@@ -73,7 +89,7 @@
                   id="example-input"
                   v-model="form.start_time"
                   type="text"
-                  placeholder="HH:DD"
+                  placeholder="Enter Time"
                   autocomplete="off"
                 ></b-form-input>
                 <b-input-group-append>
@@ -89,54 +105,11 @@
                 </b-input-group-append>
               </b-input-group>
             </b-col>
-
-            <!--End Time-->
-            <b-col sm="1">
-              <label id="input-group-5" label-for="input-5">End:</label>
-            </b-col>
-
-            <b-col sm="4">
-              <b-input-group>
-                <b-form-input
-                  id="example-input"
-                  v-model="form.end_time"
-                  type="text"
-                  placeholder="HH:DD"
-                  autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-form-timepicker
-                    no-close-button="true"
-                    v-model="form.end_time"
-                    button-only
-                    right
-                    locale="en-US"
-                    aria-controls="example-input"
-                    @context="onContext"
-                  ></b-form-timepicker>
-                </b-input-group-append>
-              </b-input-group>
-            </b-col>
-          </b-row>
-
-          <b-row class="location" style="padding-top: 15px">
-            <b-col sm="3">
-              <label id="input-group-6" label-for="input-6">Location:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
-                id="input-6"
-                v-model="form.location"
-                type="location"
-                placeholder="Enter location"
-                required
-              ></b-form-input>
-            </b-col>
           </b-row>
 
           <b-row class="details" style="padding-top: 15px">
             <b-col sm="3">
-              <label id="input-group-7" label-for="input-7">Details</label>
+              <label id="input-group-6" label-for="input-6">Details</label>
             </b-col>
             <b-col sm="9">
               <b-form-textarea
@@ -173,9 +146,8 @@ export default {
         name: "",
         subcategory: "",
         date: "",
+        duration: "",
         start_time: "",
-        end_time: "",
-        location: "",
         details: "",
       },
       subcategories: [
@@ -192,35 +164,34 @@ export default {
         name: this.form.name,
         subcategory_id: this.form.subcategory,
         date: this.form.date,
+        duration: Number(this.form.duration),
         start_time: this.form.start_time,
-        end_time: this.form.end_time,
-        location: this.form.location,
         details: this.form.details,
       };
-      this.addEvent(payload);
+      this.addTask(payload);
       this.initForm();
     },
-    getEvents() {
-      const path = "http://localhost:5000/events";
+    getTasks() {
+      const path = "http://localhost:5000/tasks";
       axios
         .get(path)
         .then((res) => {
-          this.events = res.data.name;
+          this.tasks = res.data.name;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    addEvent(payload) {
-      const path = "http://localhost:5000/events";
+    addTask(payload) {
+      const path = "http://localhost:5000/tasks";
       axios
         .post(path, payload)
         .then(() => {
-          this.getEvents();
+          this.getTasks();
         })
         .catch((error) => {
           console.log(error);
-          this.getEvents();
+          this.getTasks();
         });
     },
     getSubcategories() {
@@ -239,9 +210,8 @@ export default {
       this.form.name = "";
       this.form.subcategory_id = null;
       this.form.date = "";
+      this.form.duration = "";
       this.form.start_time = "";
-      this.form.end_time = "";
-      this.form.location = "";
       this.form.details = "";
     },
   },
