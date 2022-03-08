@@ -28,7 +28,9 @@ or
 To run the vue portion of the code, first, download vue. 
 
 1. Run flask
+2. To install Vue dependencies, use
+>`npm install`
 2. To start Vue, use
-`npm run serve`
+>`npm run serve`
 3. Vue should be working on
 > `http://localhost:8080/`

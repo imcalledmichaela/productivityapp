@@ -2,6 +2,7 @@ from platform import platform
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from json import dumps
 
 # configuration
 DEBUG = True
@@ -24,8 +25,8 @@ class Event(db.Model):
     name = db.Column(db.String(64), nullable = False)
     subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
-    start_time = db.Column(db.Integer, nullable = False)
-    end_time = db.Column(db.Integer, nullable = False)
+    start_time = db.Column(db.Time, nullable = False)
+    end_time = db.Column(db.Time, nullable = False)
     location = db.Column(db.String(254), nullable = False)
     details = db.Column(db.String(254), nullable = False)
 
@@ -43,9 +44,9 @@ class Event(db.Model):
             "event_id": self.event_id,
             "name": self.name,
             "subcategory_id": self.subcategory_id,
-            "date": self.date,
-            "start_time": self.start_time,
-            "end_time": self.end_time,
+            "date": str(self.date),
+            "start_time": str(self.start_time),
+            "end_time": str(self.end_time),
             "location": self.location,
             "details": self.details
         }
@@ -57,16 +58,16 @@ class Task(db.Model):
     name = db.Column(db.String(64), nullable = False)
     subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
-    duration = db.Column(db.Date, nullable = False)
-    end_time = db.Column(db.Integer, nullable = False)
+    duration = db.Column(db.Integer, nullable = False)
+    start_time = db.Column(db.Time, nullable = False)
     details = db.Column(db.String(254), nullable = False)
 
-    def __init__(self, name, subcategory_id, date, duration, end_time, details):
+    def __init__(self, name, subcategory_id, date, duration, start_time, details):
         self.name = name
         self.subcategory_id = subcategory_id
         self.date = date
         self.duration = duration
-        self.end_time = end_time
+        self.start_time = start_time
         self.details = details
 
     def to_dict(self):
@@ -74,9 +75,9 @@ class Task(db.Model):
             "task_id": self.task_id,
             "name": self.name,
             "subcategory_id": self.subcategory_id,
-            "date": self.date,
+            "date": str(self.date),
             "duration": self.duration,
-            "end_time": self.end_time,
+            "start_time": str(self.start_time),
             "details": self.details
         }
         
@@ -94,7 +95,7 @@ class Category(db.Model):
             "category_id": self.category_id,
             "name": self.name,
         }
-        
+
 class Subcategory(db.Model):
     __tablename__ = 'subcategory'
 
@@ -129,11 +130,12 @@ def ping_pong():
 def addEvent():
     try:
         data = request.get_json()
-        print(data)
         event = Event(**data)
+        print(data)
         db.session.add(event)
         db.session.commit()
     except Exception as e:
+        print(str(e))
         return jsonify(
             {
                 "message": "An error has occured while creating an event",
@@ -290,6 +292,25 @@ def getSubcategories():
         }
     )
 
+# Retreiving dictionary of subcategories names to id from the database
+@app.route("/subcategoriesNameId")
+def getSubcategoriesNameId():
+    subcategory_list = Subcategory.query.all()
+    if len(subcategory_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "subcategories": [{"text": subcategory.name, "value" : subcategory.subcategory_id} for subcategory in subcategory_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No subcategories found."
+        }
+    )
+
 if __name__ == '__main__':
     db.create_all()
+    db.session.commit()
     app.run()

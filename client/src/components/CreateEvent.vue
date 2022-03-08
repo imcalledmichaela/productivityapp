@@ -2,15 +2,15 @@
   <div>
   <b-container>
     <b-form @submit="onSubmit" v-if="show">
-    <b-row class="event_name">
+    <b-row class="name">
         <b-col sm="3">
      <label id="input-group-1" label-for="input-1" >Event Name:</label>
       </b-col>
       <b-col sm="9">
         <b-form-input sm="auto"
           id="input-1"
-          v-model="form.event_name"
-          type="event_name"
+          v-model="form.name"
+          type="name"
           placeholder="Enter event name"
           required
         ></b-form-input>
@@ -119,15 +119,15 @@ export default {
   data() {
     return {
       form: {
-        event_name: '',
+        name: '',
         subcategory: '',
         date: '',
         start_time: '',
         end_time: '',
         location: '',
-        description: '',
+        details: '',
       },
-      subcategories: [{ text: 'Select One', value: null }, 'CSE 437', 'CSE 347', 'L51 352'],
+      subcategories: [{ text: 'Select One', value: null }, this.getSubcategories()],
       show: true,
     };
   },
@@ -135,13 +135,13 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       const payload = {
-        event_name: this.form.event_name,
-        subcategory: this.form.subcategory,
+        name: this.form.name,
+        subcategory_id: this.form.subcategory,
         date: this.form.date,
         start_time: this.form.start_time,
         end_time: this.form.end_time,
         location: this.form.location,
-        description: this.form.description,
+        details: this.form.details,
       };
       this.addEvent(payload);
       this.initForm();
@@ -150,7 +150,7 @@ export default {
       const path = 'http://localhost:5000/events';
       axios.get(path)
         .then((res) => {
-          this.events = res.data.books;
+          this.events = res.data.name;
         })
         .catch((error) => {
           console.log(error);
@@ -167,14 +167,25 @@ export default {
           this.getEvents();
         });
     },
+    getSubcategories() {
+      const path = 'http://localhost:5000//subcategoriesNameId';
+      axios.get(path)
+        .then((res) => {
+          const subcat = res.data.data.subcategories;
+          this.subcategories = Object.keys(subcat).map((k) => subcat[k]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     initForm() {
-      this.form.event_name = '';
-      this.form.subcategory = null;
+      this.form.name = '';
+      this.form.subcategory_id = null;
       this.form.date = '';
       this.form.start_time = '';
       this.form.end_time = '';
       this.form.location = '';
-      this.form.description = '';
+      this.form.details = '';
     },
   },
 };
