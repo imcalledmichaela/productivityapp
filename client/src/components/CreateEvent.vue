@@ -147,7 +147,7 @@ export default {
       this.initForm();
     },
     getEvents() {
-      const path = 'http://localhost:5000/events';
+      const path = '/events';
       axios.get(path)
         .then((res) => {
           this.events = res.data.name;
@@ -157,7 +157,7 @@ export default {
         });
     },
     addEvent(payload) {
-      const path = 'http://localhost:5000/events';
+      const path = '/events';
       axios.post(path, payload)
         .then(() => {
           this.getEvents();
@@ -168,7 +168,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'http://localhost:5000//subcategoriesNameId';
+      const path = '/subcategoriesNameId';
       axios.get(path)
         .then((res) => {
           const subcat = res.data.data.subcategories;

@@ -23,7 +23,7 @@
         "vue-template-compiler": "^2.6.11"
     },
     "scripts": {
-        "start": "gunicorn productivityapp.app:app",
+        "start": "gunicorn app:app",
         "build": "cd client && npm run build"
     },
     "eslintConfig": {
