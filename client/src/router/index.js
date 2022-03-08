@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Ping from '../components/Ping.vue';
 import CreateEvent from '../components/CreateEvent.vue';
+import CreateTask from '../components/CreateTask.vue';
+import Today from '../components/Today.vue';
 
 Vue.use(Router);
 
@@ -18,6 +20,16 @@ export default new Router({
       path: '/createEvent',
       name: 'CreateEvent',
       component: CreateEvent,
+    },
+    {
+      path: '/createTask',
+      name: 'CreateTask',
+      component: CreateTask,
+    },
+    {
+      path: '/today',
+      name: 'Today',
+      component: Today,
     },
   ],
 });
