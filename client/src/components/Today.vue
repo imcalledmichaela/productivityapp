@@ -81,7 +81,7 @@ export default {
       const path = 'http://localhost:5000/events';
       axios.get(path)
         .then((res) => {
-          console.log(res.data.data.events)
+          console.log(res.data.data.events);
           this.events = res.data.data.events;
         })
         .catch((error) => {
@@ -92,7 +92,7 @@ export default {
       const path = 'http://localhost:5000/tasks';
       axios.get(path)
         .then((res) => {
-          console.log(res.data.data.tasks)
+          console.log(res.data.data.tasks);
           this.tasks = res.data.data.tasks;
         })
         .catch((error) => {
@@ -100,7 +100,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = "http://localhost:5000//subcategoriesNameId";
+      const path = 'http://localhost:5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {

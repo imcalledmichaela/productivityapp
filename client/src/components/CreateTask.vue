@@ -77,7 +77,6 @@
             </b-col>
           </b-row>
 
-        
           <b-row class="start_time" style="padding-top: 15px">
             <b-col sm="3">
               <label id="input-group-4" label-for="input-4">Start:</label>
@@ -137,21 +136,21 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       form: {
-        name: "",
-        subcategory: "",
-        date: "",
-        duration: "",
-        start_time: "",
-        details: "",
+        name: '',
+        subcategory: '',
+        date: '',
+        duration: '',
+        start_time: '',
+        details: '',
       },
       subcategories: [
-        { text: "Select One", value: null },
+        { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -172,7 +171,7 @@ export default {
       this.initForm();
     },
     getTasks() {
-      const path = "http://localhost:5000/tasks";
+      const path = 'http://localhost:5000/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -183,7 +182,7 @@ export default {
         });
     },
     addTask(payload) {
-      const path = "http://localhost:5000/tasks";
+      const path = 'http://localhost:5000/tasks';
       axios
         .post(path, payload)
         .then(() => {
@@ -195,7 +194,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = "http://localhost:5000//subcategoriesNameId";
+      const path = 'http://localhost:5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {
@@ -207,12 +206,12 @@ export default {
         });
     },
     initForm() {
-      this.form.name = "";
+      this.form.name = '';
       this.form.subcategory_id = null;
-      this.form.date = "";
-      this.form.duration = "";
-      this.form.start_time = "";
-      this.form.details = "";
+      this.form.date = '';
+      this.form.duration = '';
+      this.form.start_time = '';
+      this.form.details = '';
     },
   },
 };

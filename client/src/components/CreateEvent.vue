@@ -164,22 +164,22 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       form: {
-        name: "",
-        subcategory: "",
-        date: "",
-        start_time: "",
-        end_time: "",
-        location: "",
-        details: "",
+        name: '',
+        subcategory: '',
+        date: '',
+        start_time: '',
+        end_time: '',
+        location: '',
+        details: '',
       },
       subcategories: [
-        { text: "Select One", value: null },
+        { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -201,7 +201,7 @@ export default {
       this.initForm();
     },
     getEvents() {
-      const path = "http://localhost:5000/events";
+      const path = 'http://localhost:5000/events';
       axios
         .get(path)
         .then((res) => {
@@ -212,7 +212,7 @@ export default {
         });
     },
     addEvent(payload) {
-      const path = "http://localhost:5000/events";
+      const path = 'http://localhost:5000/events';
       axios
         .post(path, payload)
         .then(() => {
@@ -224,7 +224,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = "http://localhost:5000//subcategoriesNameId";
+      const path = 'http://localhost:5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {
@@ -236,13 +236,13 @@ export default {
         });
     },
     initForm() {
-      this.form.name = "";
+      this.form.name = '';
       this.form.subcategory_id = null;
-      this.form.date = "";
-      this.form.start_time = "";
-      this.form.end_time = "";
-      this.form.location = "";
-      this.form.details = "";
+      this.form.date = '';
+      this.form.start_time = '';
+      this.form.end_time = '';
+      this.form.location = '';
+      this.form.details = '';
     },
   },
 };
