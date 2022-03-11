@@ -4,9 +4,9 @@
     <div class="row">
       <div class="col-sm-10">
         <h1>Events</h1>
-        <!--<hr><br><br>
-        <button type="button" class="btn btn-success btn-sm">Add Event</button>
-        <br><br>-->
+        
+        <button type="button" @click="goCreateEvent" class="btn btn-success btn-sm">Add Event</button>
+        
         <table class="table table-hover">
           <thead>
             <tr>
@@ -35,9 +35,7 @@
     <div class="row">
       <div class="col-sm-10">
         <h1>Tasks</h1>
-        <!-- <hr><br><br>
-        <button type="button" class="btn btn-success btn-sm">Add Task</button>
-        <br><br> -->
+        <button type="button" @click="goCreateTask" class="btn btn-success btn-sm">Add Task</button>
         <table class="table table-hover">
           <thead>
             <tr>
@@ -77,6 +75,14 @@ export default {
     };
   },
   methods: {
+    goCreateEvent() {
+      this.$router.push('/createevent');
+    },
+
+    goCreateTask() {
+      this.$router.push('/createtask');
+    },
+
     getEvents() {
       const path = 'http://localhost:5000/events';
       axios.get(path)
