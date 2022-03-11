@@ -148,7 +148,7 @@
           </b-row>
           <b-row style="padding-top: 15px">
             <b-col sm="5"> </b-col>
-            <b-col sm="2">
+            <b-col sm="1">
               <b-button type="submit" variant="primary">Submit</b-button>
             </b-col>
             <b-col sm="5"> </b-col>
@@ -197,8 +197,10 @@ export default {
         location: this.form.location,
         details: this.form.details,
       };
+      
       this.addEvent(payload);
-      this.initForm();
+      this.$router.push('/success');
+      //this.initForm();
     },
     getEvents() {
       const path = 'http://localhost:5000/events';
@@ -234,6 +236,9 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    printSuccess() {
+      
     },
     initForm() {
       this.form.name = '';

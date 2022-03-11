@@ -168,7 +168,8 @@ export default {
         details: this.form.details,
       };
       this.addTask(payload);
-      this.initForm();
+      this.$router.push('/success');
+      //this.initForm();
     },
     getTasks() {
       const path = 'http://localhost:5000/tasks';

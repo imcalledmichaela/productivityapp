@@ -4,6 +4,7 @@ import Ping from '../components/Ping.vue';
 import CreateEvent from '../components/CreateEvent.vue';
 import CreateTask from '../components/CreateTask.vue';
 import Today from '../components/Today.vue';
+import Success from '../components/Success.vue';
 
 Vue.use(Router);
 
@@ -31,5 +32,10 @@ export default new Router({
       name: 'Today',
       component: Today,
     },
+    {
+      path: '/success',
+      name: 'Success',
+      component: Success,
+    }, 
   ],
 });
