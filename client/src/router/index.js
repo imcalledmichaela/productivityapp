@@ -5,6 +5,7 @@ import CreateEvent from '../components/CreateEvent.vue';
 import CreateTask from '../components/CreateTask.vue';
 import Today from '../components/Today.vue';
 import Success from '../components/Success.vue';
+import Error from '../components/Error.vue';
 
 Vue.use(Router);
 
@@ -37,5 +38,10 @@ export default new Router({
       name: 'Success',
       component: Success,
     }, 
+    {
+      path: '/error',
+      name: 'Error',
+      component: Error,
+    }
   ],
 });
