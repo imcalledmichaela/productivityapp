@@ -1,70 +1,97 @@
 <template>
-  <div class="container">
+  <b-container fluid="sm">
     <b-jumbotron header="Today">
-    <div class="row">
-      <div class="col-sm-10">
-        <h1>Events</h1>
-        
-        <button type="button" @click="goCreateEvent" class="btn btn-success btn-sm">Add Event</button>
-        
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Subcategory</th>
-              <th scope="col">Date</th>
-              <th scope="col">Start Time</th>
-              <th scope="col">End Time</th>
-              <th scope="col">Location</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(event, index) in events" :key="index">
-              <td>{{ event.name }}</td>
-              <td>{{ event.subcategory }}</td>
-              <td>{{ event.date }}</td>
-              <td>{{ event.start_time }}</td>
-              <td>{{ event.end_time }}</td>
-              <td>{{ event.location }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-10">
-        <h1>Tasks</h1>
-        <button type="button" @click="goCreateTask" class="btn btn-success btn-sm">Add Task</button>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Subcategory</th>
-              <th scope="col">Date</th>
-              <th scope="col">Duration</th>
-              <th scope="col">Start Time</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(task, index) in tasks" :key="index">
-              <td>{{ task.name }}</td>
-              <td>{{ task.subcategory }}</td>
-              <td>{{ task.date }}</td>
-              <td>{{ task.duration }}</td>
-              <td>{{ task.start_time }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <b-row class="event-header">
+        <b-col sm="2" stickyColumn="true">
+          <h1>Events</h1>
+        </b-col>
+        <b-col sm="10">
+          <button
+            type="button"
+            @click="goCreateEvent"
+            class="btn btn-success btn-sm"
+            style="margin-top: 12px"
+          >
+            Add Event
+          </button>
+        </b-col>
+      </b-row>
+
+      <b-row class="event-table">
+        <b-col sm="12" stickyColumn="true">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Subcategory</th>
+                <th scope="col">Date</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+                <th scope="col">Location</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(event, index) in events" :key="index">
+                <td>{{ event.name }}</td>
+                <td>{{ event.subcategory }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.start_time }}</td>
+                <td>{{ event.end_time }}</td>
+                <td>{{ event.location }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </b-col>
+      </b-row>
+
+      <b-row class="task-header">
+        <b-col sm="2" stickyColumn="true">
+          <h1>Tasks</h1>
+        </b-col>
+        <b-col sm="10">
+          <button
+            type="button"
+            @click="goCreateTask"
+            class="btn btn-success btn-sm"
+            style="margin-top: 12px"
+          >
+            Add Task
+          </button>
+        </b-col>
+      </b-row>
+
+      <b-row class="task-table">
+        <b-col sm="12">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Subcategory</th>
+                <th scope="col">Date</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Start Time</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(task, index) in tasks" :key="index">
+                <td>{{ task.name }}</td>
+                <td>{{ task.subcategory }}</td>
+                <td>{{ task.date }}</td>
+                <td>{{ task.duration }}</td>
+                <td>{{ task.start_time }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </b-col>
+      </b-row>
     </b-jumbotron>
-  </div>
+  </b-container>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -76,16 +103,17 @@ export default {
   },
   methods: {
     goCreateEvent() {
-      this.$router.push('/createevent');
+      this.$router.push("/createevent");
     },
 
     goCreateTask() {
-      this.$router.push('/createtask');
+      this.$router.push("/createtask");
     },
 
     getEvents() {
-      const path = 'http://localhost:5000/events';
-      axios.get(path)
+      const path = "http://localhost:5000/events";
+      axios
+        .get(path)
         .then((res) => {
           console.log(res.data.data.events);
           this.events = res.data.data.events;
@@ -95,8 +123,9 @@ export default {
         });
     },
     getTasks() {
-      const path = 'http://localhost:5000/tasks';
-      axios.get(path)
+      const path = "http://localhost:5000/tasks";
+      axios
+        .get(path)
         .then((res) => {
           console.log(res.data.data.tasks);
           this.tasks = res.data.data.tasks;
@@ -106,7 +135,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'http://localhost:5000//subcategoriesNameId';
+      const path = "http://localhost:5000//subcategoriesNameId";
       axios
         .get(path)
         .then((res) => {

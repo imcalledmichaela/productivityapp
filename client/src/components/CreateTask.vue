@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container md="auto">
+    <b-container fluid="md">
       <b-form @submit="onSubmit" v-if="show">
         <b-jumbotron header="Create Task">
           <b-row class="name">
@@ -39,25 +39,17 @@
             </b-col>
 
             <b-col sm="4">
-              <b-input-group>
-                <b-form-input
-                  id="example-input"
-                  v-model="form.date"
-                  type="text"
-                  placeholder="Enter Date"
-                  autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-form-datepicker
-                    v-model="form.date"
-                    button-only
-                    right
-                    locale="en-US"
-                    aria-controls="example-input"
-                    @context="onContext"
-                  ></b-form-datepicker>
-                </b-input-group-append>
-              </b-input-group>
+              <b-form-datepicker
+                v-model="form.date"
+                placeholder="Enter date"
+                :date-format-options="{
+                  weekday: 'short',
+                  year: '2-digit',
+                  month: '2-digit',
+                  day: '2-digit',
+                }"
+              >
+              </b-form-datepicker>
             </b-col>
           </b-row>
 
@@ -83,26 +75,11 @@
             </b-col>
 
             <b-col sm="4">
-              <b-input-group>
-                <b-form-input
-                  id="example-input"
-                  v-model="form.start_time"
-                  type="text"
-                  placeholder="Enter Time"
-                  autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-form-timepicker
-                    no-close-button="true"
-                    v-model="form.start_time"
-                    button-only
-                    right
-                    locale="en-US"
-                    aria-controls="example-input"
-                    @context="onContext"
-                  ></b-form-timepicker>
-                </b-input-group-append>
-              </b-input-group>
+              <b-form-timepicker
+                v-model="form.start_time"
+                placeholder="Enter Time"
+                locale="en-US"
+              ></b-form-timepicker>
             </b-col>
           </b-row>
 
@@ -120,8 +97,16 @@
           </b-row>
           <b-row style="padding-top: 15px">
             <b-col sm="5"> </b-col>
-            <b-col sm="2">
+            <b-col sm="1">
               <b-button type="submit" variant="primary">Submit</b-button>
+            </b-col>
+            <b-col sm="1">
+              <b-button
+                type="cancel"
+                @click="returnToday"
+                style="background-color: red"
+                >Cancel</b-button
+              >
             </b-col>
             <b-col sm="5"> </b-col>
           </b-row>
@@ -136,21 +121,21 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
       form: {
-        name: '',
-        subcategory: '',
-        date: '',
-        duration: '',
-        start_time: '',
-        details: '',
+        name: "",
+        subcategory: "",
+        date: "",
+        duration: "",
+        start_time: "",
+        details: "",
       },
       subcategories: [
-        { text: 'Select One', value: null },
+        { text: "Select One", value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -168,11 +153,12 @@ export default {
         details: this.form.details,
       };
       this.addTask(payload);
-      this.$router.push('/success');
+
+      //this.$router.push('/success');
       //this.initForm();
     },
     getTasks() {
-      const path = 'http://localhost:5000/tasks';
+      const path = "http://localhost:5000/tasks";
       axios
         .get(path)
         .then((res) => {
@@ -183,19 +169,21 @@ export default {
         });
     },
     addTask(payload) {
-      const path = 'http://localhost:5000/tasks';
+      const path = "http://localhost:5000/tasks";
       axios
         .post(path, payload)
         .then(() => {
           this.getTasks();
+          this.$router.push("/success");
         })
         .catch((error) => {
           console.log(error);
           this.getTasks();
+          this.$router.push("/error");
         });
     },
     getSubcategories() {
-      const path = 'http://localhost:5000//subcategoriesNameId';
+      const path = "http://localhost:5000//subcategoriesNameId";
       axios
         .get(path)
         .then((res) => {
@@ -207,12 +195,16 @@ export default {
         });
     },
     initForm() {
-      this.form.name = '';
+      this.form.name = "";
       this.form.subcategory_id = null;
-      this.form.date = '';
-      this.form.duration = '';
-      this.form.start_time = '';
-      this.form.details = '';
+      this.form.date = "";
+      this.form.duration = "";
+      this.form.start_time = "";
+      this.form.details = "";
+    },
+
+    returnToday() {
+      this.$router.push("/today");
     },
   },
 };

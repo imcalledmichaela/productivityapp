@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-container md="auto">
+    <b-container fluid="md">
       <b-form @submit="onSubmit" v-if="show">
         <b-jumbotron header="Create Event">
           <b-row class="name">
@@ -39,25 +39,17 @@
             </b-col>
 
             <b-col sm="9">
-              <b-input-group>
-                <b-form-input
-                  id="example-input"
-                  v-model="form.date"
-                  type="text"
-                  placeholder="Enter Date"
-                  autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-form-datepicker
-                    v-model="form.date"
-                    button-only
-                    right
-                    locale="en-US"
-                    aria-controls="example-input"
-                    @context="onContext"
-                  ></b-form-datepicker>
-                </b-input-group-append>
-              </b-input-group>
+              <b-form-datepicker
+                v-model="form.date"
+                placeholder="Enter date"
+                :date-format-options="{
+                  weekday: 'short',
+                  year: '2-digit',
+                  month: '2-digit',
+                  day: '2-digit',
+                }"
+              >
+              </b-form-datepicker>
             </b-col>
           </b-row>
 
@@ -68,26 +60,11 @@
             </b-col>
 
             <b-col sm="4">
-              <b-input-group>
-                <b-form-input
-                  id="example-input"
-                  v-model="form.start_time"
-                  type="text"
-                  placeholder="HH:DD"
-                  autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-form-timepicker
-                    no-close-button="true"
-                    v-model="form.start_time"
-                    button-only
-                    right
-                    locale="en-US"
-                    aria-controls="example-input"
-                    @context="onContext"
-                  ></b-form-timepicker>
-                </b-input-group-append>
-              </b-input-group>
+              <b-form-timepicker
+                v-model="form.start_time"
+                placeholder="Enter Time"
+                locale="en-US"
+              ></b-form-timepicker>
             </b-col>
 
             <!--End Time-->
@@ -96,26 +73,11 @@
             </b-col>
 
             <b-col sm="4">
-              <b-input-group>
-                <b-form-input
-                  id="example-input"
-                  v-model="form.end_time"
-                  type="text"
-                  placeholder="HH:DD"
-                  autocomplete="off"
-                ></b-form-input>
-                <b-input-group-append>
-                  <b-form-timepicker
-                    no-close-button="true"
-                    v-model="form.end_time"
-                    button-only
-                    right
-                    locale="en-US"
-                    aria-controls="example-input"
-                    @context="onContext"
-                  ></b-form-timepicker>
-                </b-input-group-append>
-              </b-input-group>
+               <b-form-timepicker
+                v-model="form.end_time"
+                placeholder="Enter Time"
+                locale="en-US"
+              ></b-form-timepicker>
             </b-col>
           </b-row>
 
@@ -150,6 +112,9 @@
             <b-col sm="5"> </b-col>
             <b-col sm="1">
               <b-button type="submit" variant="primary">Submit</b-button>
+            </b-col>
+            <b-col sm="1">
+              <b-button type="cancel" @click="returnToday" style="background-color: red">Cancel</b-button>
             </b-col>
             <b-col sm="5"> </b-col>
           </b-row>
@@ -198,9 +163,8 @@ export default {
         details: this.form.details,
       };
       
-      this.addEvent(payload);
-      this.$router.push('/success');
-      //this.initForm();
+      this.addEvent(payload)
+      this.initForm();
     },
     getEvents() {
       const path = 'http://localhost:5000/events';
@@ -219,10 +183,12 @@ export default {
         .post(path, payload)
         .then(() => {
           this.getEvents();
+          this.$router.push('/success');
         })
         .catch((error) => {
           console.log(error);
           this.getEvents();
+          this.$router.push('/error');
         });
     },
     getSubcategories() {
@@ -249,6 +215,10 @@ export default {
       this.form.location = '';
       this.form.details = '';
     },
+
+    returnToday() {
+      this.$router.push("/today");
+    }
   },
 };
 </script>
