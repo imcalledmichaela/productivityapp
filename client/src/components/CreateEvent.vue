@@ -114,7 +114,7 @@
               <b-button type="submit" variant="primary">Submit</b-button>
             </b-col>
             <b-col sm="1">
-              <b-button type="cancel" @click="returnToday" style="background-color: red">Cancel</b-button>
+              <b-button type="cancel" @click="returnToday" style="bg-color: red">Cancel</b-button>
             </b-col>
             <b-col sm="5"> </b-col>
           </b-row>
@@ -162,8 +162,8 @@ export default {
         location: this.form.location,
         details: this.form.details,
       };
-      
-      this.addEvent(payload)
+
+      this.addEvent(payload);
       this.initForm();
     },
     getEvents() {
@@ -204,7 +204,7 @@ export default {
         });
     },
     printSuccess() {
-      
+
     },
     initForm() {
       this.form.name = '';
@@ -217,8 +217,8 @@ export default {
     },
 
     returnToday() {
-      this.$router.push("/today");
-    }
+      this.$router.push('/today');
+    },
   },
 };
 </script>

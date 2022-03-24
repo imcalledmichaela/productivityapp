@@ -121,21 +121,21 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       form: {
-        name: "",
-        subcategory: "",
-        date: "",
-        duration: "",
-        start_time: "",
-        details: "",
+        name: '',
+        subcategory: '',
+        date: '',
+        duration: '',
+        start_time: '',
+        details: '',
       },
       subcategories: [
-        { text: "Select One", value: null },
+        { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -154,11 +154,11 @@ export default {
       };
       this.addTask(payload);
 
-      //this.$router.push('/success');
-      //this.initForm();
+      // this.$router.push('/success');
+      // this.initForm();
     },
     getTasks() {
-      const path = "http://localhost:5000/tasks";
+      const path = 'http://localhost:5000/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -169,21 +169,21 @@ export default {
         });
     },
     addTask(payload) {
-      const path = "http://localhost:5000/tasks";
+      const path = 'http://localhost:5000/tasks';
       axios
         .post(path, payload)
         .then(() => {
           this.getTasks();
-          this.$router.push("/success");
+          this.$router.push('/success');
         })
         .catch((error) => {
           console.log(error);
           this.getTasks();
-          this.$router.push("/error");
+          this.$router.push('/error');
         });
     },
     getSubcategories() {
-      const path = "http://localhost:5000//subcategoriesNameId";
+      const path = 'http://localhost:5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {
@@ -195,16 +195,16 @@ export default {
         });
     },
     initForm() {
-      this.form.name = "";
+      this.form.name = '';
       this.form.subcategory_id = null;
-      this.form.date = "";
-      this.form.duration = "";
-      this.form.start_time = "";
-      this.form.details = "";
+      this.form.date = '';
+      this.form.duration = '';
+      this.form.start_time = '';
+      this.form.details = '';
     },
 
     returnToday() {
-      this.$router.push("/today");
+      this.$router.push('/today');
     },
   },
 };

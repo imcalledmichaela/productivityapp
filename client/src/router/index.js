@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Ping from '../components/Ping.vue';
+import PingPage from '../components/PingPage.vue';
 import CreateEvent from '../components/CreateEvent.vue';
 import CreateTask from '../components/CreateTask.vue';
-import Today from '../components/Today.vue';
-import Success from '../components/Success.vue';
-import Error from '../components/Error.vue';
+import TodayPage from '../components/TodayPage.vue';
+import SuccessPage from '../components/SuccessPage.vue';
+import ErrorPage from '../components/ErrorPage.vue';
 
 Vue.use(Router);
 
@@ -16,7 +16,7 @@ export default new Router({
     {
       path: '/ping',
       name: 'Ping',
-      component: Ping,
+      component: PingPage,
     },
     {
       path: '/createEvent',
@@ -31,17 +31,17 @@ export default new Router({
     {
       path: '/today',
       name: 'Today',
-      component: Today,
+      component: TodayPage,
     },
     {
       path: '/success',
       name: 'Success',
-      component: Success,
-    }, 
+      component: SuccessPage,
+    },
     {
       path: '/error',
       name: 'Error',
-      component: Error,
-    }
+      component: ErrorPage,
+    },
   ],
 });

@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
@@ -103,15 +103,15 @@ export default {
   },
   methods: {
     goCreateEvent() {
-      this.$router.push("/createevent");
+      this.$router.push('/createevent');
     },
 
     goCreateTask() {
-      this.$router.push("/createtask");
+      this.$router.push('/createtask');
     },
 
     getEvents() {
-      const path = "http://localhost:5000/events";
+      const path = 'http://localhost:5000/events';
       axios
         .get(path)
         .then((res) => {
@@ -123,7 +123,7 @@ export default {
         });
     },
     getTasks() {
-      const path = "http://localhost:5000/tasks";
+      const path = 'http://localhost:5000/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -135,7 +135,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = "http://localhost:5000//subcategoriesNameId";
+      const path = 'http://localhost:5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {

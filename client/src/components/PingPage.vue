@@ -8,7 +8,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'Ping',
+  name: 'PingPage',
   data() {
     return {
       msg: '',
@@ -17,7 +17,8 @@ export default {
   methods: {
     getMessage() {
       const path = '/ping';
-      axios.get(path)
+      axios
+        .get(path)
         .then((res) => {
           this.msg = res.data;
         })
