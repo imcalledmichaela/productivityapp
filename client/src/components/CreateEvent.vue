@@ -131,22 +131,22 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       form: {
-        name: "",
-        subcategory: "",
-        date: "",
-        start_time: "",
-        end_time: "",
-        location: "",
-        details: "",
+        name: '',
+        subcategory: '',
+        date: '',
+        start_time: '',
+        end_time: '',
+        location: '',
+        details: '',
       },
       subcategories: [
-        { text: "Select One", value: null },
+        { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -169,7 +169,7 @@ export default {
       this.initForm();
     },
     getEvents() {
-      const path = "http://localhost:5000/events";
+      const path = 'http://localhost:5000/events';
       axios
         .get(path)
         .then((res) => {
@@ -180,21 +180,21 @@ export default {
         });
     },
     addEvent(payload) {
-      const path = "http://localhost:5000/events";
+      const path = 'http://localhost:5000/events';
       axios
         .post(path, payload)
         .then(() => {
           this.getEvents();
-          this.$router.push("/success");
+          this.$router.push('/success');
         })
         .catch((error) => {
           console.log(error);
           this.getEvents();
-          this.$router.push("/error");
+          this.$router.push('/error');
         });
     },
     getSubcategories() {
-      const path = "http://localhost:5000//subcategoriesNameId";
+      const path = 'http://localhost:5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {
@@ -207,17 +207,17 @@ export default {
     },
     printSuccess() {},
     initForm() {
-      this.form.name = "";
+      this.form.name = '';
       this.form.subcategory_id = null;
-      this.form.date = "";
-      this.form.start_time = "";
-      this.form.end_time = "";
-      this.form.location = "";
-      this.form.details = "";
+      this.form.date = '';
+      this.form.start_time = '';
+      this.form.end_time = '';
+      this.form.location = '';
+      this.form.details = '';
     },
 
     returnToday() {
-      this.$router.push("/today");
+      this.$router.push('/today');
     },
   },
 };
