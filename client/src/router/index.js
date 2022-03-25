@@ -6,6 +6,7 @@ import CreateTask from '../components/CreateTask.vue';
 import TodayPage from '../components/TodayPage.vue';
 import SuccessPage from '../components/SuccessPage.vue';
 import ErrorPage from '../components/ErrorPage.vue';
+import LoginPage from '../components/LoginPage.vue';
 
 Vue.use(Router);
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/error',
       name: 'Error',
       component: ErrorPage,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginPage,
     },
   ],
 });

@@ -9,7 +9,7 @@ DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://vaviwhocxsnomz:c274c35a9cb7d6c8bd8418ffbcda4431d407ffafca6d5e59ef2018e37aec61ef@ec2-34-230-110-100.compute-1.amazonaws.com:5432/d3ug8s7afnkd2o'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://admin:productive@URL/databaseName'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100, 'pool_recycle': 280}
 
@@ -17,11 +17,53 @@ db = SQLAlchemy(app)
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
+class User(db.Model):
+
+    __tablename__ = 'user'
+
+    user_id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64), nullable = False)
+    username = db.Column(db.String(64), nullable = False)
+    email = db.Column(db.String(254), nullable = False)
+    password = db.Column(db.String(254), nullable = False)
+
+    def __init__(user_id, name, username, email, password):
+        self.user_id = user_id
+        self.name = name
+        self.username = username
+        self.email = email
+        self.password = password
+
+    def to_dict(self):
+        return {
+            "user_id": self.user_id,
+            "name": self.name,
+            "username": self.username,
+            "email": self.email,
+            "password": self.password
+        }
+
+class Friendship(db.Model):
+    friendship_id = db.Column(db.Integer, primary_key = True)
+    user1_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
+    user2_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
+
+    def __init__(self, user1_id, user2_id):
+        self.user1_id = user1_id
+        self.user2_id = user2_id
+
+    def to_dict(self):
+        return {
+            "friendship_id": self.friendship_id,
+            "user1_id": self.user1_id,
+            "user2_id": self.user2_id
+        }
 
 class Event(db.Model):
     __tablename__ = 'event'
 
     event_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
     name = db.Column(db.String(64), nullable = False)
     subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
@@ -30,8 +72,9 @@ class Event(db.Model):
     location = db.Column(db.String(254), nullable = False)
     details = db.Column(db.String(254), nullable = False)
 
-    def __init__(self, name, subcategory_id, date, start_time, end_time, location, details):
+    def __init__(self, user_id, name, subcategory_id, date, start_time, end_time, location, details):
         self.name = name
+        self.user_id = user_id
         self.subcategory_id = subcategory_id
         self.date = date
         self.start_time = start_time
@@ -43,6 +86,7 @@ class Event(db.Model):
         return {
             "event_id": self.event_id,
             "name": self.name,
+            "user_id": self.user_id
             "subcategory_id": self.subcategory_id,
             "date": str(self.date),
             "start_time": str(self.start_time),
@@ -55,6 +99,7 @@ class Task(db.Model):
     __tablename__ = 'task'
 
     task_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
     name = db.Column(db.String(64), nullable = False)
     subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
     date = db.Column(db.Date, nullable = False)
@@ -62,7 +107,9 @@ class Task(db.Model):
     start_time = db.Column(db.Time, nullable = False)
     details = db.Column(db.String(254), nullable = False)
 
-    def __init__(self, name, subcategory_id, date, duration, start_time, details):
+    def __init__(self, user_id, name, subcategory_id, date, duration, start_time, details):
+        self.task_id = task_id
+        self.user_id = user_id
         self.name = name
         self.subcategory_id = subcategory_id
         self.date = date
@@ -73,6 +120,7 @@ class Task(db.Model):
     def to_dict(self):
         return {
             "task_id": self.task_id,
+            "user_id": self.user_id
             "name": self.name,
             "subcategory_id": self.subcategory_id,
             "date": str(self.date),
@@ -85,15 +133,18 @@ class Category(db.Model):
     __tablename__ = 'category'
 
     category_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
     name = db.Column(db.String(64), nullable = False)
 
-    def __init__(self, name):
+    def __init__(self, user_id, name):
         self.name = name
+        self.user_id = user_id
 
     def to_dict(self):
         return {
             "category_id": self.category_id,
-            "name": self.name,
+            "user_id": self.user_id,
+            "name": self.name
         }
 
 class Subcategory(db.Model):
@@ -116,13 +167,37 @@ class Subcategory(db.Model):
             "category_id": self.cateogry_id,
             "color": self.color
         }
-    
-    
+
 
 # sanity check route
 @app.route('/ping', methods=['GET'])
 def ping_pong():
     return jsonify('pong!')
+
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.get_json()
+        name = data['name']
+        username = data['username']
+        password = data['password']
+        print(data)
+        db.session.add(event)
+        db.session.commit()
+    except Exception as e:
+        print(str(e))
+        return jsonify(
+            {
+                "message": "An error has occured while logging the user in",
+                "error": str(e)
+            }
+        ), 500
+    
+    return jsonify(
+        {
+            "data": user.to_dict()
+        }
+    ), 201
 
 # EVENTS
 # Creating and sending an event to the database
