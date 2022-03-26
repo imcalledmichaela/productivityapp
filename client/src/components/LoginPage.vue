@@ -53,6 +53,7 @@ export default {
       form: {
         username_input: '',
         password_input: '',
+        APP_URL: process.env.VUE_APP_URL,
       },
     };
   },
@@ -66,7 +67,7 @@ export default {
       this.login(payload);
     },
     login(payload) {
-      const path = process.env.VUE_APP_URL + '5000/login';
+      const path = '{ APP_URL }:5000/login';
       axios
         .post(path, payload)
         .then(() => {

@@ -133,6 +133,7 @@ export default {
         duration: '',
         start_time: '',
         details: '',
+        APP_URL: process.env.VUE_APP_URL,
       },
       subcategories: [
         { text: 'Select One', value: null },
@@ -158,7 +159,7 @@ export default {
       // this.initForm();
     },
     getTasks() {
-      const path = process.env.VUE_APP_URL + ':5000/tasks';
+      const path = '{ APP_URL }:5000/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -169,7 +170,7 @@ export default {
         });
     },
     addTask(payload) {
-      const path = process.env.VUE_APP_URL + ':5000/tasks';
+      const path = '{ APP_URL }:5000/tasks';
       axios
         .post(path, payload)
         .then(() => {
@@ -183,7 +184,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = process.env.VUE_APP_URL + ':5000/subcategoriesNameId';
+      const path = '{ APP_URL }:5000/subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {
