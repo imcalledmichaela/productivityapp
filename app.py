@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from json import dumps
+import auth
 
 # configuration
 DEBUG = True
@@ -14,6 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_size': 100, 'pool_recycle': 280}
 
 db = SQLAlchemy(app)
+app.register_blueprint(auth.bp)
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -23,8 +25,8 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), nullable = False)
-    username = db.Column(db.String(64), nullable = False)
-    email = db.Column(db.String(254), nullable = False)
+    username = db.Column(db.String(64), nullable = False, unique=True)
+    email = db.Column(db.String(254), nullable = False, unique=True)
     password = db.Column(db.String(254), nullable = False)
 
     def __init__(user_id, name, username, email, password):
@@ -43,6 +45,14 @@ class User(db.Model):
             "password": self.password
         }
 
+    def add(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception:
+            return "Unable to create friendship."
+        return self
+
 class Friendship(db.Model):
     friendship_id = db.Column(db.Integer, primary_key = True)
     user1_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
@@ -58,6 +68,14 @@ class Friendship(db.Model):
             "user1_id": self.user1_id,
             "user2_id": self.user2_id
         }
+
+    def add(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception:
+            return "Unable to create friendship."
+        return self
 
 class Event(db.Model):
     __tablename__ = 'event'
@@ -86,7 +104,7 @@ class Event(db.Model):
         return {
             "event_id": self.event_id,
             "name": self.name,
-            "user_id": self.user_id
+            "user_id": self.user_id,
             "subcategory_id": self.subcategory_id,
             "date": str(self.date),
             "start_time": str(self.start_time),
@@ -94,6 +112,14 @@ class Event(db.Model):
             "location": self.location,
             "details": self.details
         }
+    
+    def add(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception:
+            return "Unable to create event."
+        return self
 
 class Task(db.Model):
     __tablename__ = 'task'
@@ -120,7 +146,7 @@ class Task(db.Model):
     def to_dict(self):
         return {
             "task_id": self.task_id,
-            "user_id": self.user_id
+            "user_id": self.user_id,
             "name": self.name,
             "subcategory_id": self.subcategory_id,
             "date": str(self.date),
@@ -128,6 +154,14 @@ class Task(db.Model):
             "start_time": str(self.start_time),
             "details": self.details
         }
+    
+    def add(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception:
+            return "Unable to create task."
+        return self
         
 class Category(db.Model):
     __tablename__ = 'category'
@@ -146,6 +180,10 @@ class Category(db.Model):
             "user_id": self.user_id,
             "name": self.name
         }
+    
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
 class Subcategory(db.Model):
     __tablename__ = 'subcategory'
@@ -167,6 +205,10 @@ class Subcategory(db.Model):
             "category_id": self.cateogry_id,
             "color": self.color
         }
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 # sanity check route

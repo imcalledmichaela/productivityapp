@@ -1,3 +1,4 @@
+blueprint==3.4.2
 click==8.0.4
 Flask==2.0.3
 Flask-Cors==3.0.10
@@ -11,6 +12,7 @@ Jinja2==3.1.0
 MarkupSafe==2.1.1
 psycopg2-binary==2.9.3
 PyJWT==2.3.0
+PyMySQL==1.0.2
 six==1.16.0
 SQLAlchemy==1.4.32
 typing-extensions==4.1.1
