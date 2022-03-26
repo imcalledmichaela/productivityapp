@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve-production": "vue-cli-service serve --mode production --host ec2-52-90-148-218.compute-1.amazonaws.com:8080",
+    "serve-production": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
