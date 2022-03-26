@@ -111,7 +111,7 @@ export default {
     },
 
     getEvents() {
-      const path = 'http://localhost:5000/events';
+      const path = process.env.VUE_APP_URL + ':5000/events';
       axios
         .get(path)
         .then((res) => {
@@ -123,7 +123,7 @@ export default {
         });
     },
     getTasks() {
-      const path = 'http://localhost:5000/tasks';
+      const path = process.env.VUE_APP_URL + ':5000/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -135,7 +135,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'http://localhost:5000//subcategoriesNameId';
+      const path = process.env.VUE_APP_URL + ':5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {

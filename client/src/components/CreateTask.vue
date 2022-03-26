@@ -158,7 +158,7 @@ export default {
       // this.initForm();
     },
     getTasks() {
-      const path = 'http://localhost:5000/tasks';
+      const path = process.env.VUE_APP_URL + ':5000/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -169,7 +169,7 @@ export default {
         });
     },
     addTask(payload) {
-      const path = 'http://localhost:5000/tasks';
+      const path = process.env.VUE_APP_URL + ':5000/tasks';
       axios
         .post(path, payload)
         .then(() => {
@@ -183,7 +183,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'http://localhost:5000//subcategoriesNameId';
+      const path = process.env.VUE_APP_URL + ':5000/subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {

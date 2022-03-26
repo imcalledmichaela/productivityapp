@@ -169,7 +169,7 @@ export default {
       this.initForm();
     },
     getEvents() {
-      const path = 'http://localhost:5000/events';
+      const path = process.env.VUE_APP_URL + '5000/events';
       axios
         .get(path)
         .then((res) => {
@@ -180,7 +180,7 @@ export default {
         });
     },
     addEvent(payload) {
-      const path = 'http://localhost:5000/events';
+      const path = process.env.VUE_APP_URL + '5000/events';
       axios
         .post(path, payload)
         .then(() => {
@@ -194,7 +194,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'http://localhost:5000//subcategoriesNameId';
+      const path = process.env.VUE_APP_URL + '5000//subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {

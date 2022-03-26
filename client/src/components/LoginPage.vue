@@ -66,7 +66,7 @@ export default {
       this.login(payload);
     },
     login(payload) {
-      const path = 'http://localhost:5000/login';
+      const path = process.env.VUE_APP_URL + '5000/login';
       axios
         .post(path, payload)
         .then(() => {
