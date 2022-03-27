@@ -11,9 +11,9 @@ from flask_jwt_extended import (
     get_jwt_identity)
 from .models import User
 
-bp = Blueprint('auth', __name__, url_prefix="/auth")
+app_auth = Blueprint('auth', __name__, url_prefix="/auth")
 
-@bp.route('/register', methods=['POST'])
+@app_auth.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     name = data['name']
@@ -47,7 +47,7 @@ def register():
     ), 400
 
 
-@bp.route('/login', methods=['POST'])
+@app_auth.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     username = data['username']
@@ -68,7 +68,7 @@ def login():
     ), 401
 
 
-@bp.route('/logout', methods=['POST'])
+@app_auth.route('/logout', methods=['POST'])
 @jwt_required
 def logout():
     response = jsonify()
@@ -76,7 +76,7 @@ def logout():
     return response, 200
 
 
-@bp.route('/refresh', methods=['POST'])
+@app_auth.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh():
     user_id = get_jwt_identity()
