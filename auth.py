@@ -13,7 +13,7 @@ from .models import User
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 
-@bp.route('/register', methods=('POST',))
+@bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     name = data['name']
@@ -47,7 +47,7 @@ def register():
     ), 400
 
 
-@bp.route('/login', methods=('POST'))
+@bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     username = data['username']
@@ -68,7 +68,7 @@ def login():
     ), 401
 
 
-@bp.route('/logout', methods=('POST',))
+@bp.route('/logout', methods=['POST'])
 @jwt_required
 def logout():
     response = jsonify()
@@ -76,7 +76,7 @@ def logout():
     return response, 200
 
 
-@bp.route('/refresh', methods=('POST',))
+@bp.route('/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh():
     user_id = get_jwt_identity()

@@ -7,7 +7,7 @@ import TodayPage from '../components/TodayPage.vue';
 import SuccessPage from '../components/SuccessPage.vue';
 import ErrorPage from '../components/ErrorPage.vue';
 import LoginPage from '../components/LoginPage.vue';
-import CreateUser from '../components/CreateUser.vue';
+import RegisterPage from '../components/RegisterPage.vue';
 
 Vue.use(Router);
 
@@ -51,9 +51,9 @@ export default new Router({
       component: LoginPage,
     },
     {
-      path: '/createuser',
-      name: 'Create User',
-      component: CreateUser,
+      path: '/register',
+      name: 'Register',
+      component: RegisterPage,
     },
   ],
 });

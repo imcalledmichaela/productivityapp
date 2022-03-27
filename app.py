@@ -17,5 +17,9 @@ with app.app_context():
     CORS(app, resources={r'/*': {'origins': '*'}})
     db.create_all()  # Create sql tables for our data models
 
+app.app_context().push()
+
 from productivityapp.auth import bp
 app.register_blueprint(bp)
+
+from productivityapp.routes import *
