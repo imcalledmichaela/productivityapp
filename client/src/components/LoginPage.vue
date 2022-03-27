@@ -48,12 +48,12 @@
 import axios from 'axios';
 
 export default {
+  APP_URL: process.env.VUE_APP_URL,
   data() {
     return {
       form: {
         username_input: '',
         password_input: '',
-        APP_URL: process.env.VUE_APP_URL,
       },
     };
   },
@@ -67,7 +67,7 @@ export default {
       this.login(payload);
     },
     login(payload) {
-      const path = '{ APP_URL }:5000/login';
+      const path = `${this.$APP_URL}:5000/login`;
       axios
         .post(path, payload)
         .then(() => {
