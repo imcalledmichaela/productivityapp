@@ -7,6 +7,7 @@ import TodayPage from '../components/TodayPage.vue';
 import SuccessPage from '../components/SuccessPage.vue';
 import ErrorPage from '../components/ErrorPage.vue';
 import LoginPage from '../components/LoginPage.vue';
+import CreateUser from '../components/CreateUser.vue';
 
 Vue.use(Router);
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: LoginPage,
+    },
+    {
+      path: '/createuser',
+      name: 'Create User',
+      component: CreateUser,
     },
   ],
 });

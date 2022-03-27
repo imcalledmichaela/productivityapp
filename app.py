@@ -29,8 +29,7 @@ class User(db.Model):
     email = db.Column(db.String(254), nullable = False, unique=True)
     password = db.Column(db.String(254), nullable = False)
 
-    def __init__(user_id, name, username, email, password):
-        self.user_id = user_id
+    def __init__(self, name, username, email, password):
         self.name = name
         self.username = username
         self.email = email
@@ -133,7 +132,7 @@ class Task(db.Model):
     start_time = db.Column(db.Time, nullable = False)
     details = db.Column(db.String(254), nullable = False)
 
-    def __init__(self, user_id, name, subcategory_id, date, duration, start_time, details):
+    def __init__(self, task_id, user_id, name, subcategory_id, date, duration, start_time, details):
         self.task_id = task_id
         self.user_id = user_id
         self.name = name
@@ -216,6 +215,8 @@ class Subcategory(db.Model):
 def ping_pong():
     return jsonify('pong!')
 
+# LOGIN
+# logging user in
 @app.route('/login', methods=['POST'])
 def login():
     try:
@@ -240,6 +241,50 @@ def login():
             "data": user.to_dict()
         }
     ), 201
+
+# CREATE USER
+# Creating and sending a new user to the database
+@app.route("/users", methods=['POST'])
+def addUser():
+    try:
+        data = request.get_json()
+        user = User(**data)
+        print(data)
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        print(str(e))
+        return jsonify(
+            {
+                "message": "An error has occured while creating a new user",
+                "error": str(e)
+            }
+        ), 500
+    
+    return jsonify(
+        {
+            "data": user.to_dict()
+        }
+    ), 201
+
+# Retreiving users from the database
+@app.route("/users")
+def getUsers():
+    user_list = User.query.all()
+    if len(user_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "users": [user.to_dict() for user in user_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No users found."
+        }
+    )
+
 
 # EVENTS
 # Creating and sending an event to the database
