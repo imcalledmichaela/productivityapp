@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(BootstrapVue);
+Vue.prototype.$APP_URL = process.env.VUE_APP_URL;
 
 Vue.config.productionTip = false;
 

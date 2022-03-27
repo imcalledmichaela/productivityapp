@@ -99,7 +99,6 @@ export default {
       events: [],
       tasks: [],
       subcategories: [this.getSubcategories()],
-      APP_URL: process.env.VUE_APP_URL,
     };
   },
   methods: {
@@ -112,7 +111,7 @@ export default {
     },
 
     getEvents() {
-      const path = '{ APP_URL }:5000/events';
+      const path = `${this.$APP_URL}:5000/events`;
       axios
         .get(path)
         .then((res) => {
@@ -124,7 +123,7 @@ export default {
         });
     },
     getTasks() {
-      const path = '{ APP_URL }:5000/tasks';
+      const path = `${this.$APP_URL}:5000/tasks`;
       axios
         .get(path)
         .then((res) => {
@@ -136,7 +135,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = '{ APP_URL }:5000/subcategoriesNameId';
+      const path = `${this.$APP_URL}:5000/subcategoriesNameId`;
       axios
         .get(path)
         .then((res) => {
