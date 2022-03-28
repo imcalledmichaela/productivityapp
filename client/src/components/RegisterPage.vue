@@ -53,6 +53,7 @@
             <b-col sm="9">
               <b-form-input
                 id="input-4"
+                type="password"
                 v-model="form.password"
                 placeholder="Enter password"
               ></b-form-input>
@@ -65,8 +66,7 @@
             </b-col>
             <b-col sm="1">
               <b-button
-                type="cancel"
-                @click="returnToday"
+                @click="returnLogin"
                 style="background-color: red"
                 >Cancel</b-button
               >
@@ -145,8 +145,8 @@ export default {
       this.form.password = '';
     },
 
-    returnToday() {
-      this.$router.push('/today');
+    returnLogin() {
+      this.$router.push('/login');
     },
   },
 };
