@@ -111,7 +111,7 @@ export default {
     },
 
     getEvents() {
-      const path = `${this.$APP_URL}:5000/events`;
+      const path = `${this.$APP_URL}/events`;
       axios
         .get(path)
         .then((res) => {
@@ -123,7 +123,7 @@ export default {
         });
     },
     getTasks() {
-      const path = `${this.$APP_URL}:5000/tasks`;
+      const path = `${this.$APP_URL}/tasks`;
       axios
         .get(path)
         .then((res) => {
@@ -135,7 +135,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = `${this.$APP_URL}:5000/subcategoriesNameId`;
+      const path = `${this.$APP_URL}/subcategoriesNameId`;
       axios
         .get(path)
         .then((res) => {

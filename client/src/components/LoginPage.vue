@@ -67,7 +67,7 @@ export default {
       this.login(payload);
     },
     login(payload) {
-      const path = `${this.$APP_URL}:5000/login`;
+      const path = `${this.$APP_URL}/login`;
       axios
         .post(path, payload)
         .then(() => {

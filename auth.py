@@ -8,10 +8,12 @@ from flask_jwt_extended import (
     set_refresh_cookies,
     unset_jwt_cookies,
     jwt_required,
+    get_current_user,
     get_jwt_identity)
 from .models import User
 
 app_auth = Blueprint('auth', __name__, url_prefix="/auth")
+
 
 @app_auth.route('/register', methods=['POST'])
 def register():
@@ -87,3 +89,11 @@ def refresh():
     set_access_cookies(response, access_token)
 
     return response, 201
+
+
+@app_auth.route('/user', methods=['GET'])
+@jwt_required(refresh=True)
+def get_user():
+    current_user = get_current_user()
+    user_has_tokens = get_jwt_identity()
+    return jsonify({"user": current_user, "tokens": user_has_tokens}), 201

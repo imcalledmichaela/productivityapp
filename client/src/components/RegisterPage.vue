@@ -88,7 +88,6 @@
 import axios from 'axios';
 
 export default {
-  APP_URL: process.env.VUE_APP_URL,
   data() {
     return {
       form: {
@@ -114,7 +113,7 @@ export default {
       this.initForm();
     },
     getUsers() {
-      const path = `${this.$APP_URL}:5000/users`;
+      const path = `${this.$APP_URL}/users`;
       axios
         .get(path)
         .then((res) => {
@@ -125,7 +124,7 @@ export default {
         });
     },
     addUser(payload) {
-      const path = `${this.$APP_URL}:5000/users`;
+      const path = `${this.$APP_URL}/users`;
       axios
         .post(path, payload)
         .then(() => {
