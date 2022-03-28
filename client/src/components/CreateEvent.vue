@@ -12,7 +12,6 @@
                 sm="auto"
                 id="input-1"
                 v-model="form.name"
-                type="name"
                 placeholder="Enter event name"
                 required
               ></b-form-input>
@@ -89,7 +88,6 @@
               <b-form-input
                 id="input-6"
                 v-model="form.location"
-                type="location"
                 placeholder="Enter location"
                 required
               ></b-form-input>
@@ -158,6 +156,7 @@ export default {
       event.preventDefault();
       const payload = {
         name: this.form.name,
+        user_id: 1,
         subcategory_id: this.form.subcategory,
         date: this.form.date,
         start_time: this.form.start_time,

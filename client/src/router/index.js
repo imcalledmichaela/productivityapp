@@ -8,6 +8,7 @@ import SuccessPage from '../components/SuccessPage.vue';
 import ErrorPage from '../components/ErrorPage.vue';
 import LoginPage from '../components/LoginPage.vue';
 import RegisterPage from '../components/RegisterPage.vue';
+import HomePage from '../components/HomePage.vue';
 
 Vue.use(Router);
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: RegisterPage,
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: HomePage,
     },
   ],
 });

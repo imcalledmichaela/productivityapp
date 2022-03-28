@@ -12,7 +12,6 @@
                 sm="auto"
                 id="input-1"
                 v-model="form.name"
-                type="name"
                 placeholder="Enter Task Name"
                 required
               ></b-form-input>
@@ -62,7 +61,6 @@
                 sm="auto"
                 id="input-1"
                 v-model="form.duration"
-                type="name"
                 placeholder="Enter Duration in Minutes"
                 required
               ></b-form-input>
@@ -147,6 +145,7 @@ export default {
       event.preventDefault();
       const payload = {
         name: this.form.name,
+        user_id: 1,
         subcategory_id: this.form.subcategory,
         date: this.form.date,
         duration: Number(this.form.duration),
