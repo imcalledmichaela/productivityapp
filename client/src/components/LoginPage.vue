@@ -21,7 +21,7 @@
                 sm="auto"
                 id="input-2"
                 v-model="form.password"
-                type="name"
+                type="password"
                 placeholder="Password"
                 required
               ></b-form-input>
@@ -34,8 +34,7 @@
             </b-col>
             <b-col sm="2">
               <b-button
-                type="cancel"
-                @click="returnToday"
+                @click="goRegister"
                 >Create User</b-button
               >
             </b-col>
@@ -79,6 +78,9 @@ export default {
           this.getTasks();
           this.$router.push('/error');
         });
+    },
+    goRegister() {
+      this.$router.push('/register');
     },
   },
 };
