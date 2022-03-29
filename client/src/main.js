@@ -1,14 +1,11 @@
 import axios from 'axios';
-import BootstrapVue from 'bootstrap-vue';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import App from './App.vue';
 import router from './router';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+import vuetify from './plugins/vuetify';
 
-Vue.use(BootstrapVue);
 Vue.use(Vuex);
 Vue.use(VueCookies);
 Vue.prototype.$APP_URL = process.env.VUE_APP_URL;
@@ -98,5 +95,6 @@ axios.interceptors.response.use((response) => (response), async (error) => {
 new Vue({
   router,
   store,
+  vuetify,
   render: (h) => h(App),
 }).$mount('#app');
