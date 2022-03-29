@@ -144,7 +144,6 @@ export default {
         end_time: '',
         location: '',
         details: '',
-        APP_URL: process.env.VUE_APP_URL,
       },
       subcategories: [
         { text: 'Select One', value: null },

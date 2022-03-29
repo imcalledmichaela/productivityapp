@@ -58,6 +58,7 @@ class Friendship(db.Model):
             return "Unable to create friendship."
         return self
 
+
 class Event(db.Model):
     __tablename__ = 'event'
 
@@ -134,7 +135,7 @@ class Task(db.Model):
             "start_time": str(self.start_time),
             "details": self.details
         }
-    
+
     def add(self):
         try:
             db.session.add(self)
@@ -142,7 +143,7 @@ class Task(db.Model):
         except Exception:
             return "Unable to create task."
         return self
-        
+
 class Category(db.Model):
     __tablename__ = 'category'
 
