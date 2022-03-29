@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-container fluid="md">
+    <v-container class="align-items:center">
       <v-form @submit="onSubmit" v-if="show">
         <v-card>
           <v-card-title>Create Task</v-card-title>
           <v-row class="name">
             <v-col sm="3">
-              <label id="input-group-1" label-for="input-1">Task Name:</label>
+              <v-card-text id="input-group-1" label-for="input-1">Task Name:</v-card-text>
             </v-col>
             <v-col sm="9">
               <v-text-field
@@ -21,21 +21,22 @@
 
           <v-row class="subcategory" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-2" label-for="input-2">Subcategory:</label>
+              <v-card-text id="input-group-2" label-for="input-2">Subcategory:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-form-select
-                id="input-2"
-                v-model="form.subcategory"
-                :options="subcategories"
-                require
-              ></v-form-select>
+              <v-select
+              v-model="form.subcategory"
+              :items="subcategories"
+              label="Select Subcategory"
+              require
+              outlined
+            ></v-select>
             </v-col>
           </v-row>
 
           <v-row class="date" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-3" label-for="input-3">Date:</label>
+              <v-card-text id="input-group-3" label-for="input-3">Date:</v-card-text>
             </v-col>
 
             <v-col sm="4">
@@ -67,7 +68,7 @@
 
           <v-row class="duration" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-5" label-for="input-5">Duration:</label>
+              <v-card-text id="input-group-5" label-for="input-5">Duration:</v-card-text>
             </v-col>
             <v-col sm="4">
               <v-text-field
@@ -82,28 +83,46 @@
 
           <v-row class="start_time" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-4" label-for="input-4">Start:</label>
+              <v-card-text id="input-group-4" label-for="input-4">Start:</v-card-text>
             </v-col>
 
             <v-col sm="4">
-              <v-form-timepicker
-                v-model="form.start_time"
-                placeholder="Enter Time"
-                locale="en-US"
-              ></v-form-timepicker>
+              <v-menu
+                v-model="menu3"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.start_time"
+                    label="Select Start Time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-model="form.start_time"
+                  header-color="primary"
+                  @input="menu3 = false"></v-time-picker>
+              </v-menu>
             </v-col>
           </v-row>
 
           <v-row class="details" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-6" label-for="input-6">Details</label>
+              <v-card-text id="input-group-6" label-for="input-6">Details:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-form-textarea
+              <v-textarea
                 id="input-7"
                 v-model="form.details"
                 placeholder="Enter details"
-              ></v-form-textarea>
+              ></v-textarea>
             </v-col>
           </v-row>
           <v-row style="padding-top: 15px">

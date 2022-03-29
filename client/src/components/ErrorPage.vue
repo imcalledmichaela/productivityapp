@@ -1,15 +1,16 @@
 <template>
   <div>
-    <v-container md="auto">
-      <v-jumbotron header="Error! Please try again">
-        <button
+    <v-container class="align-items:center">
+      <v-card>
+        <v-card-title>"Error! Please try again"</v-card-title>
+        <v-btn
           type="button"
           @click="returnToday()"
           class="btn btn-success btn-sm"
         >
           Return to Today
-        </button>
-      </v-jumbotron>
+        </v-btn>
+      </v-card>
     </v-container>
   </div>
 </template>

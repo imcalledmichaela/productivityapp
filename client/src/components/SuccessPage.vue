@@ -1,15 +1,16 @@
 <template>
   <div>
-    <v-container md="auto">
-      <v-jumbotron header="Success!">
-        <button
+    <v-container class="align-items:center">
+      <v-card>
+        <v-card-title>Success!</v-card-title>
+        <v-btn
           type="button"
           @click="returnToday()"
           class="btn btn-success btn-sm"
         >
           Continue
-        </button>
-      </v-jumbotron>
+        </v-btn>
+      </v-card>
     </v-container>
   </div>
 </template>

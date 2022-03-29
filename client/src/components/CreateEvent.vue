@@ -6,7 +6,7 @@
           <v-card-title>Create Event</v-card-title>
           <v-row class="name">
             <v-col sm="3">
-              <label id="input-group-1" label-for="input-1">Event Name:</label>
+              <v-card-text>Event Name:</v-card-text>
             </v-col>
             <v-col sm="9">
               <v-text-field
@@ -21,21 +21,22 @@
 
           <v-row class="subcategory" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-2" label-for="input-2">Subcategory:</label>
+              <v-card-text>Subcategory:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-text-field
-                id="input-2"
-                v-model="form.subcategory"
-                :options="subcategories"
-                require
-              ></v-text-field>
+              <v-select
+              v-model="form.subcategory"
+              :items="subcategories"
+              label="Select Subcategory"
+              require
+              outlined
+            ></v-select>
             </v-col>
           </v-row>
 
           <v-row class="date" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-3" label-for="input-3">Date:</label>
+              <v-card-text>Date:</v-card-text>
             </v-col>
 
             <v-col sm="9">
@@ -68,22 +69,70 @@
           <v-row class="time" style="padding-top: 15px">
             <!--Start Time-->
             <v-col sm="3">
-              <label id="input-group-4" label-for="input-4">Start:</label>
+              <v-card-text>Start Time:</v-card-text>
             </v-col>
 
-            <v-col sm="4">
-               <v-time-picker
-                v-model="form.start_time"
-                type="month"
-                width="290"
-                class="ml-4"
-              ></v-time-picker>
+            <v-col sm="3">
+              <v-menu
+                v-model="menu3"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.start_time"
+                    label="Select Start Time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-model="form.start_time"
+                  header-color="primary"
+                  @input="menu3 = false"></v-time-picker>
+              </v-menu>
+            </v-col>
+
+            <!--End Time-->
+            <v-col sm="2">
+              <v-card-text>End Time:</v-card-text>
+            </v-col>
+
+            <v-col sm="3">
+              <v-menu
+                v-model="menu4"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.end_time"
+                    label="Select End Time"
+                    prepend-icon="mdi-clock-time-four-outline"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker
+                  v-model="form.end_time"
+                  header-color="primary"
+                  @input="menu4 = false"></v-time-picker>
+              </v-menu>
             </v-col>
           </v-row>
 
           <v-row class="location" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-6" label-for="input-6">Location:</label>
+              <v-card-text>Location:</v-card-text>
             </v-col>
             <v-col sm="9">
               <v-text-field
@@ -97,7 +146,7 @@
 
           <v-row class="details" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-7" label-for="input-7">Details</label>
+              <v-card-text id="input-group-7" label-for="input-7">Details:</v-card-text>
             </v-col>
             <v-col sm="9">
               <v-textarea

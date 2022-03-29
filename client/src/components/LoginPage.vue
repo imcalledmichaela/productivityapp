@@ -1,30 +1,35 @@
 <template>
-  <v-container fluid="sm">
+  <v-container class="align-items:center">
     <v-form @submit="onSubmit">
-      <v-jumbotron header="Login">
-        <h2>Username:</h2>
+      <v-card>
+        <v-card-title>Login</v-card-title>
         <v-row class="username">
+          <v-col sm="3">
+              <v-card-text>Username:</v-card-text>
+            </v-col>
               <v-col sm="5">
-                <v-form-input
+                <v-text-field
                   sm="auto"
                   id="input-1"
                   v-model="form.username"
                   placeholder="Username"
                   required
-                ></v-form-input>
+                ></v-text-field>
               </v-col>
             </v-row>
-          <h2>Password:</h2>
             <v-row class="password">
+              <v-col sm="3">
+              <v-card-text>Password:</v-card-text>
+            </v-col>
               <v-col sm="5">
-                <v-form-input
+                <v-text-field
                   sm="auto"
                   id="input-2"
                   v-model="form.password"
                   type="password"
                   placeholder="Password"
                   required
-                ></v-form-input>
+                ></v-text-field>
               </v-col>
             </v-row>
 
@@ -39,7 +44,7 @@
                 >
               </v-col>
             </v-row>
-      </v-jumbotron>
+      </v-card>
     </v-form>
   </v-container>
 </template>

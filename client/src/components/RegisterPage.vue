@@ -1,62 +1,63 @@
 <template>
   <div>
-    <v-container fluid="md">
+    <v-container class="align-items:center">
       <v-form @submit="onSubmit" v-if="show">
-        <v-jumbotron header="Create User">
+        <v-card>
+          <v-card-title>Create User</v-card-title>
           <v-row class="name">
             <v-col sm="3">
-              <label id="input-group-1" label-for="input-1">Name:</label>
+              <v-card-text>Name:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-form-input
+              <v-text-field
                 sm="auto"
                 id="input-1"
                 v-model="form.name"
                 placeholder="Enter name"
                 required
-              ></v-form-input>
+              ></v-text-field>
             </v-col>
           </v-row>
 
           <v-row class="username" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-2" label-for="input-6">Username:</label>
+              <v-card-text>Username:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-form-input
+              <v-text-field
                 id="input-2"
                 v-model="form.username"
                 placeholder="Enter username"
                 required
-              ></v-form-input>
+              ></v-text-field>
             </v-col>
           </v-row>
 
           <v-row class="email" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-3" label-for="input-3">Email:</label>
+              <v-card-text>Email:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-form-input
+              <v-text-field
                 id="input-3"
                 v-model="form.email"
                 placeholder="Enter email"
                 required
-              ></v-form-input>
+              ></v-text-field>
             </v-col>
           </v-row>
 
           <v-row class="password" style="padding-top: 15px">
             <v-col sm="3">
-              <label id="input-group-4" label-for="input-4">Password:</label>
+              <v-card-text>Password:</v-card-text>
             </v-col>
             <v-col sm="9">
-              <v-form-input
+              <v-text-field
                 id="input-4"
                 type="password"
                 v-model="form.password"
                 placeholder="Enter password"
-              ></v-form-input>
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row style="padding-top: 15px">
@@ -74,7 +75,7 @@
             <v-col sm="5"> </v-col>
           </v-row>
 
-        </v-jumbotron>
+        </v-card>
       </v-form>
 
       <v-card class="mt-3" header="Form Data Result">
