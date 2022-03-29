@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-container md="auto">
-      <b-jumbotron header="Success!">
+    <v-container md="auto">
+      <v-jumbotron header="Success!">
         <button
           type="button"
           @click="returnToday()"
@@ -9,8 +9,8 @@
         >
           Continue
         </button>
-      </b-jumbotron>
-    </b-container>
+      </v-jumbotron>
+    </v-container>
   </div>
 </template>
 

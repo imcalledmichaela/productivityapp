@@ -1,13 +1,13 @@
 <template>
   <div>
-    <b-container>
-      <b-row id="content">
-        <b-col
+    <v-container>
+      <v-row id="content">
+        <v-col
           id="today-view"
           sm="3"
         >
-          <b-row class="event-table">
-        <b-col sm="12" stickyColumn="true">
+          <v-row class="event-table">
+        <v-col sm="12" stickyColumn="true">
           <table class="table table-hover">
             <thead>
               <tr>
@@ -31,15 +31,15 @@
               </tr>
             </tbody>
           </table>
-        </b-col>
-      </b-row>
-        </b-col>
+        </v-col>
+      </v-row>
+        </v-col>
 
-        <b-col id="calendar-view" sm="9">
-          <b-row> This is the calendar pane </b-row>
-        </b-col>
-      </b-row>
-    </b-container>
+        <v-col id="calendar-view" sm="9">
+          <v-row> This is the calendar pane </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 

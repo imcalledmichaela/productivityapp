@@ -1,11 +1,11 @@
 <template>
-  <b-container fluid="sm">
-    <b-jumbotron header="Today">
-      <b-row class="event-header">
-        <b-col sm="2" stickyColumn="true">
+  <v-container fluid="sm">
+    <v-jumbotron header="Today">
+      <v-row class="event-header">
+        <v-col sm="2" stickyColumn="true">
           <h1>Events</h1>
-        </b-col>
-        <b-col sm="10">
+        </v-col>
+        <v-col sm="10">
           <button
             type="button"
             @click="goCreateEvent"
@@ -14,11 +14,11 @@
           >
             Add Event
           </button>
-        </b-col>
-      </b-row>
+        </v-col>
+      </v-row>
 
-      <b-row class="event-table">
-        <b-col sm="12" stickyColumn="true">
+      <v-row class="event-table">
+        <v-col sm="12" stickyColumn="true">
           <table class="table table-hover">
             <thead>
               <tr>
@@ -42,14 +42,14 @@
               </tr>
             </tbody>
           </table>
-        </b-col>
-      </b-row>
+        </v-col>
+      </v-row>
 
-      <b-row class="task-header">
-        <b-col sm="2" stickyColumn="true">
+      <v-row class="task-header">
+        <v-col sm="2" stickyColumn="true">
           <h1>Tasks</h1>
-        </b-col>
-        <b-col sm="10">
+        </v-col>
+        <v-col sm="10">
           <button
             type="button"
             @click="goCreateTask"
@@ -58,11 +58,11 @@
           >
             Add Task
           </button>
-        </b-col>
-      </b-row>
+        </v-col>
+      </v-row>
 
-      <b-row class="task-table">
-        <b-col sm="12">
+      <v-row class="task-table">
+        <v-col sm="12">
           <table class="table table-hover">
             <thead>
               <tr>
@@ -84,10 +84,10 @@
               </tr>
             </tbody>
           </table>
-        </b-col>
-      </b-row>
-    </b-jumbotron>
-  </b-container>
+        </v-col>
+      </v-row>
+    </v-jumbotron>
+  </v-container>
 </template>
 
 <script>

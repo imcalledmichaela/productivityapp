@@ -1,120 +1,133 @@
 <template>
   <div>
-    <b-container fluid="md">
-      <b-form @submit="onSubmit" v-if="show">
-        <b-jumbotron header="Create Task">
-          <b-row class="name">
-            <b-col sm="3">
+    <v-container fluid="md">
+      <v-form @submit="onSubmit" v-if="show">
+        <v-card>
+          <v-card-title>Create Task</v-card-title>
+          <v-row class="name">
+            <v-col sm="3">
               <label id="input-group-1" label-for="input-1">Task Name:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-input
+            </v-col>
+            <v-col sm="9">
+              <v-text-field
                 sm="auto"
                 id="input-1"
                 v-model="form.name"
                 placeholder="Enter Task Name"
                 required
-              ></b-form-input>
-            </b-col>
-          </b-row>
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-          <b-row class="subcategory" style="padding-top: 15px">
-            <b-col sm="3">
+          <v-row class="subcategory" style="padding-top: 15px">
+            <v-col sm="3">
               <label id="input-group-2" label-for="input-2">Subcategory:</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-select
+            </v-col>
+            <v-col sm="9">
+              <v-form-select
                 id="input-2"
                 v-model="form.subcategory"
                 :options="subcategories"
                 require
-              ></b-form-select>
-            </b-col>
-          </b-row>
+              ></v-form-select>
+            </v-col>
+          </v-row>
 
-          <b-row class="date" style="padding-top: 15px">
-            <b-col sm="3">
+          <v-row class="date" style="padding-top: 15px">
+            <v-col sm="3">
               <label id="input-group-3" label-for="input-3">Date:</label>
-            </b-col>
+            </v-col>
 
-            <b-col sm="4">
-              <b-form-datepicker
-                v-model="form.date"
-                placeholder="Enter date"
-                :date-format-options="{
-                  weekday: 'short',
-                  year: '2-digit',
-                  month: '2-digit',
-                  day: '2-digit',
-                }"
+            <v-col sm="4">
+              <v-menu
+                v-model="menu2"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
               >
-              </b-form-datepicker>
-            </b-col>
-          </b-row>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="form.date"
+                    label="Select Date"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="form.date"
+                  @input="menu2 = false"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
 
-          <b-row class="duration" style="padding-top: 15px">
-            <b-col sm="3">
+          <v-row class="duration" style="padding-top: 15px">
+            <v-col sm="3">
               <label id="input-group-5" label-for="input-5">Duration:</label>
-            </b-col>
-            <b-col sm="4">
-              <b-form-input
+            </v-col>
+            <v-col sm="4">
+              <v-text-field
                 sm="auto"
                 id="input-1"
                 v-model="form.duration"
                 placeholder="Enter Duration in Minutes"
                 required
-              ></b-form-input>
-            </b-col>
-          </b-row>
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-          <b-row class="start_time" style="padding-top: 15px">
-            <b-col sm="3">
+          <v-row class="start_time" style="padding-top: 15px">
+            <v-col sm="3">
               <label id="input-group-4" label-for="input-4">Start:</label>
-            </b-col>
+            </v-col>
 
-            <b-col sm="4">
-              <b-form-timepicker
+            <v-col sm="4">
+              <v-form-timepicker
                 v-model="form.start_time"
                 placeholder="Enter Time"
                 locale="en-US"
-              ></b-form-timepicker>
-            </b-col>
-          </b-row>
+              ></v-form-timepicker>
+            </v-col>
+          </v-row>
 
-          <b-row class="details" style="padding-top: 15px">
-            <b-col sm="3">
+          <v-row class="details" style="padding-top: 15px">
+            <v-col sm="3">
               <label id="input-group-6" label-for="input-6">Details</label>
-            </b-col>
-            <b-col sm="9">
-              <b-form-textarea
+            </v-col>
+            <v-col sm="9">
+              <v-form-textarea
                 id="input-7"
                 v-model="form.details"
                 placeholder="Enter details"
-              ></b-form-textarea>
-            </b-col>
-          </b-row>
-          <b-row style="padding-top: 15px">
-            <b-col sm="5"> </b-col>
-            <b-col sm="1">
-              <b-button type="submit" variant="primary">Submit</b-button>
-            </b-col>
-            <b-col sm="1">
-              <b-button
+              ></v-form-textarea>
+            </v-col>
+          </v-row>
+          <v-row style="padding-top: 15px">
+            <v-col sm="5"> </v-col>
+            <v-col sm="1">
+              <v-btn type="submit" variant="primary">Submit</v-btn>
+            </v-col>
+            <v-col sm="1">
+              <v-btn
                 type="cancel"
                 @click="returnToday"
                 style="background-color: red"
-                >Cancel</b-button
+                >Cancel</v-btn
               >
-            </b-col>
-            <b-col sm="5"> </b-col>
-          </b-row>
-        </b-jumbotron>
-      </b-form>
+            </v-col>
+            <v-col sm="5"> </v-col>
+          </v-row>
+        </v-card>
+      </v-form>
 
-      <b-card class="mt-3" header="Form Data Result">
+      <v-card class="mt-3" header="Form Data Result">
         <pre class="m-0">{{ form }}</pre>
-      </b-card>
-    </b-container>
+      </v-card>
+    </v-container>
   </div>
 </template>
 

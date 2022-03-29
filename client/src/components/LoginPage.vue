@@ -1,47 +1,47 @@
 <template>
-  <b-container fluid="sm">
-    <b-form @submit="onSubmit">
-      <b-jumbotron header="Login">
+  <v-container fluid="sm">
+    <v-form @submit="onSubmit">
+      <v-jumbotron header="Login">
         <h2>Username:</h2>
-        <b-row class="username">
-              <b-col sm="5">
-                <b-form-input
+        <v-row class="username">
+              <v-col sm="5">
+                <v-form-input
                   sm="auto"
                   id="input-1"
                   v-model="form.username"
                   placeholder="Username"
                   required
-                ></b-form-input>
-              </b-col>
-            </b-row>
+                ></v-form-input>
+              </v-col>
+            </v-row>
           <h2>Password:</h2>
-            <b-row class="password">
-              <b-col sm="5">
-                <b-form-input
+            <v-row class="password">
+              <v-col sm="5">
+                <v-form-input
                   sm="auto"
                   id="input-2"
                   v-model="form.password"
                   type="password"
                   placeholder="Password"
                   required
-                ></b-form-input>
-              </b-col>
-            </b-row>
+                ></v-form-input>
+              </v-col>
+            </v-row>
 
-          <b-row style="padding-top: 15px">
-              <b-col sm="1">
-                <b-button type="submit" variant="primary">Login</b-button>
-              </b-col>
-              <b-col sm="2">
-                <b-button
+          <v-row style="padding-top: 15px">
+              <v-col sm="1">
+                <v-btn type="submit" variant="primary">Login</v-btn>
+              </v-col>
+              <v-col sm="2">
+                <v-btn
                   @click="goRegister"
-                  >Create User</b-button
+                  >Create User</v-btn
                 >
-              </b-col>
-            </b-row>
-      </b-jumbotron>
-    </b-form>
-  </b-container>
+              </v-col>
+            </v-row>
+      </v-jumbotron>
+    </v-form>
+  </v-container>
 </template>
 
 <script>
