@@ -158,7 +158,7 @@ export default {
       // this.initForm();
     },
     getTasks() {
-      const path = `${this.$APP_URL}:5000/tasks`;
+      const path = `${this.$APP_URL}/tasks`;
       axios
         .get(path)
         .then((res) => {
@@ -169,7 +169,7 @@ export default {
         });
     },
     addTask(payload) {
-      const path = `${this.$APP_URL}:5000/tasks`;
+      const path = `${this.$APP_URL}/tasks`;
       axios
         .post(path, payload)
         .then(() => {
@@ -183,7 +183,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = `${this.$APP_URL}:5000/subcategoriesNameId`;
+      const path = `${this.$APP_URL}/subcategoriesNameId`;
       axios
         .get(path)
         .then((res) => {

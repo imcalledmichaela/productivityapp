@@ -85,10 +85,10 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  APP_URL: process.env.VUE_APP_URL,
   data() {
     return {
       form: {
@@ -99,6 +99,11 @@ export default {
       },
       show: true,
     };
+  },
+  computed: {
+    ...mapGetters({
+      authUser: '/user',
+    }),
   },
   methods: {
     onSubmit(event) {
@@ -113,30 +118,43 @@ export default {
       this.addUser(payload);
       this.initForm();
     },
-    getUsers() {
-      const path = `${this.$APP_URL}:5000/users`;
-      axios
-        .get(path)
-        .then((res) => {
-          this.users = res.data.name;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    addUser(payload) {
-      const path = `${this.$APP_URL}:5000/users`;
-      axios
-        .post(path, payload)
-        .then(() => {
-          this.getUsers();
-          this.$router.push('/success');
-        })
-        .catch((error) => {
-          console.log(error);
-          this.getUsers();
-          this.$router.push('/error');
-        });
+    ...mapActions([
+      'registerUser', ['/registerUser'],
+    ]),
+    // getUsers() {
+    //   const path = `${this.$APP_URL}/users`;
+    //   axios
+    //     .get(path)
+    //     .then((res) => {
+    //       this.users = res.data.name;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
+    async addUser(payload) {
+      // const path = `${this.$APP_URL}/users`;
+      // axios
+      //   .post(path, payload)
+      //   .then(() => {
+      //     this.getUsers();
+      //     this.$router.push('/success');
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     this.getUsers();
+      //     this.$router.push('/error');
+      //   });
+      await this.registerUser(payload).then(() => {
+        if (this.authUser.authenticated) {
+          this.$router.push('/today');
+        } else {
+          this.user = {
+            username: null,
+            password: null,
+          };
+        }
+      });
     },
     initForm() {
       this.form.name = '';

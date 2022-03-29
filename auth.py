@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import request, jsonify
-from werkzeug.security import generate_password_hash
+import json
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -8,10 +9,12 @@ from flask_jwt_extended import (
     set_refresh_cookies,
     unset_jwt_cookies,
     jwt_required,
+    get_current_user,
     get_jwt_identity)
 from .models import User
 
 app_auth = Blueprint('auth', __name__, url_prefix="/auth")
+
 
 @app_auth.route('/register', methods=['POST'])
 def register():
@@ -35,9 +38,10 @@ def register():
             access_token = create_access_token(identity=user.user_id)
             refresh_token = create_refresh_token(identity=user.user_id)
 
-            response = jsonify({"message": "New user created!"})
+            response = jsonify()
             set_access_cookies(response, access_token)
             set_refresh_cookies(response, refresh_token)
+            # response.headers.add('Access-Control-Allow-Origin', '*')
 
             return response, 201
     return jsonify(
@@ -52,14 +56,17 @@ def login():
     data = request.get_json()
     username = data['username']
     password = data['password']
-    user = User.authenticate(username, password)
-    if user:
+
+    user = User.query.filter_by(username=username).first()
+    if user and check_password_hash(user.password, password):
+        print("60")
         access_token = create_access_token(identity=user.user_id)
         refresh_token = create_refresh_token(identity=user.user_id)
 
         response = jsonify({"message": f"{username} logged in."})
         set_access_cookies(response, access_token)
         set_refresh_cookies(response, refresh_token)
+
         return response, 201
     return jsonify(
         {
@@ -69,7 +76,7 @@ def login():
 
 
 @app_auth.route('/logout', methods=['POST'])
-@jwt_required
+@jwt_required()
 def logout():
     response = jsonify()
     unset_jwt_cookies(response)
@@ -85,5 +92,13 @@ def refresh():
 
     response = jsonify()
     set_access_cookies(response, access_token)
-
     return response, 201
+
+
+@app_auth.route('/user', methods=['GET'])
+@jwt_required()
+def get_user():
+    # current_user = get_current_user()
+    user_has_tokens = get_jwt_identity()
+    print(jsonify({"tokens": user_has_tokens}))
+    return jsonify({"tokens": user_has_tokens}), 201

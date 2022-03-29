@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from .models import Task, Event, Subcategory, Category
+from .models import Task, Event, Subcategory, Category, User
 from flask import Blueprint
 
 app_routes = Blueprint('routes', __name__, url_prefix='/')
@@ -267,3 +267,9 @@ def getSubcategoriesNameId():
             "message": "No subcategories found."
         }
     )
+
+# @app_routes.route("/addData")
+# def addData():
+#     subcat = Subcategory('TestClass', 1, 'Red')
+#     subcat.add()
+#     return jsonify(), 200
