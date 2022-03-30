@@ -2,182 +2,62 @@
   <div>
     <v-container>
       <v-row id="content">
-        <v-col
-          id="today-view"
-          sm="3">
-          <v-row class="event-table">
-            <v-col sm="12" stickyColumn="true">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Subcategory</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Start Time</th>
-                    <th scope="col">End Time</th>
-                    <th scope="col">Location</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(event, index) in events" :key="index">
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.subcategory }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>{{ event.start_time }}</td>
-                    <td>{{ event.end_time }}</td>
-                    <td>{{ event.location }}</td>
-                  </tr>
-                </tbody>
-              </table>
+        <v-col id="today-view" sm="3">
+          <v-row class="fill-height">
+            <v-col>
+              <v-sheet height="64">
+                <v-toolbar flat>
+                  <v-btn
+                    outlined
+                    class="mr-4"
+                    color="grey darken-2"
+                    @click="setToday"
+                  >
+                    Today
+                  </v-btn>
+                  <v-btn fab text small color="grey darken-2" @click="prev">
+                    <v-icon small> mdi-chevron-left </v-icon>
+                  </v-btn>
+                  <v-btn fab text small color="grey darken-2" @click="next">
+                    <v-icon small> mdi-chevron-right </v-icon>
+                  </v-btn>
+                  <v-toolbar-title v-if="$refs.calendar">
+                    {{ $refs.calendar.title }}
+                  </v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+              </v-sheet>
+              <v-sheet height="100%">
+                <v-calendar
+                  ref="calendar"
+                  v-model="focus"
+                  color="primary"
+                  type="category"
+                  category-show-all
+                  :categories="subcategories"
+                  :events="events"
+                  :event-color="getEventColor"
+                  @change="fetchEvents"
+                ></v-calendar>
+              </v-sheet>
             </v-col>
           </v-row>
+        </v-col>
 
-        <v-row>
-          <v-col id="calendar-view" sm="9">
-            <v-row class="fill-height">
-              <v-col>
-      <v-sheet height="64">
-        <v-toolbar
-          flat
-        >
-          <v-btn
-            outlined
-            class="mr-4"
-            color="grey darken-2"
-            @click="setToday"
-          >
-            Today
-          </v-btn>
-          <v-btn
-            fab
-            text
-            small
-            color="grey darken-2"
-            @click="prev"
-          >
-            <v-icon small>
-              mdi-chevron-left
-            </v-icon>
-          </v-btn>
-          <v-btn
-            fab
-            text
-            small
-            color="grey darken-2"
-            @click="next"
-          >
-            <v-icon small>
-              mdi-chevron-right
-            </v-icon>
-          </v-btn>
-          <v-toolbar-title v-if="$refs.calendar">
-            {{ $refs.calendar.title }}
-          </v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-menu
-            bottom
-            right
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                outlined
-                color="grey darken-2"
-                v-bind="attrs"
-                v-on="on"
-              >
-                <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>
-                  mdi-menu-down
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-toolbar>
-      </v-sheet>
-      <v-sheet height="600">
-        <v-calendar
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          :events="events"
-          :event-color="getEventColor"
-          :type="type"
-          @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
-          @change="updateRange"
-        ></v-calendar>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          offset-x
-        >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
-            >
-              <v-btn icon>
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <v-card-text>
-              <span v-html="selectedEvent.details"></span>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-      </v-sheet>
-      </v-col>
-  </v-row>
-  </v-col>
+        <v-col id="calendar-view">
+        </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
+      subcategories: [this.getSubcategories()],
       events: [],
     };
   },
@@ -194,22 +74,43 @@ export default {
           console.error(error);
         });
     },
+    getSubcategories() {
+      const path = `${this.$APP_URL}:5000/subcategories`;
+      axios
+        .get(path)
+        .then((res) => {
+          console.log(res.data.data.subcategories);
+          this.subcategories = res.data.data.subcategories;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    fetchEvents() {
+    },
+    getEventColor() {
+      
+    },
+    setToday() {
+
+    },
   },
   created() {
     this.getEvents();
+    this.getSubcategories();
   },
 };
 </script>
 
 <style scoped>
 #today-view {
-  height: 400px;
-  border: 5px solid red;
+  height: 100vh;
   overflow-y: scroll;
+  border: 5px solid red;
 }
 
 #calendar-view {
-  height: 400px;
+  height: 100vh;
   border: 5px solid blue;
 }
 </style>

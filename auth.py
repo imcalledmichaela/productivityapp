@@ -66,7 +66,6 @@ def login():
         response = jsonify({"message": f"{username} logged in."})
         set_access_cookies(response, access_token)
         set_refresh_cookies(response, refresh_token)
-
         return response, 201
     return jsonify(
         {

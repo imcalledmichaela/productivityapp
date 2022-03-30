@@ -36,26 +36,16 @@ const store = new Vuex.Store({
       console.log('in loginuser');
       await axios.post('/login', user).then((response) => {
         console.log(response);
-        console.log(Object.keys(response.headers));
       });
       await dispatch('fetchUser');
     },
     async fetchUser({ commit }) {
-      await axios.get('/user')
+      await axios.get('http://localhost:8080/auth/user/')
         .then(({ data }) => commit('setUser', data));
     },
     async logoutUser({ commit }) {
       await axios.post('/logout');
       commit('logoutUserState');
-    },
-    isValidJwt(jwt) {
-      if (!jwt || jwt.split('.'.length < 3)) {
-        return false;
-      }
-      const data = JSON.parse(atob(jwt.split('.')[1]));
-      const exp = new Date(data.exp * 1000); // JS deals with dates in milliseconds since epoch
-      const now = new Date();
-      return now < exp;
     },
   },
   mutations: {

@@ -5,3 +5,14 @@ module.exports = defineConfig({
     'vuetify',
   ],
 });
+
+module.exports = {
+  devServer: {
+    proxy: {
+      '^/auth': {
+        target: 'http://localhost:5000',
+        changeOrigin: true
+      }
+    }
+  }
+}
