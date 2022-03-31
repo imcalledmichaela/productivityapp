@@ -1,88 +1,93 @@
 <template>
-  <div>
-    <v-container class="align-items:center">
-      <v-form @submit="onSubmit" v-if="show">
-        <v-card>
-          <v-card-title>Create User</v-card-title>
-          <v-row class="name">
-            <v-col sm="3">
-              <v-card-text>Name:</v-card-text>
-            </v-col>
-            <v-col sm="9">
-              <v-text-field
-                sm="auto"
-                id="input-1"
-                v-model="form.name"
-                placeholder="Enter name"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
+  <v-container fluid class="orange lighten-5 fill-height">
+    <v-row class="wrap">
+      <v-col md="5" sm="7" class="ma-auto">
+        <v-card class="rounded-lg pt-3">
+          <v-form @submit="onSubmit" v-if="show">
+            <v-row>
+              <v-col sm="10" md="10" class="ma-auto">
+                <v-card-title class="ml-n5 mb-3 mt-5 display-2 font-weight-bold"
+                  >Create User</v-card-title
+                >
+              </v-col>
+            </v-row>
+            <v-row class="name">
+              <v-col sm="10" md="10" class="ma-auto">
+                <v-text-field
+                  class="rounded-lg"
+                  id="input-1"
+                  v-model="form.name"
+                  label="Enter name"
+                  outlined
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-          <v-row class="username" style="padding-top: 15px">
-            <v-col sm="3">
-              <v-card-text>Username:</v-card-text>
-            </v-col>
-            <v-col sm="9">
-              <v-text-field
-                id="input-2"
-                v-model="form.username"
-                placeholder="Enter username"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
+            <v-row class="email">
+              <v-col sm="10" md="10" class="ma-auto">
+                <v-text-field
+                  class="mt-n5 rounded-lg"
+                  id="input-3"
+                  v-model="form.email"
+                  label="Enter email"
+                  outlined
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-          <v-row class="email" style="padding-top: 15px">
-            <v-col sm="3">
-              <v-card-text>Email:</v-card-text>
-            </v-col>
-            <v-col sm="9">
-              <v-text-field
-                id="input-3"
-                v-model="form.email"
-                placeholder="Enter email"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
+            <v-row class="username">
+              <v-col sm="10" md="10" class="ma-auto">
+                <v-text-field
+                  class="mt-n5 rounded-lg"
+                  id="input-2"
+                  v-model="form.username"
+                  label="Enter username"
+                  outlined
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-          <v-row class="password" style="padding-top: 15px">
-            <v-col sm="3">
-              <v-card-text>Password:</v-card-text>
-            </v-col>
-            <v-col sm="9">
-              <v-text-field
-                id="input-4"
-                type="password"
-                v-model="form.password"
-                placeholder="Enter password"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row style="padding-top: 15px">
-            <v-col sm="5"> </v-col>
-            <v-col sm="1">
-              <v-btn type="submit" variant="primary">Create</v-btn>
-            </v-col>
-            <v-col sm="1">
-              <v-btn
-                @click="returnLogin"
-                style="background-color: red"
-                >Cancel</v-btn
-              >
-            </v-col>
-            <v-col sm="5"> </v-col>
-          </v-row>
+            <v-row class="password">
+              <v-col sm="10" md="10" class="ma-auto">
+                <v-text-field
+                  class="mt-n5 rounded-lg"
+                  id="input-4"
+                  type="password"
+                  v-model="form.password"
+                  label="Enter password"
+                  outlined
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
+            <v-row>
+              <v-card-actions class="ma-auto mt-n5 mb-5">
+                <v-col class="justify-start">
+                  <v-btn plain @click="returnLogin" color="red">Cancel</v-btn>
+                </v-col>
+                <v-col class="justify-end">
+                  <v-btn type="submit" color="blue" dark variant="primary"
+                    >Create</v-btn
+                  >
+                </v-col>
+              </v-card-actions>
+            </v-row>
+          </v-form>
         </v-card>
-      </v-form>
-
-      <v-card class="mt-3" header="Form Data Result">
-        <pre class="m-0">{{ form }}</pre>
-      </v-card>
-    </v-container>
-  </div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col md="5" sm="7" class="mt-10 ma-auto">
+        <v-card class="mt-3" header="Form Data Result">
+          <pre class="m-0">{{ form }}</pre>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -119,9 +124,7 @@ export default {
       this.addUser(payload);
       this.initForm();
     },
-    ...mapActions([
-      'registerUser', ['/registerUser'],
-    ]),
+    ...mapActions(['registerUser', ['/registerUser']]),
     // getUsers() {
     //   const path = `${this.$APP_URL}/users`;
     //   axios

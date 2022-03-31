@@ -1,51 +1,56 @@
 <template>
-  <v-container class="align-items:center">
-    <v-form @submit="onSubmit">
-      <v-card>
-        <v-card-title>Login</v-card-title>
-        <v-row class="username">
-          <v-col sm="3">
-              <v-card-text>Username:</v-card-text>
-            </v-col>
-              <v-col sm="5">
+  <v-container fluid class="orange lighten-5 fill-height">
+    <v-row class="wrap">
+      <v-col md="5" sm="7" class="ma-auto">
+        <v-card class="rounded-lg pt-3">
+          <v-card-title class="mb-3 justify-center display-3 font-weight-bold"
+            >Login</v-card-title
+          >
+          <v-form @submit="onSubmit">
+            <v-row class="username">
+              <v-col sm="8" md="8" class="ma-auto">
                 <v-text-field
-                  sm="auto"
+                  class="rounded-lg"
                   id="input-1"
                   v-model="form.username"
-                  placeholder="Username"
+                  label="Username"
+                  outlined
                   required
                 ></v-text-field>
               </v-col>
             </v-row>
             <v-row class="password">
-              <v-col sm="3">
-              <v-card-text>Password:</v-card-text>
-            </v-col>
-              <v-col sm="5">
+              <v-col sm="8" md="8" class="ma-auto">
                 <v-text-field
-                  sm="auto"
+                  class="mt-n5 rounded-lg"
                   id="input-2"
                   v-model="form.password"
                   type="password"
-                  placeholder="Password"
+                  label="Password"
+                  outlined
                   required
                 ></v-text-field>
               </v-col>
             </v-row>
 
-          <v-row style="padding-top: 15px">
-              <v-col sm="1">
-                <v-btn type="submit" variant="primary">Login</v-btn>
-              </v-col>
-              <v-col sm="2">
-                <v-btn
-                  @click="goRegister"
-                  >Create User</v-btn
-                >
-              </v-col>
+            <v-row>
+              <v-card-actions class="ma-auto mt-n5 mb-5">
+                <v-col class="justify-start">
+                  <v-btn plain color="blue" @click="goRegister"
+                    >Create User</v-btn
+                  >
+                </v-col>
+                <v-col class="justify-end">
+                  <v-btn color="green" dark type="submit" variant="primary"
+                    >Login</v-btn
+                  >
+                </v-col>
+              </v-card-actions>
             </v-row>
-      </v-card>
-    </v-form>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -63,9 +68,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      'user', ['/user'],
-    ]),
+    ...mapGetters(['user', ['/user']]),
   },
   methods: {
     onSubmit(event) {
@@ -77,9 +80,7 @@ export default {
       this.login(payload);
       this.initForm();
     },
-    ...mapActions([
-      'loginUser', ['/loginUser'],
-    ]),
+    ...mapActions(['loginUser', ['/loginUser']]),
     async login(payload) {
       // const path = `${this.$APP_URL}/login`;
       // axios
