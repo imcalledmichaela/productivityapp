@@ -12,15 +12,19 @@
               </v-col>
             </v-row>
             <v-row class="name">
-              <v-col sm="3" md="3" class="ma-auto">
+              <v-col sm="3" md="3">
+                <v-icon large x-large> mdi-checkbox-marked-circle-plus-outline </v-icon>
+                <!--
                 <v-card-text
-                  class="text-h6 justify-right"
+                  class="text-h6 justify-end"
                   id="input-group-1"
                   label-for="input-1"
                   >Task Name:</v-card-text
                 >
+                --> 
               </v-col>
-              <v-col sm="7" md="7" class="ml-0">
+              <v-col sm="7" md="7">
+
                 <v-text-field
                   sm="auto"
                   id="input-1"
