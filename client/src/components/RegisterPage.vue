@@ -80,6 +80,7 @@
         </v-card>
       </v-col>
     </v-row>
+    
     <v-row>
       <v-col md="5" sm="7" class="mt-10 ma-auto">
         <v-card class="mt-3" header="Form Data Result">

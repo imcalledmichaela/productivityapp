@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="blue lighten-5 fill-height">
     <v-row class="wrap">
-      <v-col md="8" sm="8" class="ma-auto">
+      <v-col md="7" sm="7" class="ma-auto">
         <v-card class="rounded-lg pt-3">
           <v-form @submit="onSubmit" v-if="show">
             <v-row>
@@ -11,22 +11,16 @@
                 >
               </v-col>
             </v-row>
-            <v-row class="name">
-              <v-col sm="3" md="3">
-                <v-icon large x-large> mdi-checkbox-marked-circle-plus-outline </v-icon>
-                <!--
-                <v-card-text
-                  class="text-h6 justify-end"
-                  id="input-group-1"
-                  label-for="input-1"
-                  >Task Name:</v-card-text
-                >
-                --> 
-              </v-col>
-              <v-col sm="7" md="7">
 
+            <v-row class="name justify-center">
+              <v-col sm="1" md="1" class="my-auto">
+                <v-icon class="ma-auto" x-large>
+                  mdi-pencil
+                </v-icon>
+              </v-col>
+
+              <v-col sm="8" md="8" class="my-auto">
                 <v-text-field
-                  sm="auto"
                   id="input-1"
                   v-model="form.name"
                   placeholder="Enter Task Name"
@@ -35,31 +29,30 @@
               </v-col>
             </v-row>
 
-            <v-row class="subcategory" style="padding-top: 15px">
-              <v-col sm="3">
-                <v-card-text id="input-group-2" label-for="input-2"
-                  >Subcategory:</v-card-text
-                >
+            <v-row class="subcategory justify-center">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-format-list-bulleted-type
+                </v-icon>
               </v-col>
-              <v-col sm="9">
+
+              <v-col sm="8" md="8">
                 <v-select
                   v-model="form.subcategory"
                   :items="subcategories"
-                  label="Select Subcategory"
+                  placeholder="Select Subcategory"
                   require
-                  outlined
+                  filled
                 ></v-select>
               </v-col>
             </v-row>
 
-            <v-row class="date" style="padding-top: 15px">
-              <v-col sm="3">
-                <v-card-text id="input-group-3" label-for="input-3"
-                  >Date:</v-card-text
-                >
+            <v-row class="date justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large> mdi-calendar </v-icon>
               </v-col>
 
-              <v-col sm="4">
+              <v-col sm="8" md="8">
                 <v-menu
                   v-model="menu2"
                   :close-on-content-click="false"
@@ -72,12 +65,13 @@
                     <v-text-field
                       v-model="form.date"
                       label="Select Date"
-                      prepend-icon="mdi-calendar"
                       readonly
+                      filled
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
                   </template>
+
                   <v-date-picker
                     v-model="form.date"
                     @input="menu2 = false"
@@ -86,31 +80,30 @@
               </v-col>
             </v-row>
 
-            <v-row class="duration" style="padding-top: 15px">
-              <v-col sm="3">
-                <v-card-text id="input-group-5" label-for="input-5"
-                  >Duration:</v-card-text
-                >
+            <v-row class="duration justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large> mdi-timer-cog-outline </v-icon>
               </v-col>
-              <v-col sm="4">
+
+              <v-col sm="8" md="8">
                 <v-text-field
-                  sm="auto"
                   id="input-1"
                   v-model="form.duration"
                   placeholder="Enter Duration in Minutes"
+                  filled
                   required
                 ></v-text-field>
               </v-col>
             </v-row>
 
-            <v-row class="start_time" style="padding-top: 15px">
-              <v-col sm="3">
-                <v-card-text id="input-group-4" label-for="input-4"
-                  >Start:</v-card-text
-                >
+            <v-row class="start_time justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-clock-time-four-outline
+                </v-icon>
               </v-col>
 
-              <v-col sm="4">
+              <v-col sm="8" md="8">
                 <v-menu
                   v-model="menu3"
                   :close-on-content-click="false"
@@ -123,7 +116,7 @@
                     <v-text-field
                       v-model="form.start_time"
                       label="Select Start Time"
-                      prepend-icon="mdi-clock-time-four-outline"
+                      filled
                       readonly
                       v-bind="attrs"
                       v-on="on"
@@ -138,34 +131,37 @@
               </v-col>
             </v-row>
 
-            <v-row class="details" style="padding-top: 15px">
-              <v-col sm="3">
-                <v-card-text id="input-group-6" label-for="input-6"
-                  >Details:</v-card-text
-                >
+            <v-row class="details justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-clipboard-edit-outline
+                </v-icon>
               </v-col>
-              <v-col sm="9">
+
+              <v-col sm="8" md="8">
                 <v-textarea
                   id="input-7"
                   v-model="form.details"
-                  placeholder="Enter details"
+                  placeholder="Enter Details"
+                  filled
                 ></v-textarea>
               </v-col>
             </v-row>
-            <v-row style="padding-top: 15px">
-              <v-col sm="5"> </v-col>
-              <v-col sm="1">
-                <v-btn type="submit" variant="primary">Submit</v-btn>
-              </v-col>
-              <v-col sm="1">
-                <v-btn
-                  type="cancel"
-                  @click="returnToday"
-                  style="background-color: red"
-                  >Cancel</v-btn
-                >
-              </v-col>
-              <v-col sm="5"> </v-col>
+
+            <v-row class="mt-n5">
+              <v-card-actions class="ma-auto">
+                <v-col class="justify-start">
+                  <v-btn type="cancel" plain @click="returnHome" color="red"
+                    >Cancel</v-btn
+                  >
+                </v-col>
+
+                <v-col class="justify-end">
+                  <v-btn type="submit" color="blue" dark variant="primary"
+                    >Submit</v-btn
+                  >
+                </v-col>
+              </v-card-actions>
             </v-row>
           </v-form>
         </v-card>
@@ -173,30 +169,32 @@
     </v-row>
 
     <v-row>
-      <v-card class="mt-3" header="Form Data Result">
-        <pre class="m-0">{{ form }}</pre>
-      </v-card>
+      <v-col md="7" sm="7" class="ma-auto">
+        <v-card class="mt-3" header="Form Data Result">
+          <pre class="m-0">{{ form }}</pre>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   APP_URL: process.env.VUE_APP_URL,
   data() {
     return {
       form: {
-        name: "",
-        subcategory: "",
-        date: "",
-        duration: "",
-        start_time: "",
-        details: "",
+        name: '',
+        subcategory: '',
+        date: '',
+        duration: '',
+        start_time: '',
+        details: '',
       },
       subcategories: [
-        { text: "Select One", value: null },
+        { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -236,12 +234,12 @@ export default {
         .post(path, payload)
         .then(() => {
           this.getTasks();
-          this.$router.push("/success");
+          this.$router.push('/success');
         })
         .catch((error) => {
           console.log(error);
           this.getTasks();
-          this.$router.push("/error");
+          this.$router.push('/error');
         });
     },
     getSubcategories() {
@@ -257,16 +255,16 @@ export default {
         });
     },
     initForm() {
-      this.form.name = "";
+      this.form.name = '';
       this.form.subcategory_id = null;
-      this.form.date = "";
-      this.form.duration = "";
-      this.form.start_time = "";
-      this.form.details = "";
+      this.form.date = '';
+      this.form.duration = '';
+      this.form.start_time = '';
+      this.form.details = '';
     },
 
-    returnToday() {
-      this.$router.push("/today");
+    returnHome() {
+      this.$router.push('/home');
     },
   },
 };
