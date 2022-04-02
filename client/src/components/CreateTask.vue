@@ -2,7 +2,7 @@
   <v-container fluid class="blue lighten-5 fill-height">
     <v-row class="wrap">
       <v-col md="7" sm="7" class="ma-auto">
-        <v-card class="rounded-lg pt-3">
+        <v-card id="today-card" class="rounded-lg pt-3">
           <v-form @submit="onSubmit" v-if="show">
             <v-row>
               <v-col>
