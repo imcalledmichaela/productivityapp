@@ -97,7 +97,7 @@ def refresh():
 @app_auth.route('/user', methods=['GET'])
 @jwt_required()
 def get_user():
-    # current_user = get_current_user()
-    user_has_tokens = get_jwt_identity()
-    print(jsonify({"tokens": user_has_tokens}))
-    return jsonify({"tokens": user_has_tokens}), 201
+    current_user = get_current_user()
+    user_has_tokens = get_jwt_identity() is not None
+    response = jsonify({"user": current_user.user_id, "isLoggedIn": user_has_tokens})
+    return response, 201

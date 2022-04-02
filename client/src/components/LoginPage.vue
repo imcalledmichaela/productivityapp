@@ -69,6 +69,14 @@ export default {
   },
   computed: {
     ...mapGetters(['user', ['/user']]),
+    user: {
+      get() {
+        return this.$store.user;
+      },
+      set(user) {
+        return user;
+      },
+    },
   },
   methods: {
     onSubmit(event) {
@@ -96,8 +104,8 @@ export default {
       //   });
       console.log(payload);
       await this.loginUser(payload).then(() => {
-        if (this.user.isLoggedIn) {
-          this.$router.push('/today');
+        if (this.$store.state.isLoggedIn) {
+          this.$router.push('/home');
         } else {
           console.log('authenticationfailed');
           this.user = {

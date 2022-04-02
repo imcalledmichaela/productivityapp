@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     getEvents() {
-      const path = `${this.$APP_URL}:5000/events`;
+      const path = 'api/events';
       axios
         .get(path)
         .then((res) => {
@@ -75,7 +75,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = `${this.$APP_URL}:5000/subcategories`;
+      const path = 'api/subcategories';
       axios
         .get(path)
         .then((res) => {

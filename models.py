@@ -1,4 +1,5 @@
 from .app import db
+from .app import jwt
 
 
 class User(db.Model):
@@ -33,6 +34,11 @@ class User(db.Model):
         except Exception:
             return "Unable to create user."
         return self
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        return User.query.filter_by(user_id=identity).one_or_none()
 
 class Friendship(db.Model):
     friendship_id = db.Column(db.Integer, primary_key = True)

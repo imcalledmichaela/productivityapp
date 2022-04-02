@@ -8,11 +8,9 @@ import vuetify from './plugins/vuetify';
 
 Vue.use(Vuex);
 Vue.use(VueCookies);
-Vue.prototype.$APP_URL = process.env.VUE_APP_URL;
 
 Vue.config.productionTip = false;
 
-axios.defaults.baseURL = process.env.VUE_APP_AUTH_URL;
 axios.defaults.auth = {
   username: '',
   password: '',
@@ -29,22 +27,25 @@ const store = new Vuex.Store({
   },
   actions: {
     async registerUser({ dispatch }, user) {
-      await axios.post('/register', user);
+      await axios.post('api/auth/register', user);
       await dispatch('fetchUser');
     },
     async loginUser({ dispatch }, user) {
       console.log('in loginuser');
-      await axios.post('/login', user).then((response) => {
+      await axios.post('api/auth/login', user).then((response) => {
         console.log(response);
       });
       await dispatch('fetchUser');
     },
     async fetchUser({ commit }) {
-      await axios.get('http://localhost:8080/auth/user/')
-        .then(({ data }) => commit('setUser', data));
+      await axios.get('api/auth/user')
+        .then(({ data }) => {
+          console.log(data);
+          commit('setUser', data);
+        });
     },
     async logoutUser({ commit }) {
-      await axios.post('/logout');
+      await axios.post('api/auth/logout');
       commit('logoutUserState');
     },
   },
@@ -59,6 +60,14 @@ const store = new Vuex.Store({
     },
   },
 });
+
+new Vue({
+  router,
+  store,
+  vuetify,
+  render: (h) => h(App),
+}).$mount('#app');
+
 const COOKIE_EXPIRED_MSG = 'Token has expired';
 axios.interceptors.response.use((response) => (response), async (error) => {
   const errorMessage = error.response.data.msg;
@@ -74,17 +83,10 @@ axios.interceptors.response.use((response) => (response), async (error) => {
       }
       break;
     case 404:
-      this.$router.push('/404');
+      this.$router.push('/error');
       break;
     default:
       break;
   }
   return error.response;
 });
-
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: (h) => h(App),
-}).$mount('#app');

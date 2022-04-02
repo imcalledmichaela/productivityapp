@@ -218,7 +218,7 @@ export default {
       this.initForm();
     },
     getEvents() {
-      const path = `${this.$APP_URL}/events`;
+      const path = 'api/events';
       axios
         .get(path)
         .then((res) => {
@@ -229,7 +229,7 @@ export default {
         });
     },
     addEvent(payload) {
-      const path = `${this.$APP_URL}/events`;
+      const path = 'api/events';
       axios
         .post(path, payload)
         .then(() => {
@@ -243,7 +243,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = `${this.$APP_URL}/subcategoriesNameId`;
+      const path = 'api/subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {

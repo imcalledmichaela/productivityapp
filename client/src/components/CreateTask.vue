@@ -177,22 +177,21 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-  APP_URL: process.env.VUE_APP_URL,
   data() {
     return {
       form: {
-        name: "",
-        subcategory: "",
-        date: "",
-        duration: "",
-        start_time: "",
-        details: "",
+        name: '',
+        subcategory: '',
+        date: '',
+        duration: '',
+        start_time: '',
+        details: '',
       },
       subcategories: [
-        { text: "Select One", value: null },
+        { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
@@ -216,7 +215,7 @@ export default {
       // this.initForm();
     },
     getTasks() {
-      const path = `${this.$APP_URL}/tasks`;
+      const path = 'api/tasks';
       axios
         .get(path)
         .then((res) => {
@@ -227,21 +226,21 @@ export default {
         });
     },
     addTask(payload) {
-      const path = `${this.$APP_URL}/tasks`;
+      const path = 'api/tasks';
       axios
         .post(path, payload)
         .then(() => {
           this.getTasks();
-          this.$router.push("/success");
+          this.$router.push('/success');
         })
         .catch((error) => {
           console.log(error);
           this.getTasks();
-          this.$router.push("/error");
+          this.$router.push('/error');
         });
     },
     getSubcategories() {
-      const path = `${this.$APP_URL}/subcategoriesNameId`;
+      const path = 'api/subcategoriesNameId';
       axios
         .get(path)
         .then((res) => {
@@ -253,16 +252,16 @@ export default {
         });
     },
     initForm() {
-      this.form.name = "";
+      this.form.name = '';
       this.form.subcategory_id = null;
-      this.form.date = "";
-      this.form.duration = "";
-      this.form.start_time = "";
-      this.form.details = "";
+      this.form.date = '';
+      this.form.duration = '';
+      this.form.start_time = '';
+      this.form.details = '';
     },
 
     returnToday() {
-      this.$router.push("/today");
+      this.$router.push('/today');
     },
   },
 };
