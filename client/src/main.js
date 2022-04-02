@@ -32,10 +32,15 @@ const store = new Vuex.Store({
     },
     async loginUser({ dispatch }, user) {
       console.log('in loginuser');
-      await axios.post('api/auth/login', user).then((response) => {
-        console.log(response);
+      await axios.post('api/auth/login', user).then(async (response) => {
+        if (response.status !== 201) {
+          throw Error(response.status);
+        }
+        await dispatch('fetchUser');
+      }).catch(async (error) => {
+        console.log('Error Authenticating', error);
+        await dispatch('logoutUser');
       });
-      await dispatch('fetchUser');
     },
     async fetchUser({ commit }) {
       await axios.get('api/auth/user')
@@ -77,10 +82,11 @@ axios.interceptors.response.use((response) => (response), async (error) => {
       if (!err.config.retry && errorMessage === COOKIE_EXPIRED_MSG) {
         err.config.retry = true;
         axios.defaults.xsrfCookieName = 'csrf_refresh_token';
-        await axios.post('/refresh_token');
+        await axios.post('api/auth/refresh_token');
         axios.defaults.xsrfCookieName = 'csrf_access_token';
         return axios(err.config);
       }
+      await store.dispatch('logoutUserState');
       break;
     case 404:
       this.$router.push('/error');

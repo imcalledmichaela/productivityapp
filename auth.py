@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import request, jsonify
 import json
+from .app import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (
     create_access_token,
@@ -10,10 +11,15 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
     jwt_required,
     get_current_user,
-    get_jwt_identity)
+    get_jwt_identity,)
 from .models import User
 
 app_auth = Blueprint('auth', __name__, url_prefix="/auth")
+
+
+@jwt.expired_token_loader
+def my_expired_token_callback(jwt_header, jwt_payload):
+    return jsonify(err="Token has expired"), 401
 
 
 @app_auth.route('/register', methods=['POST'])
@@ -75,7 +81,6 @@ def login():
 
 
 @app_auth.route('/logout', methods=['POST'])
-@jwt_required()
 def logout():
     response = jsonify()
     unset_jwt_cookies(response)

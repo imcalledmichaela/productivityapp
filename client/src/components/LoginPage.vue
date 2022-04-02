@@ -1,5 +1,15 @@
 <template>
   <v-container fluid class="orange lighten-5 fill-height">
+    <v-alert
+      v-if="show"
+      color="red"
+      type="error"
+      outlined
+      dark
+      class="ma-auto"
+    >
+      {{ alert_message }}
+    </v-alert>
     <v-row class="wrap">
       <v-col md="5" sm="7" class="ma-auto">
         <v-card class="rounded-lg pt-3">
@@ -65,6 +75,8 @@ export default {
         username: '',
         password: '',
       },
+      show: false,
+      alert_message: '',
     };
   },
   computed: {
@@ -89,6 +101,7 @@ export default {
       this.initForm();
     },
     ...mapActions(['loginUser', ['/loginUser']]),
+    ...mapActions(['logoutUser', ['/logoutUser']]),
     async login(payload) {
       // const path = `${this.$APP_URL}/login`;
       // axios
@@ -108,10 +121,13 @@ export default {
           this.$router.push('/home');
         } else {
           console.log('authenticationfailed');
+          this.$router.push('/login');
           this.user = {
             username: null,
             password: null,
           };
+          this.show = true;
+          this.alert_message = 'Unable to log in! Please check credentials again!';
         }
       });
     },
@@ -122,6 +138,10 @@ export default {
       this.form.username = '';
       this.form.password = '';
     },
+  },
+  async mounted() {
+    console.log('hello');
+    await this.logoutUser();
   },
 };
 </script>

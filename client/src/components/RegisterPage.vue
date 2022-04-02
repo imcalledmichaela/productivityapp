@@ -80,7 +80,6 @@
         </v-card>
       </v-col>
     </v-row>
-    
     <v-row>
       <v-col md="5" sm="7" class="mt-10 ma-auto">
         <v-card class="mt-3" header="Form Data Result">
@@ -104,7 +103,7 @@ export default {
         email: '',
         password: '',
       },
-      show: true,
+      show: false,
     };
   },
   computed: {
@@ -151,9 +150,11 @@ export default {
       //     this.$router.push('/error');
       //   });
       await this.registerUser(payload).then(() => {
-        if (this.authUser.authenticated) {
-          this.$router.push('/today');
+        if (this.$store.state.isLoggedIn) {
+          this.$router.push('/home');
         } else {
+          console.log('authenticationfailed');
+          this.$router.push('/login');
           this.user = {
             username: null,
             password: null,
