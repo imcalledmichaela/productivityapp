@@ -33,7 +33,7 @@
           color="primary"
           :events="events"
           :event-color="getEventColor"
-          :type="type"
+          :type="month"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
@@ -92,6 +92,9 @@ export default {
   data() {
     return {
       subcategories: [this.getSubcategories()],
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
       events: [],
     };
   },
@@ -99,12 +102,12 @@ export default {
     getEvents(start, end) {
       const path = 'api/events';
       const bodyParameters = {
-      start_time: start,
-      end_time: end,
-      user: 
-    };
+        start_time: start,
+        end_time: end,
+        user: this.$store.getters.user.user,
+      };
       axios
-        .get(path, params)
+        .get(path, bodyParameters)
         .then((res) => {
           console.log(res.data.data.events);
           this.events = res.data.data.events;
@@ -146,6 +149,32 @@ export default {
   created() {
     this.getEvents();
     this.getSubcategories();
+  },
+  getEventColor(event) {
+    return event.color;
+  },
+  setToday() {
+    this.focus = '';
+  },
+  prev() {
+    this.$refs.calendar.prev();
+  },
+  next() {
+    this.$refs.calendar.next();
+  },
+  showEvent({ nativeEvent, event }) {
+    const open = () => {
+      this.selectedEvent = event;
+      this.selectedElement = nativeEvent.target;
+      requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true));
+    };
+    if (this.selectedOpen) {
+      this.selectedOpen = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => open()));
+    } else {
+      open();
+    }
+    nativeEvent.stopPropagation();
   },
   updateRange({ start, end }) {
     const min = new Date(`${start.date}T00:00:00`);

@@ -291,8 +291,8 @@ def getEventsWithParams():
                     "events": [
                         {
                             "name": event.name,
-                            "start_time": event.start_time,
-                            "end_time": event.end_time,
+                            "start_time" : event.start_time,
+                            "end_time": event.end_time, 
                             "color": colors[event.subcategory_id]
                         } for event in events_list
                     ]
