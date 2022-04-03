@@ -11,6 +11,7 @@
                 >
               </v-col>
             </v-row>
+            
             <v-row class="name">
               <v-col sm="10" md="10" class="ma-auto">
                 <v-text-field
@@ -77,7 +78,7 @@
               </v-card-actions>
             </v-row>
           </v-form>
-        </v-card>
+       </v-card>
       </v-col>
     </v-row>
     <v-row>
@@ -99,11 +100,11 @@ export default {
     return {
       form: {
         name: '',
-        username: '',
         email: '',
+        username: '',
         password: '',
       },
-      show: false,
+      show: true,
     };
   },
   computed: {
@@ -116,8 +117,8 @@ export default {
       event.preventDefault();
       const payload = {
         name: this.form.name,
-        username: this.form.username,
         email: this.form.email,
+        username: this.form.username,
         password: this.form.password,
       };
 
