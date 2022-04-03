@@ -1,58 +1,39 @@
 <template>
-  <div>
-    <v-container>
-      <v-row id="content">
-        <v-col id="today-view" sm="3">
-          <v-row class="fill-height">
-            <v-col>
-              <v-sheet height="64">
-                <v-toolbar flat>
-                  <v-btn
-                    outlined
-                    class="mr-4"
-                    color="grey darken-2"
-                    @click="setToday"
-                  >
-                    Today
-                  </v-btn>
-                  <v-btn fab text small color="grey darken-2" @click="prev">
-                    <v-icon small> mdi-chevron-left </v-icon>
-                  </v-btn>
-                  <v-btn fab text small color="grey darken-2" @click="next">
-                    <v-icon small> mdi-chevron-right </v-icon>
-                  </v-btn>
-                  <v-toolbar-title v-if="$refs.calendar">
-                    {{ $refs.calendar.title }}
-                  </v-toolbar-title>
-                  <v-spacer></v-spacer>
-                </v-toolbar>
-              </v-sheet>
-              <v-sheet height="100%">
-                <v-calendar
-                  ref="calendar"
-                  v-model="focus"
-                  color="primary"
-                  type="category"
-                  category-show-all
-                  :categories="subcategories"
-                  :events="events"
-                  :event-color="getEventColor"
-                  @change="fetchEvents"
-                ></v-calendar>
-              </v-sheet>
-            </v-col>
-          </v-row>
-        </v-col>
+  <v-container fluid class="orange lighten-5 fill-height">
+    <v-row id="content" class="justify-center">
+      <v-col id="today-view" sm="3" md="3">
+        <v-sheet id="today-card" class="rounded-lg pt-3" height="100vh">
+          <v-calendar color="primary" type="day">
+            <template v-slot:day-header="{ present }">
+              <template v-if="present" class="text-center"> Today </template>
+            </template>
 
-        <v-col id="calendar-view">
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+            <template v-slot:day-body="{ date, week }">
+              <div
+                class="v-current-time"
+                :class="{ first: date === week[0].date }"
+                :style="{ top: nowY }"
+              ></div>
+            </template>
+
+            <!--
+            <template v-slot:interval="{ hour }">
+              <div class="text-center">{{ hour }} o'clock</div>
+            </template>
+            -->
+          </v-calendar>
+        </v-sheet>
+      </v-col>
+
+      <v-col id="calendar-view" sm="8" md="8">
+        <v-card id="calendar-card" class="rounded-lg pt-3"> </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -63,7 +44,7 @@ export default {
   },
   methods: {
     getEvents() {
-      const path = 'api/events';
+      const path = "api/events";
       axios
         .get(path)
         .then((res) => {
@@ -75,7 +56,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'api/subcategories';
+      const path = "api/subcategories";
       axios
         .get(path)
         .then((res) => {
@@ -86,13 +67,23 @@ export default {
           console.error(error);
         });
     },
-    fetchEvents() {
+    getCurrentTime() {
+      return this.cal
+        ? this.cal.times.now.hour * 60 + this.cal.times.now.minute
+        : 0;
     },
-    getEventColor() {
-    },
-    setToday() {
+    scrollToTime() {
+      const time = this.getCurrentTime();
+      const first = Math.max(0, time - (time % 30) - 30);
 
+      this.cal.scrollToTime(first);
     },
+    updateTime() {
+      setInterval(() => this.cal.updateTimes(), 60 * 1000);
+    },
+    fetchEvents() {},
+    getEventColor() {},
+    setToday() {},
   },
   created() {
     this.getEvents();
@@ -102,14 +93,18 @@ export default {
 </script>
 
 <style scoped>
-#today-view {
-  height: 100vh;
-  overflow-y: scroll;
-  border: 5px solid red;
+#today-card {
+  height: 100%;
 }
 
+#calendar-card {
+  height: 100vh;
+}
+
+/*
 #calendar-view {
   height: 100vh;
   border: 5px solid blue;
 }
+*/
 </style>
