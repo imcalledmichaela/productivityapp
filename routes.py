@@ -86,9 +86,7 @@ def addEvent():
         data = request.get_json()
         event = Event(**data)
         print(data)
-        # db.session.add(event)
-        # db.session.commit()
-        event.add()
+        created_event = event.add()
     except Exception as e:
         print(str(e))
         return jsonify(
@@ -266,6 +264,44 @@ def getSubcategoriesNameId():
     return jsonify(
         {
             "message": "No subcategories found."
+        }
+    )
+
+
+@app_routes.route("/getEvents")
+def getEventsWithParams():
+    data = request.get_json()
+    start_time = data['start_time']
+    end_time = data['end_time']
+    user = data['user']
+    print(type(end_time))
+    events_list = (Event.query().filter(Event.user_id == user)
+                        .filter(Event.start_time >= start_time)
+                        .filter(Event.end_time <= end_time))
+    colors = {}
+    for event in events_list:
+        if event.subcategory not in colors:
+            subcat = Subcategory.query().filter(Subcategory.subcategory_id == event.subcategory_id).one()
+            colors[event.subcategory_id] = subcat.color
+    print(events_list)
+    if len(events_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "events": [
+                        {
+                            "name": event.name,
+                            "start_time": event.start_time,
+                            "end_time": event.end_time,
+                            "color": colors[event.subcategory_id]
+                        } for event in events_list
+                    ]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No events found."
         }
     )
 

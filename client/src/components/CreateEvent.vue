@@ -234,7 +234,7 @@ export default {
       event.preventDefault();
       const payload = {
         name: this.form.name,
-        user_id: 1,
+        user_id: this.$store.getters.user.user,
         subcategory_id: this.form.subcategory,
         date: this.form.date,
         start_time: this.form.start_time,

@@ -31,8 +31,9 @@ class User(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
-        except Exception:
-            return "Unable to create user."
+        except Exception as e:
+            print(str(e))
+            raise Exception("Unable to create User")
         return self
 
     @jwt.user_lookup_loader
@@ -60,8 +61,9 @@ class Friendship(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
-        except Exception:
-            return "Unable to create friendship."
+        except Exception as e:
+            print(str(e))
+            raise Exception("Unable to create Friendship")
         return self
 
 
@@ -105,8 +107,10 @@ class Event(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
-        except Exception:
-            return "Unable to create event."
+            print("event created")
+        except Exception as e:
+            print(str(e))
+            raise Exception("Unable to create Event")
         return self
 
 class Task(db.Model):
@@ -146,8 +150,9 @@ class Task(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
-        except Exception:
-            return "Unable to create task."
+        except Exception as e:
+            print(str(e))
+            raise Exception("Unable to create Task")
         return self
 
 class Category(db.Model):
@@ -169,8 +174,14 @@ class Category(db.Model):
         }
     
     def add(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            print(str(e))
+            raise Exception("Unable to create Category")
+        return self
+
 
 class Subcategory(db.Model):
     __tablename__ = 'subcategory'
@@ -194,5 +205,11 @@ class Subcategory(db.Model):
         }
 
     def add(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            print(str(e))
+            raise Exception("Unable to create Subcategory")
+        return self
+
