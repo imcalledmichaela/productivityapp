@@ -100,8 +100,7 @@ export default {
       this.login(payload);
       this.initForm();
     },
-    ...mapActions(['loginUser', ['/loginUser']]),
-    ...mapActions(['logoutUser', ['/logoutUser']]),
+    ...mapActions(['loginUser', 'logoutUser']),
     async login(payload) {
       // const path = `${this.$APP_URL}/login`;
       // axios
@@ -117,7 +116,8 @@ export default {
       //   });
       console.log(payload);
       await this.loginUser(payload).then(() => {
-        if (this.$store.state.isLoggedIn) {
+        console.log(this.$store);
+        if (this.$store.getters.isLoggedIn) {
           this.$router.push('/home');
         } else {
           console.log('authenticationfailed');

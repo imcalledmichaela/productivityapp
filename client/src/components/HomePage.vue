@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     getEvents() {
-      const path = "api/events";
+      const path = 'api/events';
       axios
         .get(path)
         .then((res) => {
@@ -56,7 +56,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = "api/subcategories";
+      const path = 'api/subcategories';
       axios
         .get(path)
         .then((res) => {

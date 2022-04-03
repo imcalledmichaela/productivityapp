@@ -250,6 +250,7 @@ def getSubcategories():
         }
     )
 
+
 # Retreiving dictionary of subcategories names to id from the database
 @app_routes.route("/subcategoriesNameId")
 def getSubcategoriesNameId():
