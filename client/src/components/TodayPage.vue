@@ -23,7 +23,7 @@
             <thead>
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Subcategory</th>
+                <th scope="col">SubcategoryColor</th>
                 <th scope="col">Date</th>
                 <th scope="col">Start Time</th>
                 <th scope="col">End Time</th>
@@ -98,7 +98,8 @@ export default {
     return {
       events: [],
       tasks: [],
-      subcategories: [this.getSubcategories()],
+      subcategories: [],
+      subcategoriesColor: [],
     };
   },
   methods: {
@@ -146,11 +147,27 @@ export default {
           console.log(error);
         });
     },
+    getSubcategoriesColor() {
+      const path = 'api/getEvents';
+      axios
+        .get(path, {
+          params: {
+            data: this.events,
+          },
+        })
+        .then(function (res) {
+          console.log(res);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+    },
   },
   created() {
     this.getEvents();
     this.getTasks();
     this.getSubcategories();
+    this.getSubcategoriesColor();
   },
 };
 </script>
