@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import PingPage from '../components/PingPage.vue';
 import CreateEvent from '../components/CreateEvent.vue';
 import CreateTask from '../components/CreateTask.vue';
-import TodayPage from '../components/TodayPage.vue';
+import TodayComponent from '../components/TodayComponent.vue';
 import SuccessPage from '../components/SuccessPage.vue';
 import ErrorPage from '../components/ErrorPage.vue';
 import LoginPage from '../components/LoginPage.vue';
@@ -52,7 +52,7 @@ const router = new Router({
     {
       path: '/today',
       name: 'Today',
-      component: TodayPage,
+      component: TodayComponent,
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (!store.getters.isLoggedIn) {
