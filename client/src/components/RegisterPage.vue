@@ -1,9 +1,19 @@
 <template>
   <v-container fluid class="orange lighten-5 fill-height">
+    <v-alert
+      v-if="show"
+      color="red"
+      type="error"
+      outlined
+      dark
+      class="ma-auto"
+    >
+      {{ alert_message }}
+    </v-alert>
     <v-row class="wrap">
       <v-col md="5" sm="7" class="ma-auto">
         <v-card class="rounded-lg pt-3">
-          <v-form @submit="onSubmit" v-if="show">
+          <v-form @submit="onSubmit">
             <v-row>
               <v-col sm="10" md="10" class="ma-auto">
                 <v-card-title class="ml-n5 mb-3 mt-5 display-2 font-weight-bold"
@@ -104,7 +114,8 @@ export default {
         username: '',
         password: '',
       },
-      show: true,
+      show: false,
+      alert_message: '',
     };
   },
   computed: {
@@ -126,40 +137,19 @@ export default {
       this.initForm();
     },
     ...mapActions(['registerUser', ['/registerUser']]),
-    // getUsers() {
-    //   const path = `${this.$APP_URL}/users`;
-    //   axios
-    //     .get(path)
-    //     .then((res) => {
-    //       this.users = res.data.name;
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
     async addUser(payload) {
-      // const path = `${this.$APP_URL}/users`;
-      // axios
-      //   .post(path, payload)
-      //   .then(() => {
-      //     this.getUsers();
-      //     this.$router.push('/success');
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     this.getUsers();
-      //     this.$router.push('/error');
-      //   });
       await this.registerUser(payload).then(() => {
         if (this.$store.state.isLoggedIn) {
           this.$router.push('/home');
         } else {
           console.log('authenticationfailed');
-          this.$router.push('/login');
+          this.$router.push('/register');
           this.user = {
             username: null,
             password: null,
           };
+          this.show = true;
+          this.alert_message = 'Unable to create user!';
         }
       });
     },
@@ -169,7 +159,6 @@ export default {
       this.form.email = '';
       this.form.password = '';
     },
-
     returnLogin() {
       this.$router.push('/login');
     },

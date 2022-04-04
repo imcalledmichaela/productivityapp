@@ -102,21 +102,7 @@ export default {
     },
     ...mapActions(['loginUser', 'logoutUser']),
     async login(payload) {
-      // const path = `${this.$APP_URL}/login`;
-      // axios
-      //   .post(path, payload)
-      //   .then(() => {
-      //     console.log('User logged in');
-      //     // do something after login
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     this.getTasks();
-      //     this.$router.push('/error');
-      //   });
-      console.log(payload);
       await this.loginUser(payload).then(() => {
-        console.log(this.$store);
         if (this.$store.getters.isLoggedIn) {
           this.$router.push('/home');
         } else {
@@ -140,7 +126,6 @@ export default {
     },
   },
   async mounted() {
-    console.log('hello');
     await this.logoutUser();
   },
 };
