@@ -2,33 +2,19 @@
   <v-container fluid class="orange lighten-5 fill-height">
     <v-row id="content" class="justify-center">
       <v-col id="today-view" sm="3" md="3">
-<<<<<<< HEAD
-        <v-sheet id="today-card" class="rounded-lg pt-3" height="100vh">
-          <v-calendar
-            ref="today_calendar"
-            color="primary"
-            type="day"
-            :now="today_day"
-            :events="today_events_tasks"
-            :event-color="getEventColor"
-            @change="updateToday"
-          >
-=======
         <v-card class="rounded-lg pt-3" style="overflow:hidden">
         <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
           <v-calendar color="primary" type="day">
->>>>>>> d472da443ed8108df1c5349915cb73d0f162cfee
             <template v-slot:day-header="{ present }">
               <template v-if="present" class="text-center"> Today </template>
             </template>
-
           </v-calendar>
         </v-sheet>
         </v-card>
       </v-col>
 
       <v-col id="calendar-view" sm="8" md="8">
-        <v-card class="rounded-lg pt-3" style="overflow:hidden"> 
+        <v-card class="rounded-lg pt-3" style="overflow:hidden">
         <v-sheet height="10vh">
           <v-toolbar
             flat
@@ -129,17 +115,17 @@
       </v-col>
     </v-row>
     <v-speed-dial
-      style="position:fixed float:right"
-      :bottom="bottom"
-      :right="right"
-      :direction="direction"
-      :open-on-hover="hover"
-      :transition="transition"
+      class="mr-5 mb-5"
+      v-model="fab"
+      absolute
+      bottom
+      right
+      slide-y-reverse-transition
     >
       <template v-slot:activator>
         <v-btn
           v-model="fab"
-          color="blue darken-2"
+          color="green darken-2"
           dark
           fab
         >
@@ -147,7 +133,7 @@
             mdi-close
           </v-icon>
           <v-icon v-else>
-            mdi-account-circle
+            mdi-plus
           </v-icon>
         </v-btn>
       </template>
@@ -155,25 +141,19 @@
         fab
         dark
         small
-        color="green"
+        @click="goToCreateTask"
+        color="blue"
       >
-        <v-icon>mdi-pencil</v-icon>
+        <v-icon>mdi-checkbox-marked-circle-plus-outline</v-icon>
       </v-btn>
       <v-btn
         fab
-        dark
         small
-        color="indigo"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-btn
-        fab
         dark
-        small
-        color="red"
+        @click="goToCreateEvent"
+        color="purple"
       >
-        <v-icon>mdi-delete</v-icon>
+        <v-icon>mdi-calendar</v-icon>
       </v-btn>
     </v-speed-dial>
   </v-container>
@@ -262,6 +242,12 @@ export default {
       const min = new Date(`${start.date}T00:00:00`);
       const max = new Date(`${end.date}T23:59:59`);
       this.getEvents(min, max);
+    },
+    goToCreateTask() {
+      this.$router.push('/createtask');
+    },
+    goToCreateEvent() {
+      this.$router.push('/createevent');
     },
     updateToday() {
       const path = 'api/eventsAndTasksWithParams';

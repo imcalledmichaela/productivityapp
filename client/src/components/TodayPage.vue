@@ -155,12 +155,12 @@ export default {
             data: this.events,
           },
         })
-        .then(function (res) {
+        .then((res) => {
           console.log(res);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
-        })
+        });
     },
   },
   created() {

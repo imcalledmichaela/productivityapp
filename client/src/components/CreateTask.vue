@@ -1,9 +1,21 @@
 <template>
   <v-container fluid class="blue lighten-5 fill-height">
-    <v-row class="wrap">
-      <v-col md="7" sm="7" class="ma-auto">
-        <v-card id="today-card" class="rounded-lg pt-3">
-          <v-form @submit="onSubmit" v-if="show">
+    <v-row class="wrap justify-center">
+      <v-col id="today-view" sm="3" md="3">
+        <v-card class="rounded-lg pt-3" style="overflow:hidden">
+        <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
+          <v-calendar color="primary" type="day">
+            <template v-slot:day-header="{ present }">
+              <template v-if="present" class="text-center"> Today </template>
+            </template>
+          </v-calendar>
+        </v-sheet>
+        </v-card>
+      </v-col>
+
+      <v-col md="8" sm="8">
+        <v-form @submit="onSubmit" v-if="show">
+          <v-card class="rounded-lg pt-3" height="96vh" style="overflow-y:scroll">
             <v-row>
               <v-col>
                 <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
@@ -147,7 +159,7 @@
                 ></v-textarea>
               </v-col>
             </v-row>
-
+<!--
             <v-row class="mt-n5">
               <v-card-actions class="ma-auto">
                 <v-col class="justify-start">
@@ -163,11 +175,34 @@
                 </v-col>
               </v-card-actions>
             </v-row>
-          </v-form>
-        </v-card>
+            -->
+          </v-card>
+          <v-speed-dial
+            class="mr-5 mb-5"
+            v-model="fab"
+            absolute
+            bottom
+            right
+            slide-y-reverse-transition
+          >
+            <template v-slot:activator>
+              <v-btn v-model="fab" color="green darken-2" dark fab>
+                <v-icon v-if="fab"> mdi-close </v-icon>
+                <v-icon v-else> mdi-content-save </v-icon>
+              </v-btn>
+            </template>
+            <v-btn fab dark small type="submit" color="green">
+              <v-icon>mdi-content-save</v-icon>
+            </v-btn>
+            <v-btn fab small dark @click="returnHome" color="red">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-speed-dial>
+        </v-form>
       </v-col>
     </v-row>
 
+<!--
     <v-row>
       <v-col md="7" sm="7" class="ma-auto">
         <v-card class="mt-3" header="Form Data Result">
@@ -175,6 +210,7 @@
         </v-card>
       </v-col>
     </v-row>
+    -->
   </v-container>
 </template>
 
