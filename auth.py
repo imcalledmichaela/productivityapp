@@ -81,6 +81,7 @@ def login():
 
 
 @app_auth.route('/logout', methods=['POST'])
+
 def logout():
     response = jsonify()
     unset_jwt_cookies(response)

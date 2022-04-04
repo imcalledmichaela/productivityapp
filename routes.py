@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import request, jsonify
 from .models import Task, Event, Subcategory, Category, User
 from flask import Blueprint
+from .app import db
+from datetime import datetime, timezone
+
 
 app_routes = Blueprint('routes', __name__, url_prefix='/')
 
@@ -106,6 +109,9 @@ def addEvent():
 @app_routes.route("/events")
 def getEvents():
     event_list = Event.query.all()
+    for event in event_list:
+        print(event.start_time)
+        print(type(event.start_time))
     if len(event_list) != 0:
         return jsonify(
             {
@@ -268,20 +274,24 @@ def getSubcategoriesNameId():
     )
 
 
-@app_routes.route("/getEvents")
+@app_routes.route("/eventsWithParams", methods=['POST'])
 def getEventsWithParams():
+    print(request.data)
     data = request.get_json()
+    print(data)
+    
     start_time = data['start_time']
+    start_date = datetime.fromisoformat(start_time[:-1]).astimezone(timezone.utc).date()
     end_time = data['end_time']
+    end_date =  datetime.fromisoformat(end_time[:-1]).astimezone(timezone.utc).date()
     user = data['user']
-    print(type(end_time))
-    events_list = (Event.query().filter(Event.user_id == user)
-                        .filter(Event.start_time >= start_time)
-                        .filter(Event.end_time <= end_time))
+    events_list = (db.session.query(Event).filter(Event.user_id == user)
+                   .filter(Event.date >= start_time)
+                   .filter(Event.date <= end_time).all())
     colors = {}
     for event in events_list:
-        if event.subcategory not in colors:
-            subcat = Subcategory.query().filter(Subcategory.subcategory_id == event.subcategory_id).one()
+        if event.subcategory_id not in colors:
+            subcat = db.session.query(Subcategory).filter(Subcategory.subcategory_id == event.subcategory_id).one()
             colors[event.subcategory_id] = subcat.color
     print(events_list)
     if len(events_list) != 0:
@@ -291,9 +301,9 @@ def getEventsWithParams():
                     "events": [
                         {
                             "name": event.name,
-                            "start_time" : event.start_time,
-                            "end_time": event.end_time, 
-                            "color": colors[event.subcategory_id]
+                            "start": str(event.date) + "T" + str(event.start_time),
+                            "end": str(event.date) + "T" + str(event.end_time), 
+                            "color": colors[event.subcategory_id].lower()
                         } for event in events_list
                     ]
                 }
@@ -303,7 +313,7 @@ def getEventsWithParams():
         {
             "message": "No events found."
         }
-    )
+    ), 204
 
 # @app_routes.route("/addData")
 # def addData():
