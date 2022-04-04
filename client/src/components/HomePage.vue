@@ -3,24 +3,19 @@
     <v-row id="content" class="justify-center">
       <v-col id="today-view" sm="3" md="3">
         <v-sheet id="today-card" class="rounded-lg pt-3" height="100vh">
-          <v-calendar color="primary" type="day">
+          <v-calendar
+            ref="today_calendar"
+            color="primary"
+            type="day"
+            :now="today_day"
+            :events="today_events_tasks"
+            :event-color="getEventColor"
+            @change="updateToday"
+          >
             <template v-slot:day-header="{ present }">
               <template v-if="present" class="text-center"> Today </template>
             </template>
 
-            <template v-slot:day-body="{ date, week }">
-              <div
-                class="v-current-time"
-                :class="{ first: date === week[0].date }"
-                :style="{ top: nowY }"
-              ></div>
-            </template>
-
-            <!--
-            <template v-slot:interval="{ hour }">
-              <div class="text-center">{{ hour }} o'clock</div>
-            </template>
-            -->
           </v-calendar>
         </v-sheet>
       </v-col>
@@ -133,13 +128,14 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      subcategories: [this.getSubcategories()],
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
       events: [],
       focus: '',
       type: 'month',
+      today_day: new Date().toISOString().split('T')[0],
+      today_events_tasks: [],
     };
   },
   methods: {
@@ -150,24 +146,10 @@ export default {
         end_time: end,
         user: this.$store.getters.user.user,
       };
-      console.log(bodyParameters);
       axios
         .post(path, bodyParameters)
         .then((res) => {
-          console.log(res);
           this.events = res.data.data.events;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    getSubcategories() {
-      const path = 'api/subcategories';
-      axios
-        .get(path)
-        .then((res) => {
-          console.log(res.data.data.subcategories);
-          this.subcategories = res.data.data.subcategories;
         })
         .catch((error) => {
           console.error(error);
@@ -189,7 +171,7 @@ export default {
     },
     fetchEvents() {},
     getEventColor(event) {
-      return `${event.color} darken-1`;
+      return event.color;
     },
     setToday() {
       this.focus = '';
@@ -204,6 +186,8 @@ export default {
       const open = () => {
         this.selectedEvent = event;
         console.log(this.selectedEvent);
+        console.log(this.today_events_tasks);
+        console.log(this.events);
         this.selectedElement = nativeEvent.target;
         requestAnimationFrame(() => requestAnimationFrame(() => {
           this.selectedOpen = true;
@@ -221,6 +205,26 @@ export default {
       const min = new Date(`${start.date}T00:00:00`);
       const max = new Date(`${end.date}T23:59:59`);
       this.getEvents(min, max);
+    },
+    updateToday() {
+      const path = 'api/eventsAndTasksWithParams';
+      const currDate = new Date(this.today_day);
+      const start = currDate;
+      const end = currDate;
+      const bodyParameters = {
+        start_time: start,
+        end_time: end,
+        user: this.$store.getters.user.user,
+      };
+      axios
+        .post(path, bodyParameters)
+        .then((res) => {
+          console.log(res);
+          this.today_events_tasks = res.data.data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };

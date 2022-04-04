@@ -2,10 +2,11 @@ from flask import request, jsonify
 from .models import Task, Event, Subcategory, Category, User
 from flask import Blueprint
 from .app import db
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 
 app_routes = Blueprint('routes', __name__, url_prefix='/')
+TIME_FORMAT = '%Y-%m-%d %H:%M'
 
 
 # sanity check route
@@ -279,18 +280,24 @@ def getEventsWithParams():
     print(request.data)
     data = request.get_json()
     start_time = data['start_time']
-    start_date = datetime.fromisoformat(start_time[:-1]).astimezone(timezone.utc).date()
+    start_date = (datetime.fromisoformat(start_time[:-1]).date())
     end_time = data['end_time']
-    end_date =  datetime.fromisoformat(end_time[:-1]).astimezone(timezone.utc).date()
+    end_date = (datetime.fromisoformat(end_time[:-1]).date())
+    print(start_date, end_date)
     user = data['user']
     events_list = (db.session.query(Event).filter(Event.user_id == user)
-                   .filter(Event.date >= start_time)
-                   .filter(Event.date <= end_time).all())
+                   .filter(Event.date >= start_date)
+                   .filter(Event.date <= end_date).all())
     colors = {}
+    subcat_names = {}
     for event in events_list:
-        if event.subcategory_id not in colors:
-            subcat = db.session.query(Subcategory).filter(Subcategory.subcategory_id == event.subcategory_id).one()
-            colors[event.subcategory_id] = subcat.color
+        event_subcat = event.subcategory_id
+        if event_subcat not in colors:
+            subcat = (db.session.query(Subcategory)
+                      .filter(Subcategory.subcategory_id == event_subcat)
+                      .one())
+            colors[event_subcat] = subcat.color
+            subcat_names[event_subcat] = subcat.name
     print(events_list)
     if len(events_list) != 0:
         return jsonify(
@@ -299,11 +306,14 @@ def getEventsWithParams():
                     "events": [
                         {
                             "name": event.name,
-                            "start": str(event.date) + "T" + str(event.start_time),
+                            "start": (str(event.date) +
+                                      "T" + str(event.start_time)),
                             "end": str(event.date) + "T" + str(event.end_time),
                             "location": event.location,
                             "details": event.details,
-                            "color": colors[event.subcategory_id].lower()
+                            "color": (colors[event.subcategory_id].lower() +
+                                      " darken-1"),
+                            "subcategory": subcat_names[event.subcategory_id]
                         } for event in events_list
                     ]
                 }
@@ -314,6 +324,132 @@ def getEventsWithParams():
             "message": "No events found."
         }
     ), 204
+
+
+@app_routes.route("/tasksWithParams", methods=['POST'])
+def getTasksWithParams():
+    print(request.data)
+    data = request.get_json()
+    start_time = data['start_time']
+    start_date = (datetime.fromisoformat(start_time[:-1])
+                  .astimezone(timezone.utc).date())
+    user = data['user']
+    tasks_list = (db.session.query(Task).filter(Task.user_id == user)
+                  .filter(Task.date == start_date).all())
+    colors = {}
+    subcat_names = {}
+    for task in tasks_list:
+        task_subcat = task.subcategory_id
+        if task_subcat not in colors:
+            subcat = (db.session.query(Subcategory)
+                      .filter(Subcategory.subcategory_id == task_subcat).one())
+            colors[task_subcat] = subcat.color
+            subcat_names[task_subcat] = subcat.name
+    print(tasks_list)
+    if len(tasks_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "tasks": [
+                        {
+                            "name": task.name,
+                            "start": (str(task.date) + " " +
+                                      task.start_time.strftime(TIME_FORMAT)),
+                            "end": getTaskEnd(task),
+                            "details": task.details,
+                            "color": (colors[task.subcategory_id].lower()
+                                      + " lighten-1"),
+                            "subcategory": subcat_names[task.subcategory_id]
+                        } for task in tasks_list
+                    ]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No events found."
+        }
+    ), 204
+
+
+@app_routes.route("/eventsAndTasksWithParams", methods=['POST'])
+def getEventsAndTasksWithParams():
+    print(request.data)
+    data = request.get_json()
+    start_time = data['start_time']
+    start_date = (datetime.fromisoformat(start_time[:-1])
+                  .astimezone(timezone.utc).date())
+    end_time = data['end_time']
+    end_date = (datetime.fromisoformat(end_time[:-1]).date())
+    user = data['user']
+
+    events_list = (db.session.query(Event).filter(Event.user_id == user)
+                   .filter(Event.date >= start_date)
+                   .filter(Event.date <= end_date).all())
+
+    tasks_list = (db.session.query(Task).filter(Task.user_id == user)
+                  .filter(Task.date == start_date).all())
+
+    colors = {}
+    subcat_names = {}
+    for task in tasks_list:
+        task_subcat = task.subcategory_id
+        if task_subcat not in colors:
+            subcat = (db.session.query(Subcategory)
+                      .filter(Subcategory.subcategory_id == task_subcat).one())
+            colors[task_subcat] = subcat.color
+            subcat_names[task_subcat] = subcat.name
+
+    tasks_dict = [{
+                    "name": task.name,
+                    "start": (str(task.date) + "T" +
+                              str(task.start_time)),
+                    "end": getTaskEnd(task),
+                    "details": task.details,
+                    "color": (colors[task.subcategory_id].lower()
+                              + " lighten-1"),
+                    "subcategory": subcat_names[task.subcategory_id]
+                } for task in tasks_list]
+
+    for event in events_list:
+        event_subcat = event.subcategory_id
+        if event_subcat not in colors:
+            subcat = (db.session.query(Subcategory)
+                      .filter(Subcategory.subcategory_id == event_subcat)
+                      .one())
+            colors[event_subcat] = subcat.color
+            subcat_names[event_subcat] = subcat.name
+
+    events_dict = [{
+                    "name": event.name,
+                    "start": (str(event.date) +
+                              "T" + str(event.start_time)),
+                    "end": str(event.date) + "T" + str(event.end_time),
+                    "location": event.location,
+                    "details": event.details,
+                    "color": (colors[event.subcategory_id].lower() +
+                              " darken-1"),
+                    "subcategory": subcat_names[event.subcategory_id]
+                } for event in events_list]
+
+    if len(tasks_list) != 0 or len(events_list) != 0:
+        return jsonify(
+            {
+                "data": tasks_dict + events_dict
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No events found."
+        }
+    ), 204
+
+def getTaskEnd(task):
+    start_time = task.start_time
+    date = task.date
+    start_datetime = datetime.combine(date, start_time)
+    end_time = start_datetime + timedelta(minutes=task.duration)
+    return end_time.strftime('%Y-%m-%dT%H:%M:%S')
 
 # @app_routes.route("/addData")
 # def addData():
