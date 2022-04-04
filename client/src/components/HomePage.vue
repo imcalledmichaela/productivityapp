@@ -2,6 +2,7 @@
   <v-container fluid class="orange lighten-5 fill-height">
     <v-row id="content" class="justify-center">
       <v-col id="today-view" sm="3" md="3">
+<<<<<<< HEAD
         <v-sheet id="today-card" class="rounded-lg pt-3" height="100vh">
           <v-calendar
             ref="today_calendar"
@@ -12,16 +13,23 @@
             :event-color="getEventColor"
             @change="updateToday"
           >
+=======
+        <v-card class="rounded-lg pt-3" style="overflow:hidden">
+        <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
+          <v-calendar color="primary" type="day">
+>>>>>>> d472da443ed8108df1c5349915cb73d0f162cfee
             <template v-slot:day-header="{ present }">
               <template v-if="present" class="text-center"> Today </template>
             </template>
 
           </v-calendar>
         </v-sheet>
+        </v-card>
       </v-col>
 
       <v-col id="calendar-view" sm="8" md="8">
-        <v-sheet height="64">
+        <v-card class="rounded-lg pt-3" style="overflow:hidden"> 
+        <v-sheet height="10vh">
           <v-toolbar
             flat
           >
@@ -61,7 +69,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="600">
+        <v-sheet height="85vh">
           <v-calendar
             ref="calendar"
             v-model="focus"
@@ -117,8 +125,57 @@
             </v-card>
           </v-menu>
         </v-sheet>
+        </v-card>
       </v-col>
     </v-row>
+    <v-speed-dial
+      style="position:fixed float:right"
+      :bottom="bottom"
+      :right="right"
+      :direction="direction"
+      :open-on-hover="hover"
+      :transition="transition"
+    >
+      <template v-slot:activator>
+        <v-btn
+          v-model="fab"
+          color="blue darken-2"
+          dark
+          fab
+        >
+          <v-icon v-if="fab">
+            mdi-close
+          </v-icon>
+          <v-icon v-else>
+            mdi-account-circle
+          </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        fab
+        dark
+        small
+        color="green"
+      >
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="indigo"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <v-btn
+        fab
+        dark
+        small
+        color="red"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
+    </v-speed-dial>
   </v-container>
 </template>
 

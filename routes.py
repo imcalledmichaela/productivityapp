@@ -305,6 +305,7 @@ def getEventsWithParams():
                 "data": {
                     "events": [
                         {
+                            "event": event.event_id,
                             "name": event.name,
                             "start": (str(event.date) +
                                       "T" + str(event.start_time)),
@@ -352,6 +353,7 @@ def getTasksWithParams():
                 "data": {
                     "tasks": [
                         {
+                            "task_id": task.task_id,
                             "name": task.name,
                             "start": (str(task.date) + " " +
                                       task.start_time.strftime(TIME_FORMAT)),
@@ -401,6 +403,7 @@ def getEventsAndTasksWithParams():
             subcat_names[task_subcat] = subcat.name
 
     tasks_dict = [{
+                    "task_id": task.task_id,
                     "name": task.name,
                     "start": (str(task.date) + "T" +
                               str(task.start_time)),
@@ -421,6 +424,7 @@ def getEventsAndTasksWithParams():
             subcat_names[event_subcat] = subcat.name
 
     events_dict = [{
+                    "event_id": event.event_id,
                     "name": event.name,
                     "start": (str(event.date) +
                               "T" + str(event.start_time)),
