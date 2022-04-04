@@ -105,7 +105,10 @@
                 </v-btn>
               </v-toolbar>
               <v-card-text>
-                <span v-html="selectedEvent.details"></span>
+                <v-card-subtitle>Description:</v-card-subtitle>
+                <v-card-text>{{selectedEvent.details}}</v-card-text>
+                <v-card-subtitle>Location:</v-card-subtitle>
+                <v-card-text>{{selectedEvent.location}}</v-card-text>
               </v-card-text>
               <v-card-actions>
                 <v-btn
@@ -200,6 +203,7 @@ export default {
     showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event;
+        console.log(this.selectedEvent);
         this.selectedElement = nativeEvent.target;
         requestAnimationFrame(() => requestAnimationFrame(() => {
           this.selectedOpen = true;

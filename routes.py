@@ -278,8 +278,6 @@ def getSubcategoriesNameId():
 def getEventsWithParams():
     print(request.data)
     data = request.get_json()
-    print(data)
-    
     start_time = data['start_time']
     start_date = datetime.fromisoformat(start_time[:-1]).astimezone(timezone.utc).date()
     end_time = data['end_time']
@@ -302,7 +300,9 @@ def getEventsWithParams():
                         {
                             "name": event.name,
                             "start": str(event.date) + "T" + str(event.start_time),
-                            "end": str(event.date) + "T" + str(event.end_time), 
+                            "end": str(event.date) + "T" + str(event.end_time),
+                            "location": event.location,
+                            "details": event.details,
                             "color": colors[event.subcategory_id].lower()
                         } for event in events_list
                     ]
