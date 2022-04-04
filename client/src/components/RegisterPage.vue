@@ -11,7 +11,7 @@
                 >
               </v-col>
             </v-row>
-            
+
             <v-row class="name">
               <v-col sm="10" md="10" class="ma-auto">
                 <v-text-field
