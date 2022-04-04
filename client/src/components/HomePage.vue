@@ -4,10 +4,15 @@
       <v-col id="today-view" sm="3" md="3">
         <v-card class="rounded-lg pt-3" style="overflow:hidden">
         <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
-          <v-calendar color="primary" type="day">
-            <template v-slot:day-header="{ present }">
-              <template v-if="present" class="text-center"> Today </template>
-            </template>
+          <v-calendar
+            ref="today_calendar"
+            color="primary"
+            type="day"
+            :now="today_day"
+            :events="today_events_tasks"
+            :event-color="getEventColor"
+            @change="updateToday"
+          >
           </v-calendar>
         </v-sheet>
         </v-card>

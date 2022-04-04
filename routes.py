@@ -253,18 +253,28 @@ def getSubcategories():
         {
             "message": "No subcategories found."
         }
-    )
+    ), 204
 
 
 # Retreiving dictionary of subcategories names to id from the database
-@app_routes.route("/subcategoriesNameId")
-def getSubcategoriesNameId():
-    subcategory_list = Subcategory.query.all()
-    if len(subcategory_list) != 0:
+@app_routes.route("/subcategoriesNameId/<int:user_id>")
+def getSubcategoriesNameId(user_id):
+    cat_list = (db.session.query(Category)
+                .filter(Category.user_id == user_id).all())
+
+    subcat_list = (db.session.query(Subcategory)
+                   .filter(Subcategory.subcategory_id
+                   .in_([cat.category_id for cat in cat_list])).all())
+
+    if len(subcat_list) != 0:
         return jsonify(
             {
                 "data": {
-                    "subcategories": [{"text": subcategory.name, "value" : subcategory.subcategory_id} for subcategory in subcategory_list]
+                    "subcategories": [
+                        {
+                            "text": subcategory.name,
+                            "value": subcategory.subcategory_id
+                        } for subcategory in subcat_list]
                 }
             }
         ), 200
@@ -272,7 +282,7 @@ def getSubcategoriesNameId():
         {
             "message": "No subcategories found."
         }
-    )
+    ), 204
 
 
 @app_routes.route("/eventsWithParams", methods=['POST'])
@@ -454,6 +464,63 @@ def getTaskEnd(task):
     start_datetime = datetime.combine(date, start_time)
     end_time = start_datetime + timedelta(minutes=task.duration)
     return end_time.strftime('%Y-%m-%dT%H:%M:%S')
+
+
+@app_routes.route("/getCategoryByUserId/<int:user_id>")
+def getCategoryByUserId(user_id):
+    cat_list = (db.session.query(Category)
+                .filter(Category.user_id == user_id).all())
+
+    if len(cat_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "categories": [
+                        {
+                            "category_id": category.category_id,
+                            "name": category.name,
+                        } for category in cat_list
+                    ]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No categories found"
+        }
+    ), 204
+
+
+@app_routes.route("/getSubategoryByUserId/<int:user_id>")
+def getSubategoryByUserId(user_id):
+    cat_list = (db.session.query(Category)
+                .filter(Category.user_id == user_id).all())
+
+    subcat_list = (db.session.query(Subcategory)
+                   .filter(Subcategory.subcategory_id
+                   .in_([cat.category_id for cat in cat_list])).all())
+
+    if len(subcat_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "subcategories": [
+                        {
+                            "subcategory_id": subcategory.subcategory_id,
+                            "name": subcategory.name,
+                            "category_id": subcategory.category_id,
+                            "color": subcategory.color.lower()
+                        } for subcategory in cat_list
+                    ]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No subcategories found."
+        }
+    ), 204
+
 
 # @app_routes.route("/addData")
 # def addData():

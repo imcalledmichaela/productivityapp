@@ -278,12 +278,13 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'api/subcategoriesNameId';
+      const path = `api/subcategoriesNameId/${this.$store.getters.user.user}`;
       axios
         .get(path)
         .then((res) => {
           const subcat = res.data.data.subcategories;
           this.subcategories = Object.keys(subcat).map((k) => subcat[k]);
+          console.log(this.subcategories)
         })
         .catch((error) => {
           console.log(error);
