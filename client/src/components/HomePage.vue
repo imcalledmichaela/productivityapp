@@ -69,6 +69,7 @@
             :event-color="getEventColor"
             :type="type"
             @click:event="showEvent"
+            @click:date="showDay"
             @change="updateRange"
           ></v-calendar>
           <v-menu
@@ -242,6 +243,11 @@ export default {
         open();
       }
       nativeEvent.stopPropagation();
+    },
+    showDay(dayTime, nativeEvent) {
+      this.today_day = dayTime.date;
+      console.log(this.today_day);
+      this.updateToday();
     },
     updateRange({ start, end }) {
       console.log(start.date);
