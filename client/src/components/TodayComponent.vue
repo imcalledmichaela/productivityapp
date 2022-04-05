@@ -1,7 +1,7 @@
 <template>
   <v-col id="today-view" sm="3" md="3">
     <v-card class="rounded-lg pt-3" style="overflow: hidden">
-      <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
+      <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="93vh">
         <v-calendar
           ref="today_calendar"
           color="primary"

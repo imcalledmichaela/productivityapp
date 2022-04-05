@@ -1,26 +1,12 @@
 <template>
   <v-container fluid class="orange lighten-5 fill-height">
-    <v-row id="content" class="justify-center">
-      <v-col id="today-view" sm="3" md="3">
-        <v-card class="rounded-lg pt-3" style="overflow:hidden">
-        <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
-          <v-calendar
-            ref="today_calendar"
-            color="primary"
-            type="day"
-            :now="today_day"
-            :events="today_events_tasks"
-            :event-color="getEventColor"
-            @change="updateToday"
-          >
-          </v-calendar>
-        </v-sheet>
-        </v-card>
-      </v-col>
+    <navigation-drawer absolute> </navigation-drawer>
+    <v-row id="content" class="wrap justify-center">
+      <today-component></today-component>
 
       <v-col id="calendar-view" sm="8" md="8">
         <v-card class="rounded-lg pt-3" style="overflow:hidden">
-        <v-sheet height="10vh">
+        <v-sheet height="8vh">
           <v-toolbar
             flat
           >
@@ -32,6 +18,7 @@
             >
               Today
             </v-btn>
+            <v-spacer></v-spacer>
             <v-btn
               fab
               text
@@ -43,6 +30,9 @@
                 mdi-chevron-left
               </v-icon>
             </v-btn>
+            <v-toolbar-title class="justify-center" v-if="$refs.calendar">
+              {{ $refs.calendar.title }}
+            </v-toolbar-title>
             <v-btn
               fab
               text
@@ -54,13 +44,10 @@
                 mdi-chevron-right
               </v-icon>
             </v-btn>
-            <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }}
-            </v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
         </v-sheet>
-        <v-sheet height="85vh">
+        <v-sheet height="81.5vh">
           <v-calendar
             ref="calendar"
             v-model="focus"
