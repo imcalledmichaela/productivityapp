@@ -177,7 +177,7 @@ def getTasks():
 def addCategory():
     try:
         data = request.get_json()
-        category = Category(**category)
+        category = Category(**data)
         # db.session.add(category)
         # db.session.commit()
         category.add()
@@ -220,7 +220,7 @@ def getCategories():
 def addSubcategory():
     try:
         data = request.get_json()
-        subcategory = Subcategory(**subcategory)
+        subcategory = Subcategory(**data)
         db.session.add(subcategory)
         db.session.commit()
     except Exception as e:
