@@ -1,21 +1,11 @@
 <template>
   <v-container fluid class="lime lighten-5 fill-height">
     <v-row class="wrap justify-center">
-      <v-col id="today-view" sm="3" md="3">
-        <v-card class="rounded-lg pt-3" style="overflow:hidden">
-        <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
-          <v-calendar color="primary" type="day">
-            <template v-slot:day-header="{ present }">
-              <template v-if="present" class="text-center"> Today </template>
-            </template>
-          </v-calendar>
-        </v-sheet>
-        </v-card>
-      </v-col>
+      <today-component></today-component>
 
       <v-col md="8" sm="8">
         <v-form @submit="onSubmit">
-          <v-card class="rounded-lg pt-3" height="96vh" style="overflow-y:scroll">
+          <v-card class="rounded-lg pt-3" height="91vh" style="overflow-y:scroll">
             <v-row>
               <v-col>
                 <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"

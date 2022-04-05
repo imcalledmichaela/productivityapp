@@ -30,9 +30,11 @@
                 mdi-chevron-left
               </v-icon>
             </v-btn>
+            <v-spacer></v-spacer>
             <v-toolbar-title class="justify-center" v-if="$refs.calendar">
               {{ $refs.calendar.title }}
             </v-toolbar-title>
+            <v-spacer></v-spacer>
             <v-btn
               fab
               text
@@ -166,6 +168,7 @@ export default {
       type: 'month',
       today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
       today_events_tasks: [],
+      fab: false,
     };
   },
   methods: {
@@ -231,7 +234,7 @@ export default {
       }
       nativeEvent.stopPropagation();
     },
-    showDay(dayTime, nativeEvent) {
+    showDay(dayTime) {
       this.today_day = dayTime.date;
       console.log(this.today_day);
       this.updateToday();
@@ -247,26 +250,6 @@ export default {
     },
     goToCreateEvent() {
       this.$router.push('/createevent');
-    },
-    updateToday() {
-      console.log('in update toda');
-      console.log(this.today_day);
-      const path = 'api/eventsAndTasksWithParams';
-      const bodyParameters = {
-        start_time: this.today_day,
-        end_time: this.today_day,
-        user: this.$store.getters.user.user,
-      };
-      console.log(bodyParameters);
-      axios
-        .post(path, bodyParameters)
-        .then((res) => {
-          console.log(res);
-          this.today_events_tasks = res.data.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     },
   },
 };
@@ -286,7 +269,8 @@ export default {
   right: 50px;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+  0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   border-radius: 2px;
 } */
 

@@ -10,6 +10,7 @@
           :events="today_events_tasks"
           :event-color="getEventColor"
           @change="updateToday"
+          @click:event="showEvent"
         >
         </v-calendar>
       </v-sheet>
@@ -24,7 +25,7 @@ export default {
   data() {
     return {
       focus: '',
-      today_day: new Date().toISOString().split('T')[0],
+      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
       today_events_tasks: [],
     };
   },
@@ -50,15 +51,15 @@ export default {
       this.focus = '';
     },
     updateToday() {
+      console.log('in update toda');
+      console.log(this.today_day);
       const path = 'api/eventsAndTasksWithParams';
-      const currDate = new Date(this.today_day);
-      const start = currDate;
-      const end = currDate;
       const bodyParameters = {
-        start_time: start,
-        end_time: end,
+        start_time: this.today_day,
+        end_time: this.today_day,
         user: this.$store.getters.user.user,
       };
+      console.log(bodyParameters);
       axios
         .post(path, bodyParameters)
         .then((res) => {
@@ -68,6 +69,12 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+    },
+    showEvent({ event }) {
+      console.log(event.task_id);
+      if (typeof event.task_id !== 'undefined') {
+        console.log('is a task');
+      }
     },
   },
 };

@@ -1,17 +1,31 @@
 <template>
-  <v-container fluid class="orange lighten-5 fill-height">
-    <v-alert
-      v-if="show"
-      color="red"
-      type="error"
-      outlined
+<v-app>
+<v-app-bar
+      absolute
+      color="deep-purple accent-2"
       dark
-      class="ma-auto"
+      prominent
     >
-      {{ alert_message }}
-    </v-alert>
+      <v-spacer></v-spacer>
+        <v-img
+          src="@/assets/Planit_Logo_white.png"
+          max-width="250"
+        ></v-img>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+  <v-container fluid class="orange lighten-5 fill-height">
     <v-row class="wrap">
       <v-col md="5" sm="7" class="ma-auto">
+        <v-alert
+          v-if="show"
+          color="red"
+          type="error"
+          outlined
+          dark
+          class="ma-auto mb-2"
+        >
+          {{ alert_message }}
+        </v-alert>
         <v-card class="rounded-lg pt-3">
           <v-card-title class="mb-3 justify-center display-3 font-weight-bold"
             >Login</v-card-title
@@ -62,6 +76,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </v-app>
 </template>
 
 <script>

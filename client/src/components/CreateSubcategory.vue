@@ -1,21 +1,11 @@
 <template>
   <v-container fluid class="teal lighten-5 fill-height">
     <v-row class="wrap justify-center">
-      <v-col id="today-view" sm="3" md="3">
-        <v-card class="rounded-lg pt-3" style="overflow:hidden">
-        <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="98vh">
-          <v-calendar color="primary" type="day">
-            <template v-slot:day-header="{ present }">
-              <template v-if="present" class="text-center"> Today </template>
-            </template>
-          </v-calendar>
-        </v-sheet>
-        </v-card>
-      </v-col>
+      <today-component></today-component>
 
       <v-col md="8" sm="8">
         <v-form @submit="onSubmit">
-          <v-card class="rounded-lg pt-3" height="96vh" style="overflow-y:scroll">
+          <v-card class="rounded-lg pt-3" height="91vh" style="overflow-y:scroll">
             <v-row>
               <v-col>
                 <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
@@ -59,6 +49,13 @@
               </v-col>
             </v-row>
 
+            <v-row class="justify-center">
+            <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-palette
+                </v-icon>
+              </v-col>
+
             <v-col sm="8" md="8">
                 <v-select
                   v-model="form.color"
@@ -69,6 +66,7 @@
                   :color="form.color"
                 ></v-select>
             </v-col>
+            </v-row>
           </v-card>
           <v-speed-dial
             class="mr-5 mb-5"
@@ -141,7 +139,6 @@ export default {
       event.preventDefault();
       const payload = {
         name: this.form.name,
-        user_id: this.$store.getters.user.user,
         category_id: this.form.category,
         color: this.form.color,
       };

@@ -82,6 +82,27 @@ def getUsers():
         }
     )
 
+
+# Retreiving users from the database
+@app_routes.route("/user/<int:user_id>")
+def getUser(user_id):
+    user = (db.session.query(User)
+            .filter(User.user_id == user_id).one_or_none())
+    if user:
+        return jsonify(
+            {
+                "data": {
+                    "user": user.to_dict()
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No users found."
+        }
+    ), 204
+
+
 # EVENTS
 # Creating and sending an event to the database
 @app_routes.route("/events", methods=['POST'])
@@ -220,10 +241,11 @@ def getCategories():
 def addSubcategory():
     try:
         data = request.get_json()
+        print(data)
         subcategory = Subcategory(**data)
-        db.session.add(subcategory)
-        db.session.commit()
+        subcategory.add()
     except Exception as e:
+        print(str(e))
         return jsonify(
             {
                 "message": "An error has occured while creating a subcategory",
@@ -263,7 +285,7 @@ def getSubcategoriesNameId(user_id):
                 .filter(Category.user_id == user_id).all())
 
     subcat_list = (db.session.query(Subcategory)
-                   .filter(Subcategory.subcategory_id
+                   .filter(Subcategory.cateogry_id
                    .in_([cat.category_id for cat in cat_list])).all())
 
     if len(subcat_list) != 0:
@@ -395,7 +417,7 @@ def getTasksWithParams():
                             "end": getTaskEnd(task),
                             "details": task.details,
                             "color": (colors[task.subcategory_id].lower()
-                                      + " lighten-1"),
+                                      + " lighten-2"),
                             "subcategory": subcat_names[task.subcategory_id]
                         } for task in tasks_list
                     ]
@@ -448,7 +470,7 @@ def getEventsAndTasksWithParams():
                     "end": getTaskEnd(task),
                     "details": task.details,
                     "color": (colors[task.subcategory_id].lower()
-                              + " lighten-1"),
+                              + " lighten-2"),
                     "subcategory": subcat_names[task.subcategory_id]
                 } for task in tasks_list]
 
@@ -502,19 +524,28 @@ def getCategoryByUserId(user_id):
     cat_list = (db.session.query(Category)
                 .filter(Category.user_id == user_id).all())
 
+    subcat_list = (db.session.query(Subcategory).all())
+
     if len(cat_list) != 0:
-        return jsonify(
-            {
-                "data": {
-                    "categories": [
-                        {
-                            "category_id": category.category_id,
-                            "name": category.name,
-                        } for category in cat_list
-                    ]
-                }
+        return jsonify({
+            "data": {
+                "categories": [
+                    {
+                        "category_id": category.category_id,
+                        "name": category.name,
+                        "subcategories": [
+                            {
+                                "subcategory_id": subcategory.subcategory_id,
+                                "name": subcategory.name,
+                                "category_id": subcategory.cateogry_id,
+                                "color": subcategory.color.lower()
+                            } for subcategory in subcat_list if
+                            subcategory.cateogry_id == category.category_id
+                        ]
+                    } for category in cat_list
+                ]
             }
-        ), 200
+        }), 200
     return jsonify(
         {
             "message": "No categories found"
@@ -528,7 +559,7 @@ def getSubategoryByUserId(user_id):
                 .filter(Category.user_id == user_id).all())
 
     subcat_list = (db.session.query(Subcategory)
-                   .filter(Subcategory.subcategory_id
+                   .filter(Subcategory.category_id
                    .in_([cat.category_id for cat in cat_list])).all())
 
     if len(subcat_list) != 0:
@@ -553,8 +584,68 @@ def getSubategoryByUserId(user_id):
     ), 204
 
 
+@app_routes.route("/getTaskById/<int:task_id>")
+def getTaskById(task_id):
+    task = (db.session.query(Task)
+            .filter(Task.task_id == task_id).one())
+
+    subcategory = (db.session.query(Subcategory)
+                   .filter(Subcategory.subcategory_id == task.subcategory_id)
+                   .one())
+    print(task.details)
+
+    return jsonify(
+        {
+            "data": {
+                "task": {
+                    "name": task.name,
+                    "subcategory": subcategory.name,
+                    "date": str(task.date),
+                    "start_time": str(task.start_time),
+                    "end_time": getTaskEnd(task).split('T')[1],
+                    "details": task.details
+                }
+            }
+        }
+    ), 200
+
+
+@app_routes.route("/getEventById/<int:task_id>")
+def getEventById(event_id):
+    event = (db.session.query(Event)
+             .filter(Event.event_id == event_id).one())
+
+    subcategory = (db.session.query(Subcategory)
+                   .filter(Subcategory.subcategory_id == event.subcategory_id)
+                   .one())
+
+    return jsonify(
+        {
+            "data": {
+                "event": {
+                    "name": event.name,
+                    "subcategory": subcategory.name,
+                    "date": str(event.date),
+                    "start_time": str(event.start_time),
+                    "end_time": str(event.end_time),
+                    "location": event.location,
+                    "details": event.details
+                }
+            }
+        }
+    ), 200
+
+
 # @app_routes.route("/addData")
 # def addData():
 #     subcat = Subcategory('TestClass', 1, 'Red')
 #     subcat.add()
+#     return jsonify(), 200
+
+
+# @app_routes.route("/deleteData")
+# def deleteData():
+#     d = db.session.query(Category).filter(Category.category_id == 5)
+#     d.delete()
+#     db.session.commit()
 #     return jsonify(), 200

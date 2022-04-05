@@ -110,7 +110,7 @@ const router = new Router({
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (from.matched.some((record) => record.meta.requiresAuth)) {
-          if (store.getters.isLoggedIn) {
+          if (!store.getters.isLoggedIn) {
             next('/home');
             return;
           }

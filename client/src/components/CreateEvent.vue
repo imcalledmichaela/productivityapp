@@ -257,6 +257,10 @@ export default {
         this.getSubcategories(),
       ],
       show: true,
+      fab: false,
+      menu2: false,
+      menu3: false,
+      menu4: false,
     };
   },
   methods: {
@@ -302,7 +306,7 @@ export default {
         });
     },
     getSubcategories() {
-      const path = 'api/subcategoriesNameId';
+      const path = `api/subcategoriesNameId/${this.$store.getters.user.user}`;
       axios
         .get(path)
         .then((res) => {

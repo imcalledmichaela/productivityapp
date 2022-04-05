@@ -68,6 +68,7 @@
                       v-model="form.date"
                       label="Select Date"
                       readonly
+                      require
                       filled
                       v-bind="attrs"
                       v-on="on"
@@ -120,6 +121,7 @@
                       label="Select Start Time"
                       filled
                       readonly
+                      require
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
@@ -223,6 +225,9 @@ export default {
         this.getSubcategories(),
       ],
       show: true,
+      fab: false,
+      menu2: false,
+      menu3: false,
     };
   },
   methods: {
