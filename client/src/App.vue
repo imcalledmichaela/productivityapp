@@ -10,13 +10,15 @@
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>
 
+      <v-spacer></v-spacer>
+
       <v-img
         class="mx-auto logo"
         src="@/assets/Planit_Logo_white.png"
         @click="returnHome"
         max-height="60"
         max-width="75"
-        contain
+        containu
       ></v-img>
 
       <v-spacer></v-spacer>

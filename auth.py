@@ -25,12 +25,14 @@ def my_expired_token_callback(jwt_header, jwt_payload):
 @app_auth.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    print(data)
     name = data['name']
     username = data['username']
     email = data['email']
     password = data['password']
 
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).one_or_none()
+    print(user)
     if user is None:
         user = User(
             name=name,
@@ -38,7 +40,7 @@ def register():
             email=email,
             password=generate_password_hash(password)
         )
-
+        print('creating user')
         created_user = user.add()
         if created_user:
             access_token = create_access_token(identity=user.user_id)

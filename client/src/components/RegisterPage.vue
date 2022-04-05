@@ -141,7 +141,7 @@ export default {
     ...mapActions(['registerUser', ['/registerUser']]),
     async addUser(payload) {
       await this.registerUser(payload).then(() => {
-        if (this.$store.state.isLoggedIn) {
+        if (this.$store.getters.user.isLoggedIn) {
           this.$router.push('/home');
         } else {
           console.log('authenticationfailed');
