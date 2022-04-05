@@ -176,7 +176,7 @@ export default {
       events: [],
       focus: '',
       type: 'month',
-      today_day: new Date().toISOString().split('T')[0],
+      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset()*60*1000)).toISOString().split('T')[0],
       today_events_tasks: [],
     };
   },
@@ -244,8 +244,9 @@ export default {
       nativeEvent.stopPropagation();
     },
     updateRange({ start, end }) {
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
+      console.log(start.date);
+      const min = start.date;
+      const max = end.date;
       this.getEvents(min, max);
     },
     goToCreateTask() {
@@ -255,15 +256,15 @@ export default {
       this.$router.push('/createevent');
     },
     updateToday() {
+      console.log('in update toda');
+      console.log(this.today_day);
       const path = 'api/eventsAndTasksWithParams';
-      const currDate = new Date(this.today_day);
-      const start = currDate;
-      const end = currDate;
       const bodyParameters = {
-        start_time: start,
-        end_time: end,
+        start_time: this.today_day,
+        end_time: this.today_day,
         user: this.$store.getters.user.user,
       };
+      console.log(bodyParameters);
       axios
         .post(path, bodyParameters)
         .then((res) => {

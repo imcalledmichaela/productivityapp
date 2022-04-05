@@ -290,9 +290,9 @@ def getEventsWithParams():
     print(request.data)
     data = request.get_json()
     start_time = data['start_time']
-    start_date = (datetime.fromisoformat(start_time[:-1]).date())
+    start_date = (datetime.strptime(start_time, '%Y-%m-%d').date())
     end_time = data['end_time']
-    end_date = (datetime.fromisoformat(end_time[:-1]).date())
+    end_date = (datetime.strptime(end_time, '%Y-%m-%d').date())
     print(start_date, end_date)
     user = data['user']
     events_list = (db.session.query(Event).filter(Event.user_id == user)
@@ -342,8 +342,7 @@ def getTasksWithParams():
     print(request.data)
     data = request.get_json()
     start_time = data['start_time']
-    start_date = (datetime.fromisoformat(start_time[:-1])
-                  .astimezone(timezone.utc).date())
+    start_date = (datetime.strptime(start_time, '%Y-%m-%d').date())
     user = data['user']
     tasks_list = (db.session.query(Task).filter(Task.user_id == user)
                   .filter(Task.date == start_date).all())
@@ -386,13 +385,16 @@ def getTasksWithParams():
 
 @app_routes.route("/eventsAndTasksWithParams", methods=['POST'])
 def getEventsAndTasksWithParams():
+    print('events and tasks')
     print(request.data)
     data = request.get_json()
     start_time = data['start_time']
-    start_date = (datetime.fromisoformat(start_time[:-1])
-                  .astimezone(timezone.utc).date())
+    start_date = (datetime.strptime(start_time, '%Y-%m-%d').date())
+    print(start_date)
     end_time = data['end_time']
-    end_date = (datetime.fromisoformat(end_time[:-1]).date())
+    end_date = (datetime.strptime(end_time, '%Y-%m-%d').date())
+    print(end_date)
+    
     user = data['user']
 
     events_list = (db.session.query(Event).filter(Event.user_id == user)
@@ -446,6 +448,8 @@ def getEventsAndTasksWithParams():
                     "subcategory": subcat_names[event.subcategory_id]
                 } for event in events_list]
 
+    print(tasks_list)
+    print(events_list)
     if len(tasks_list) != 0 or len(events_list) != 0:
         return jsonify(
             {
@@ -457,6 +461,7 @@ def getEventsAndTasksWithParams():
             "message": "No events found."
         }
     ), 204
+
 
 def getTaskEnd(task):
     start_time = task.start_time
