@@ -285,6 +285,32 @@ def getSubcategoriesNameId(user_id):
     ), 204
 
 
+# Retreiving dictionary of categories names to id from the database
+@app_routes.route("/categoriesNameId/<int:user_id>")
+def getCategoriesNameId(user_id):
+    print('in categories name id')
+    cat_list = (db.session.query(Category)
+                .filter(Category.user_id == user_id).all())
+
+    if len(cat_list) != 0:
+        return jsonify(
+            {
+                "data": {
+                    "categories": [
+                        {
+                            "text": category.name,
+                            "value": category.category_id
+                        } for category in cat_list]
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No categories found."
+        }
+    ), 204
+
+
 @app_routes.route("/eventsWithParams", methods=['POST'])
 def getEventsWithParams():
     print(request.data)

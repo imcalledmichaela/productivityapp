@@ -176,7 +176,7 @@ export default {
       events: [],
       focus: '',
       type: 'month',
-      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset()*60*1000)).toISOString().split('T')[0],
+      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
       today_events_tasks: [],
     };
   },

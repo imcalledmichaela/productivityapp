@@ -3,6 +3,8 @@ import Router from 'vue-router';
 import PingPage from '../components/PingPage.vue';
 import CreateEvent from '../components/CreateEvent.vue';
 import CreateTask from '../components/CreateTask.vue';
+import CreateSubcategory from '../components/CreateSubcategory.vue';
+import CreateCategory from '../components/CreateCategory.vue';
 import TodayComponent from '../components/TodayComponent.vue';
 import SuccessPage from '../components/SuccessPage.vue';
 import ErrorPage from '../components/ErrorPage.vue';
@@ -40,6 +42,32 @@ const router = new Router({
       path: '/createTask',
       name: 'CreateTask',
       component: CreateTask,
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.isLoggedIn) {
+          next('/login');
+          return;
+        }
+        next();
+      },
+    },
+    {
+      path: '/createSubcategory',
+      name: 'CreateSubcategory',
+      component: CreateSubcategory,
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.isLoggedIn) {
+          next('/login');
+          return;
+        }
+        next();
+      },
+    },
+    {
+      path: '/createCategory',
+      name: 'CreateCategory',
+      component: CreateCategory,
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (!store.getters.isLoggedIn) {

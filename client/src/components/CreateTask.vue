@@ -284,7 +284,7 @@ export default {
         .then((res) => {
           const subcat = res.data.data.subcategories;
           this.subcategories = Object.keys(subcat).map((k) => subcat[k]);
-          console.log(this.subcategories)
+          console.log(this.subcategories);
         })
         .catch((error) => {
           console.log(error);
@@ -292,7 +292,7 @@ export default {
     },
     initForm() {
       this.form.name = '';
-      this.form.subcategory_id = null;
+      this.form.subcategory = null;
       this.form.date = '';
       this.form.duration = '';
       this.form.start_time = '';
