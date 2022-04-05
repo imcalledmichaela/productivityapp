@@ -1,10 +1,21 @@
 <template>
   <v-app>
     <v-app-bar
-      plain
+      color="deep-purple accent-2"
       dense
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+      
+      <v-img
+        class="mx-auto logo"
+        src="@/assets/Planit_Logo_white.png"
+        @click="returnHome"
+        max-height="60"
+        max-width="75"
+        contain
+      ></v-img>
+      
 
       <v-spacer></v-spacer>
 
@@ -74,8 +85,19 @@ export default {
   name: 'App',
 
   data: () => ({
-    drawer: true,
+    drawer: false,
     //
   }),
+  methods:{
+    returnHome() {
+      this.$router.push('/home');
+    },
+  },
 };
 </script>
+
+<style scoped>
+.logo{
+  cursor:pointer
+}
+</style>
