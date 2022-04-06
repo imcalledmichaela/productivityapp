@@ -20,7 +20,7 @@
       <v-row class="headline">
         <v-spacer></v-spacer>
           <v-app-bar-text align="center">Making your world revolve around you</v-app-bar-text>
-        <v-spacer></v-spacer>    
+        <v-spacer></v-spacer>
       </v-row>
     </v-col>
     </v-app-bar>

@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="blue lighten-5 fill-height">
-    <v-row class="wrap justify-center">
-      <today-component></today-component>
+    <v-row class="wrap justify-center fill-height">
+      <today-component class="hidden-xs-only"></today-component>
 
       <v-col md="8" sm="8">
         <v-form @submit="onSubmit" v-if="show">
@@ -15,6 +15,7 @@
             </v-row>
 
             <v-row class="name justify-center">
+              <v-spacer></v-spacer>
               <v-col sm="1" md="1" class="my-auto">
                 <v-icon class="ma-auto" x-large>
                   mdi-pencil
@@ -29,9 +30,11 @@
                   required
                 ></v-text-field>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
 
             <v-row class="subcategory justify-center">
+              <v-spacer></v-spacer>
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large>
                   mdi-format-list-bulleted-type
@@ -47,9 +50,11 @@
                   filled
                 ></v-select>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
 
             <v-row class="date justify-center mt-n4">
+              <v-spacer></v-spacer>
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large> mdi-calendar </v-icon>
               </v-col>
@@ -81,9 +86,11 @@
                   ></v-date-picker>
                 </v-menu>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
 
             <v-row class="duration justify-center mt-n4">
+              <v-spacer></v-spacer>
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large> mdi-timer-cog-outline </v-icon>
               </v-col>
@@ -97,9 +104,11 @@
                   required
                 ></v-text-field>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
 
             <v-row class="start_time justify-center mt-n4">
+              <v-spacer></v-spacer>
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large>
                   mdi-clock-time-four-outline
@@ -133,9 +142,11 @@
                   ></v-time-picker>
                 </v-menu>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
 
             <v-row class="details justify-center mt-n4">
+              <v-spacer></v-spacer>
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large>
                   mdi-clipboard-edit-outline
@@ -150,6 +161,7 @@
                   filled
                 ></v-textarea>
               </v-col>
+              <v-spacer></v-spacer>
             </v-row>
 <!--
             <v-row class="mt-n5">

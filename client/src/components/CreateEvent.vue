@@ -1,9 +1,9 @@
 <template>
   <v-container fluid class="purple lighten-5 fill-height">
     <v-row class="wrap justify-center">
-      <today-component> </today-component>
+      <today-component class="hidden-xs-only"> </today-component>
 
-      <v-col md="8" sm="8">
+      <v-col md="8" sm="8" xs="8">
         <v-form @submit="onSubmit" v-if="show">
           <v-card
             class="rounded-lg pt-3"
