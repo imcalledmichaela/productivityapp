@@ -4,7 +4,7 @@
     <v-row id="content" class="wrap justify-center">
       <today-component></today-component>
 
-      <v-col id="calendar-view" sm="8" md="8">
+      <v-col class="d-none d-sm-block" id="calendar-view" sm="8" md="8">
         <v-card class="rounded-lg pt-3" style="overflow:hidden">
         <v-sheet height="8vh">
           <v-toolbar

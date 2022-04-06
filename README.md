@@ -18,7 +18,9 @@ For Linux or MacOS
 
 4. Finally, to run the flask application, use
 >`flask run`
-or 
+or
+>`python -m flask run`
+or
 >`python app.py`
 
 5. Flask should be working on 
