@@ -5,13 +5,24 @@
       color="deep-purple accent-2"
       dark
       prominent
+      extended="true"
+      extension-height="64px"
     >
-      <v-spacer></v-spacer>
-        <v-img
-          src="@/assets/Planit_Logo_white.png"
-          max-width="250"
-        ></v-img>
-      <v-spacer></v-spacer>
+    <v-col>
+      <v-row class="no-gutters mt-3">
+        <v-spacer></v-spacer>
+          <v-img
+            src="@/assets/planitLogo_white_fullsize.png"
+            max-width="300"
+          ></v-img>
+        <v-spacer></v-spacer>
+      </v-row>
+      <v-row class="headline">
+        <v-spacer></v-spacer>
+          <v-app-bar-text align="center">Making your world revolve around you</v-app-bar-text>
+        <v-spacer></v-spacer>    
+      </v-row>
+    </v-col>
     </v-app-bar>
   <v-container fluid class="orange lighten-5 fill-height">
     <v-row class="wrap">
@@ -27,7 +38,7 @@
           {{ alert_message }}
         </v-alert>
         <v-card class="rounded-lg pt-3">
-          <v-card-title class="mb-3 justify-center display-3 font-weight-bold"
+          <v-card-title class="mb-3 justify-center display-3 display-2"
             >Login</v-card-title
           >
           <v-form @submit="onSubmit">
