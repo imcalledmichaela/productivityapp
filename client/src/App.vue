@@ -103,8 +103,10 @@
           subgroup
         >
         <v-list-item color="subcategory.color">
-          <v-list-item-content >
-              <v-list-item-title v-text="subcategory.name"></v-list-item-title>
+          <v-list-item-content>
+              <v-list-item-title
+                v-text="subcategory.name"
+              ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         </v-list-item-group>
