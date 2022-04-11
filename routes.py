@@ -146,7 +146,27 @@ def getEvents():
         {
             "message": "No events found."
         }
-    )
+    ), 204
+
+
+# Retreiving event by Id from the database
+@app_routes.route("/event/<int:event_id>")
+def getEventById(event_id):
+    event = (db.session.query(Event)
+             .filter(Event.event_id == event_id).one_or_none())
+    if event:
+        return jsonify(
+            {
+                "data": {
+                    "event": event.to_dict()
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No event found."
+        }
+    ), 204
 
 # TASKS
 # Creating and sending a task to the database
@@ -189,7 +209,27 @@ def getTasks():
         {
             "message": "No tasks found."
         }
-    )
+    ), 204
+
+
+# Retreiving task by Id from the database
+@app_routes.route("/task/<int:task_id>")
+def getTaskById(task_id):
+    task = (db.session.query(Task)
+            .filter(Task.task_id == task_id).one_or_none())
+    if task:
+        return jsonify(
+            {
+                "data": {
+                    "task": task.to_dict()
+                }
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No tasks found."
+        }
+    ), 204
 
 
 # CATEGORIES
