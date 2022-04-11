@@ -637,6 +637,108 @@ def getSubategoryByUserId(user_id):
     ), 204
 
 
+@app_routes.route("/eventsAndTasksBySubcategory", methods=['POST'])
+def getEventsAndTasksBySubcategory():
+    data = request.get_json()
+    start_time = data['start_time']
+    start_date = (datetime.strptime(start_time, '%Y-%m-%d').date())
+    end_time = data['end_time']
+    end_date = (datetime.strptime(end_time, '%Y-%m-%d').date())
+    user = data['user']
+    subcategory = data['subcategory']
+
+    events_list = (db.session.query(Event).filter(Event.user_id == user)
+                   .filter(Event.date >= start_date)
+                   .filter(Event.date <= end_date)
+                   .filter(Event.subcategory_id == subcategory).all())
+
+    tasks_list = (db.session.query(Task).filter(Task.user_id == user)
+                  .filter(Task.date == start_date)
+                  .filter(Task.subcategory_id == subcategory).all())
+
+    subcat_obj = (db.session.query(Subcategory)
+                    .filter(Subcategory.subcategory_id == subcategory).one())
+    color = subcat_obj.color
+    subcat_name = subcat_obj.name
+
+    tasks_dict = [{
+        "task_id": task.task_id,
+        "name": task.name,
+        "start": (str(task.date) + "T" + str(task.start_time)),
+        "end": getTaskEnd(task),
+        "details": task.details,
+        "color": color.lower() + " lighten-2",
+        "subcategory": subcat_name
+    } for task in tasks_list]
+
+    events_dict = [{
+        "event_id": event.event_id,
+        "name": event.name,
+        "start": (str(event.date) + "T" + str(event.start_time)),
+        "end": str(event.date) + "T" + str(event.end_time),
+        "location": event.location,
+        "details": event.details,
+        "color": color + " darken-1",
+        "subcategory": subcat_name
+    } for event in events_list]
+
+    print(tasks_list)
+    print(events_list)
+    if len(tasks_list) != 0 or len(events_list) != 0:
+        return jsonify(
+            {
+                "data": tasks_dict + events_dict
+            }
+        ), 200
+    return jsonify(
+        {
+            "message": "No events found."
+        }
+    ), 204
+
+
+@app_routes.route("/eventsBySubcategory", methods=['POST'])
+def getEventsBySubcategory():
+    data = request.get_json()
+    start_time = data['start_time']
+    start_date = (datetime.strptime(start_time, '%Y-%m-%d').date())
+    end_time = data['end_time']
+    end_date = (datetime.strptime(end_time, '%Y-%m-%d').date())
+    user = data['user']
+    subcategory = data['subcategory']
+
+    events_list = (db.session.query(Event).filter(Event.user_id == user)
+                   .filter(Event.date >= start_date)
+                   .filter(Event.date <= end_date)
+                   .filter(Event.subcategory_id <= subcategory).all())
+
+    subcat_obj = (db.session.query(Subcategory)
+                    .filter(Subcategory.subcategory_id == subcategory).one())
+    color = subcat_obj.color
+    subcat_name = subcat_obj.name
+
+    if len(events_list) != 0:
+        return jsonify({
+            "data": {
+                "events": [{
+                    "event": event.event_id,
+                    "name": event.name,
+                    "start": (str(event.date) +
+                                "T" + str(event.start_time)),
+                    "end": str(event.date) + "T" + str(event.end_time),
+                    "location": event.location,
+                    "details": event.details,
+                    "color": color.lower() + " darken-1",
+                    "subcategory": subcat_name
+                } for event in events_list]
+            }
+        }), 200
+    return jsonify(
+        {
+            "message": "No events found."
+        }
+    ), 204
+
 # @app_routes.route("/addData")
 # def addData():
 #     subcat = Subcategory('TestClass', 1, 'Red')
