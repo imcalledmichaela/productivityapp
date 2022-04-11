@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="orange lighten-5 fill-height">
-    <navigation-drawer absolute> </navigation-drawer>
     <v-row id="content" class="wrap justify-center">
       <today-component></today-component>
 

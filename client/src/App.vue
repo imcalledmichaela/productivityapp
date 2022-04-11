@@ -8,44 +8,44 @@
       color="green lighten-5"
       v-if="this.$store.getters.user.isLoggedIn"
     >
-      <v-list
-      rounded>
-      <v-list-item>
-        <v-list-item-title
-        class="text-h5 text-center font-weight-bold">
-        Categories</v-list-item-title>
-      </v-list-item>
+      <v-list expand nav>
+        <v-list-item>
+          <v-list-item-title class="text-h5 text-center font-weight-bold">
+            Categories</v-list-item-title
+          >
+        </v-list-item>
 
-      <v-list-group
-        :value="true"
-        v-for="(category, i) in categories"
-        :key="i"
-        v-model="categoriesActive[i]"
-      >
-        <template v-slot:activator>
-          <v-list-item-title v-text="category.name"></v-list-item-title>
-        </template>
-        <v-list-item-group
-          :value="true"
-          v-for="(subcategory, j) in category.subcategories"
-          :key="j"
-          no-action
-          subgroup
-        >
-            <v-card :color="subcategory.color"
-            dark
-            width="275"
-            height="30"
-            class="ml-5 rounded-lg"
-            >
-              <v-list-text
-              v-text="subcategory.name"
-              class="font-weight-bold ml-3 text-h6">
-              </v-list-text>
-            </v-card>
+        <v-list-item-group>
+          <template v-for="(category, index) in categories">
+            <v-list-item :key="index" v-model="categoriesActive[index]">
+              <template v-slot:activator>
+                <v-list-item-title v-text="category.name"></v-list-item-title>
+              </template>
+              <v-list-item-group
+                :value="true"
+                v-for="(subcategory, j) in category.subcategories"
+                :key="j"
+                no-action
+                subgroup
+              >
+                <v-card
+                  :color="subcategory.color"
+                  dark
+                  width="275"
+                  height="30"
+                  class="ml-5 rounded-lg"
+                >
+                  <v-card-title
+                    v-text="subcategory.name"
+                    class="font-weight-bold pt-0 text-h6"
+                  >
+                  </v-card-title>
+                </v-card>
+              </v-list-item-group>
+            </v-list-item>
+          </template>
         </v-list-item-group>
-      </v-list-group>
-    </v-list>
+      </v-list>
       <template absolute class="justify-end">
         <div class="pa-2">
           <v-btn color="blue darken-2" dark block @click="showCategoryView">
@@ -53,10 +53,10 @@
           </v-btn>
         </div>
         <div class="pa-2">
-        <v-btn color="green darken-2" dark block @click="showSubcategoryView">
+          <v-btn color="green darken-2" dark block @click="showSubcategoryView">
             Create Subcategory
           </v-btn>
-      </div>
+        </div>
       </template>
     </v-navigation-drawer>
 
@@ -84,12 +84,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-menu
-        bottom
-        min-width="200px"
-        rounded
-        offset-y
-      >
+      <v-menu bottom min-width="200px" rounded offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon x-large v-on="on">
             <v-btn icon>
