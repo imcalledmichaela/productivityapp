@@ -215,24 +215,28 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
-    showEvent({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        console.log(this.selectedEvent);
-        console.log(this.today_events_tasks);
-        console.log(this.events);
-        this.selectedElement = nativeEvent.target;
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          this.selectedOpen = true;
-        }));
-      };
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        requestAnimationFrame(() => requestAnimationFrame(() => open()));
-      } else {
-        open();
+    showEvent({ event }) {
+      // const open = () => {
+      //   this.selectedEvent = event;
+      //   console.log(this.selectedEvent);
+      //   console.log(this.today_events_tasks);
+      //   console.log(this.events);
+      //   this.selectedElement = nativeEvent.target;
+      //   requestAnimationFrame(() => requestAnimationFrame(() => {
+      //     this.selectedOpen = true;
+      //   }));
+      // };
+      // if (this.selectedOpen) {
+      //   this.selectedOpen = false;
+      //   requestAnimationFrame(() => requestAnimationFrame(() => open()));
+      // } else {
+      //   open();
+      // }
+      // nativeEvent.stopPropagation();
+      console.log(event.event);
+      if (typeof event.event !== 'undefined') {
+        this.$router.push({ name: 'ShowEvent', params: { event_id: event.event } });
       }
-      nativeEvent.stopPropagation();
     },
     showDay(dayTime) {
       this.today_day = dayTime.date;

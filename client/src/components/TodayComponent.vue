@@ -73,7 +73,13 @@ export default {
     showEvent({ event }) {
       console.log(event.task_id);
       if (typeof event.task_id !== 'undefined') {
-        console.log('is a task');
+        this.$router.push({ name: 'ShowTask', params: { task_id: event.task_id } }).catch((err) => {
+          if (err.name !== 'NavigationDuplicated' && !err.message.includes('Avoided redundant navigation to current location')) {
+            console.log(err);
+          }
+        });
+      } else {
+        this.$router.push({ name: 'ShowEvent', params: { event_id: event.event_id } }).catch();
       }
     },
   },

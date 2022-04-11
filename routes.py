@@ -155,10 +155,16 @@ def getEventById(event_id):
     event = (db.session.query(Event)
              .filter(Event.event_id == event_id).one_or_none())
     if event:
+        subcat = (db.session.query(Subcategory)
+                  .filter(Subcategory.subcategory_id == event.subcategory_id)
+                  .one())
+        event_dict = event.to_dict()
+        event_dict['subcategory'] = subcat.name
+        print(event_dict)
         return jsonify(
             {
                 "data": {
-                    "event": event.to_dict()
+                    "event": event_dict
                 }
             }
         ), 200
@@ -218,10 +224,17 @@ def getTaskById(task_id):
     task = (db.session.query(Task)
             .filter(Task.task_id == task_id).one_or_none())
     if task:
+        subcat = (db.session.query(Subcategory)
+                  .filter(Subcategory.subcategory_id == task.subcategory_id)
+                  .one())
+        task_dict = task.to_dict()
+        task_dict['subcategory'] = subcat.name
+        task_dict['end_time'] = getTaskEnd(task).split("T")[1]
+        print(task_dict)
         return jsonify(
             {
                 "data": {
-                    "task": task.to_dict()
+                    "task": task_dict
                 }
             }
         ), 200
@@ -622,58 +635,6 @@ def getSubategoryByUserId(user_id):
             "message": "No subcategories found."
         }
     ), 204
-
-
-@app_routes.route("/getTaskById/<int:task_id>")
-def getTaskById(task_id):
-    task = (db.session.query(Task)
-            .filter(Task.task_id == task_id).one())
-
-    subcategory = (db.session.query(Subcategory)
-                   .filter(Subcategory.subcategory_id == task.subcategory_id)
-                   .one())
-    print(task.details)
-
-    return jsonify(
-        {
-            "data": {
-                "task": {
-                    "name": task.name,
-                    "subcategory": subcategory.name,
-                    "date": str(task.date),
-                    "start_time": str(task.start_time),
-                    "end_time": getTaskEnd(task).split('T')[1],
-                    "details": task.details
-                }
-            }
-        }
-    ), 200
-
-
-@app_routes.route("/getEventById/<int:task_id>")
-def getEventById(event_id):
-    event = (db.session.query(Event)
-             .filter(Event.event_id == event_id).one())
-
-    subcategory = (db.session.query(Subcategory)
-                   .filter(Subcategory.subcategory_id == event.subcategory_id)
-                   .one())
-
-    return jsonify(
-        {
-            "data": {
-                "event": {
-                    "name": event.name,
-                    "subcategory": subcategory.name,
-                    "date": str(event.date),
-                    "start_time": str(event.start_time),
-                    "end_time": str(event.end_time),
-                    "location": event.location,
-                    "details": event.details
-                }
-            }
-        }
-    ), 200
 
 
 # @app_routes.route("/addData")

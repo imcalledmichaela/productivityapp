@@ -11,6 +11,8 @@ import ErrorPage from '../components/ErrorPage.vue';
 import LoginPage from '../components/LoginPage.vue';
 import RegisterPage from '../components/RegisterPage.vue';
 import HomePage from '../components/HomePage.vue';
+import ShowTask from '../components/ShowTask.vue';
+import ShowEvent from '../components/ShowEvent.vue';
 import store from '../store';
 
 Vue.use(Router);
@@ -42,6 +44,34 @@ const router = new Router({
       path: '/createTask',
       name: 'CreateTask',
       component: CreateTask,
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.isLoggedIn) {
+          next('/login');
+          return;
+        }
+        next();
+      },
+    },
+    {
+      path: '/showTask',
+      name: 'ShowTask',
+      component: ShowTask,
+      props: true,
+      meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.isLoggedIn) {
+          next('/login');
+          return;
+        }
+        next();
+      },
+    },
+    {
+      path: '/showEvent',
+      name: 'ShowEvent',
+      component: ShowEvent,
+      props: true,
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (!store.getters.isLoggedIn) {
