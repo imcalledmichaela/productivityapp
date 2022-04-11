@@ -1,6 +1,67 @@
 <template>
   <v-app>
+    <v-navigation-drawer
+      app
+      v-model="drawer"
+      temporary
+      width="325"
+      color="green lighten-5"
+      v-if="this.$store.getters.user.isLoggedIn"
+    >
+      <v-list
+      rounded>
+      <v-list-item>
+        <v-list-item-title
+        class="text-h5 text-center font-weight-bold">
+        Categories</v-list-item-title>
+      </v-list-item>
+
+      <v-list-group
+        :value="true"
+        v-for="(category, i) in categories"
+        :key="i"
+        v-model="categoriesActive[i]"
+      >
+        <template v-slot:activator>
+          <v-list-item-title v-text="category.name"></v-list-item-title>
+        </template>
+        <v-list-item-group
+          :value="true"
+          v-for="(subcategory, j) in category.subcategories"
+          :key="j"
+          no-action
+          subgroup
+        >
+            <v-card :color="subcategory.color"
+            dark
+            width="275"
+            height="30"
+            class="ml-5 rounded-lg"
+            >
+              <v-list-text
+              v-text="subcategory.name"
+              class="font-weight-bold ml-3 text-h6">
+              </v-list-text>
+            </v-card>
+        </v-list-item-group>
+      </v-list-group>
+    </v-list>
+      <template absolute class="justify-end">
+        <div class="pa-2">
+          <v-btn color="blue darken-2" dark block @click="showCategoryView">
+            Create Category
+          </v-btn>
+        </div>
+        <div class="pa-2">
+        <v-btn color="green darken-2" dark block @click="showSubcategoryView">
+            Create Subcategory
+          </v-btn>
+      </div>
+      </template>
+    </v-navigation-drawer>
+
     <v-app-bar
+      app
       color="deep-purple accent-2"
       dense
       v-if="this.$store.getters.user.isLoggedIn"
@@ -77,55 +138,6 @@
       </v-menu>
     </v-app-bar>
 
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      bottom
-      temporary
-      v-if="this.$store.getters.user.isLoggedIn"
-    >
-      <v-list>
-
-      <v-list-group
-        :value="true"
-        v-for="(category, i) in categories"
-        :key="i"
-
-      >
-        <template v-slot:activator>
-          <v-list-item-title v-text="category.name"></v-list-item-title>
-        </template>
-        <v-list-item-group
-          :value="true"
-          v-for="(subcategory, j) in category.subcategories"
-          :key="j"
-          no-action
-          subgroup
-        >
-        <v-list-item color="subcategory.color">
-          <v-list-item-content>
-              <v-list-item-title
-                v-text="subcategory.name"
-              ></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        </v-list-item-group>
-      </v-list-group>
-    </v-list>
-      <template absolute class="justify-end">
-        <div class="pa-2">
-          <v-btn color="blue darken-2" dark block @click="showCategoryView">
-            Create Category
-          </v-btn>
-        </div>
-        <div class="pa-2">
-        <v-btn color="green darken-2" dark block @click="showSubcategoryView">
-            Create Subcategory
-          </v-btn>
-      </div>
-      </template>
-    </v-navigation-drawer>
-
     <v-main>
       <router-view />
     </v-main>
@@ -143,6 +155,7 @@ export default {
     drawer: false,
     user: {},
     categories: [],
+    categoriesActive: [],
     dialog: false,
     //
   }),
@@ -177,7 +190,11 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             this.categories = res.data.data.categories;
+            for (let i = 0; i < this.categories.length; i += 1) {
+              this.categoriesActive[i] = false;
+            }
             console.log(res);
+            console.log(this.categoriesActive);
           }
         })
         .catch((error) => {
