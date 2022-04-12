@@ -1,65 +1,5 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      app
-      v-model="drawer"
-      temporary
-      width="325"
-      color="green lighten-5"
-      v-if="this.$store.getters.user.isLoggedIn"
-    >
-      <v-list expand nav>
-        <v-list-item>
-          <v-list-item-title class="text-h5 text-center font-weight-bold">
-            Categories</v-list-item-title
-          >
-        </v-list-item>
-
-        <v-list-item-group>
-          <template v-for="(category, index) in categories">
-            <v-list-item :key="index" v-model="categoriesActive[index]">
-              <template v-slot:activator>
-                <v-list-item-title v-text="category.name"></v-list-item-title>
-              </template>
-              <v-list-item-group
-                :value="true"
-                v-for="(subcategory, j) in category.subcategories"
-                :key="j"
-                no-action
-                subgroup
-              >
-                <v-card
-                  :color="subcategory.color"
-                  dark
-                  width="275"
-                  height="30"
-                  class="ml-5 rounded-lg"
-                >
-                  <v-card-title
-                    v-text="subcategory.name"
-                    class="font-weight-bold pt-0 text-h6"
-                  >
-                  </v-card-title>
-                </v-card>
-              </v-list-item-group>
-            </v-list-item>
-          </template>
-        </v-list-item-group>
-      </v-list>
-      <template absolute class="justify-end">
-        <div class="pa-2">
-          <v-btn color="blue darken-2" dark block @click="showCategoryView">
-            Create Category
-          </v-btn>
-        </div>
-        <div class="pa-2">
-          <v-btn color="green darken-2" dark block @click="showSubcategoryView">
-            Create Subcategory
-          </v-btn>
-        </div>
-      </template>
-    </v-navigation-drawer>
-
     <v-app-bar
       app
       color="deep-purple accent-2"
@@ -133,9 +73,131 @@
       </v-menu>
     </v-app-bar>
 
-    <v-main>
+    <v-navigation-drawer
+      app
+      v-model="drawer"
+      width="325"
+      color="green lighten-5"
+      v-if="this.$store.getters.user.isLoggedIn"
+    >
+      <!--Heading-->
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h5 text-center font-weight-bold">
+            Categories
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <!--Categories List-->
+      <v-list expand nav>
+        <v-list-group
+        v-for="(category, index) in categories"
+        :key="index"
+        v-model="categoriesActive[index]">
+
+        <!--Categories Title-->
+        <template v-slot:activator>
+          <!--Add Subcategory Button-->
+          <v-list-item-action class="align-self-start">
+            <v-tooltip right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                v-bind="attrs"
+                v-on="on"
+                @click.stop>
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </template>
+            <span>Create Subcategory</span>
+            </v-tooltip>
+          </v-list-item-action>
+
+          <!--Title-->
+          <v-list-item-content>
+            <v-list-item-title v-text="category.name">
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+          <!--Subcategory Cards-->
+          <v-list-item-group
+            :value="true"
+            v-for="(subcategory, j) in category.subcategories"
+            :key="j"
+            no-action
+            subgroup
+            >
+            <v-card
+              :color="subcategory.color"
+              dark
+              width="275"
+              height="30"
+              class="ml-5 rounded-lg"
+            >
+              <v-card-title
+                v-text="subcategory.name"
+                class="font-weight-bold pt-0"
+              >
+              </v-card-title>
+            </v-card>
+          </v-list-item-group>
+        </v-list-group>
+      </v-list>
+
+      <!--Create Category Field-->
+      <v-form
+      @submit="onSubmit"
+      v-if="this.createCategoryButton">
+      <v-list-item>
+        <v-list-item-content>
+          <v-text-field
+          label="Enter Category Name"
+          v-model="form.name"
+          required
+          solo>
+          </v-text-field>
+        </v-list-item-content>
+
+          <v-list-item-action class="mt-n4">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                v-bind="attrs"
+                v-on="on"
+                type="submit"
+                color="green"
+                dark
+                >
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+              </template>
+            <span>Create</span>
+            </v-tooltip>
+          </v-list-item-action>
+      </v-list-item>
+      </v-form>
+
+      <!--Create Category Button-->
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block dark
+          color="blue" @click="enableCreateCategory">
+            Create Category
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+
+    <v-content>
       <router-view />
-    </v-main>
+    </v-content>
   </v-app>
 </template>
 
@@ -152,9 +214,40 @@ export default {
     categories: [],
     categoriesActive: [],
     dialog: false,
-    //
+    createCategoryButton: false,
+    form: {
+      name: '',
+    },
   }),
   methods: {
+    onSubmit(event) {
+      event.preventDefault();
+      if (this.form.name !== '') {
+        const payload = {
+          name: this.form.name,
+          user_id: this.$store.getters.user.user,
+        };
+        this.addCategory(payload);
+      } else {
+        this.$router.push('/error');
+      }
+    },
+    addCategory(payload) {
+      const path = 'api/categories';
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getCategoriesByUserId();
+          this.createCategoryButton = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$router.push('/error');
+        });
+    },
+    initForm() {
+      this.form.name = '';
+    },
     returnHome() {
       this.$router.push('/home');
     },
@@ -201,6 +294,9 @@ export default {
     },
     showSubcategoryView() {
       this.$router.push('/createsubcategory');
+    },
+    enableCreateCategory() {
+      this.createCategoryButton = !this.createCategoryButton;
     },
   },
   created() {
