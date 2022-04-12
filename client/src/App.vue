@@ -123,6 +123,43 @@
           </v-list-item-content>
         </template>
 
+        <!--Create Subcategory Field-->
+      <v-form
+      @submit="onSubmitSubCategory(event, category.name)"
+      >
+      <v-list-item>
+        <v-list-item-content>
+          <v-text-field
+          label="Enter Subcategory Name"
+          v-model="subcategoryForm.name"
+          class="rounded-lg"
+          required
+          solo>
+          </v-text-field>
+        </v-list-item-content>
+
+          <v-list-item-action class="mt-n4">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                v-bind="attrs"
+                v-on="on"
+                type="submit"
+                color="green"
+                dark
+                >
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+              </template>
+            <span>Create</span>
+            </v-tooltip>
+          </v-list-item-action>
+      </v-list-item>
+      </v-form>
+
           <!--Subcategory Cards-->
           <v-list-item-group
             :value="true"
@@ -156,7 +193,8 @@
         <v-list-item-content>
           <v-text-field
           label="Enter Category Name"
-          v-model="form.name"
+          v-model="categoryForm.name"
+          class="rounded-lg"
           required
           solo>
           </v-text-field>
@@ -187,7 +225,7 @@
       <!--Create Category Button-->
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block dark
+          <v-btn class="rounded-lg" block dark
           color="blue" @click="enableCreateCategory">
             Create Category
           </v-btn>
@@ -214,20 +252,39 @@ export default {
     categories: [],
     categoriesActive: [],
     dialog: false,
+    createSubcategoryButton: false,
     createCategoryButton: false,
-    form: {
+    categoryForm: {
       name: '',
+    },
+    subcategoryForm: {
+      name: '',
+      category: '',
+      color: '',
     },
   }),
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      if (this.form.name !== '') {
+      if (this.categoryForm.name !== '') {
         const payload = {
-          name: this.form.name,
+          name: this.categoryForm.name,
           user_id: this.$store.getters.user.user,
         };
         this.addCategory(payload);
+      } else {
+        this.$router.push('/error');
+      }
+    },
+    onSubmitSubCategory(event, specificCategory) {
+      event.preventDefault();
+      if (this.subcategoryForm.name !== '') {
+        const payload = {
+          name: this.subcategoryForm.name,
+          category_id: specificCategory,
+          color: 'blue',
+        };
+        this.addSubcategory(payload);
       } else {
         this.$router.push('/error');
       }
@@ -245,8 +302,21 @@ export default {
           this.$router.push('/error');
         });
     },
+    addSubcategory(payload) {
+      const path = 'api/subcategories';
+      axios
+        .post(path, payload)
+        .then(() => {
+          this.getCategoriesByUserId();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$router.push('/error');
+        });
+    },
     initForm() {
-      this.form.name = '';
+      this.categoryForm.name = '';
+      this.subcategoryForm.name = '';
     },
     returnHome() {
       this.$router.push('/home');
