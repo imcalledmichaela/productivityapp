@@ -170,7 +170,7 @@ export default {
     showEvent({ event }) {
       console.log(event.event);
       if (typeof event.event !== 'undefined') {
-        this.$router.push({ name: 'ShowEvent', params: { event_id: event.event } });
+        this.$router.push({ name: 'ShowEvent', query: { event_id: event.event } });
       }
     },
     showDay(dayTime) {

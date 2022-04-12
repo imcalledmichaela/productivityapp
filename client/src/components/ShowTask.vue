@@ -80,16 +80,16 @@
 import axios from 'axios';
 
 export default {
-  props: ['task_id'],
   data() {
     return {
       task: {},
+      task_id: this.$route.query.task_id,
     };
   },
   methods: {
     getTask() {
       console.log('in show task');
-      console.log('this.task_id');
+      console.log(this.task_id);
       const path = `api/task/${this.task_id}`;
       axios
         .get(path)

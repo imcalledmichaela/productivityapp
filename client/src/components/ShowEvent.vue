@@ -92,10 +92,10 @@
 import axios from 'axios';
 
 export default {
-  props: ['event_id'],
   data() {
     return {
       event: {},
+      event_id: this.$route.query.event_id,
     };
   },
   methods: {

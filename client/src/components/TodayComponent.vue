@@ -51,19 +51,15 @@ export default {
       this.focus = '';
     },
     updateToday() {
-      console.log('in update toda');
-      console.log(this.today_day);
       const path = 'api/eventsAndTasksWithParams';
       const bodyParameters = {
         start_time: this.today_day,
         end_time: this.today_day,
         user: this.$store.getters.user.user,
       };
-      console.log(bodyParameters);
       axios
         .post(path, bodyParameters)
         .then((res) => {
-          console.log(res);
           this.today_events_tasks = res.data.data;
         })
         .catch((error) => {
@@ -72,14 +68,11 @@ export default {
     },
     showEvent({ event }) {
       console.log(event.task_id);
-      if (typeof event.task_id !== 'undefined') {
-        this.$router.push({ name: 'ShowTask', params: { task_id: event.task_id } }).catch((err) => {
-          if (err.name !== 'NavigationDuplicated' && !err.message.includes('Avoided redundant navigation to current location')) {
-            console.log(err);
-          }
-        });
-      } else {
-        this.$router.push({ name: 'ShowEvent', params: { event_id: event.event_id } }).catch();
+      if (typeof event.task_id !== 'undefined' && this.$route.query.task_id !== event.task_id) {
+        this.$router.push({ name: 'ShowTask', query: { task_id: event.task_id } });
+      } else if (this.$route.query.event_id !== event.event_id) {
+        console.log(event.event_id);
+        this.$router.push({ name: 'ShowEvent', query: { event_id: event.event_id } });
       }
     },
   },

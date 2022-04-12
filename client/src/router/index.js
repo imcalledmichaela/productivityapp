@@ -57,7 +57,6 @@ const router = new Router({
       path: '/showTask',
       name: 'ShowTask',
       component: ShowTask,
-      props: true,
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (!store.getters.isLoggedIn) {
@@ -71,7 +70,6 @@ const router = new Router({
       path: '/showEvent',
       name: 'ShowEvent',
       component: ShowEvent,
-      props: true,
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (!store.getters.isLoggedIn) {
