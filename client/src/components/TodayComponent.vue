@@ -6,12 +6,18 @@
           ref="today_calendar"
           color="primary"
           type="day"
-          :now="today_day"
           :events="today_events_tasks"
           :event-color="getEventColor"
           @change="updateToday"
           @click:event="showEvent"
         >
+        <template v-slot:day-body>
+          <div
+            class="v-current-time"
+            :class="{ first: true }"
+            :style="{ top: nowY }"
+          ></div>
+        </template>
         </v-calendar>
       </v-sheet>
     </v-card>
@@ -27,7 +33,13 @@ export default {
       focus: '',
       today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
       today_events_tasks: [],
+      cal: null,
     };
+  },
+  computed: {
+    nowY() {
+      return this.cal ? `${this.cal.timeToY(this.cal.times.now)}px` : '-10px';
+    },
   },
   methods: {
     getCurrentTime() {
@@ -76,5 +88,32 @@ export default {
       }
     },
   },
+  mounted() {
+    console.log('mounting');
+    this.cal = this.$refs.today_calendar;
+    this.scrollToTime();
+    this.updateTime();
+  },
 };
 </script>
+
+<style lang="scss">
+.v-current-time {
+  height: 2px;
+  background-color: #ea4335;
+  position: absolute;
+  left: -1px;
+  right: 0;
+  pointer-events: none;
+  &.first::before {
+    content: '';
+    position: absolute;
+    background-color: #ea4335;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: -5px;
+    margin-left: -6.5px;
+  }
+}
+</style>
