@@ -150,11 +150,18 @@ def getEvents():
 
 
 # Retreiving event by Id from the database
-@app_routes.route("/event/<int:event_id>")
+@app_routes.route("/event/<int:event_id>", methods=['GET', 'PUT', 'DELETE'])
 def getEventById(event_id):
     event = (db.session.query(Event)
              .filter(Event.event_id == event_id).one_or_none())
     if event:
+        return jsonify(
+            {
+                "message": "No event found."
+            }
+        ), 204
+
+    if request.method == 'GET':
         subcat = (db.session.query(Subcategory)
                   .filter(Subcategory.subcategory_id == event.subcategory_id)
                   .one())
@@ -168,11 +175,33 @@ def getEventById(event_id):
                 }
             }
         ), 200
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        event.name = data['name']
+        event.subcategory_id = data['subcategory_id']
+        event.date = data['date']
+        event.start_time = data['start_time']
+        event.end_time = data['end_time']
+        event.location = data['location']
+        event.details = data['details']
+        db.session.commit()
+        return jsonify(
+            {
+                "data": {
+                    "event": event.to_dict()
+                }
+            }
+        ), 200
+
+    db.session.delete(event)
+    db.session.commit()
     return jsonify(
         {
-            "message": "No event found."
+            "message": "Event deleted successfully."
         }
-    ), 204
+    ), 200
+
 
 # TASKS
 # Creating and sending a task to the database
@@ -219,11 +248,18 @@ def getTasks():
 
 
 # Retreiving task by Id from the database
-@app_routes.route("/task/<int:task_id>")
-def getTaskById(task_id):
+@app_routes.route("/task/<int:task_id>", methods=['GET', 'PUT', 'DELETE'])
+def taskById(task_id):
     task = (db.session.query(Task)
             .filter(Task.task_id == task_id).one_or_none())
-    if task:
+    if not task:
+        return jsonify(
+            {
+                "message": "No task found."
+            }
+        ), 204
+
+    if request.method == 'GET':
         subcat = (db.session.query(Subcategory)
                   .filter(Subcategory.subcategory_id == task.subcategory_id)
                   .one())
@@ -238,11 +274,31 @@ def getTaskById(task_id):
                 }
             }
         ), 200
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        task.name = data['name']
+        task.subcategory_id = data['subcategory_id']
+        task.date = data['date']
+        task.duration = data['duration']
+        task.start_time = data['start_time']
+        task.details = data['details']
+        db.session.commit()
+        return jsonify(
+            {
+                "data": {
+                    "task": task.to_dict()
+                }
+            }
+        ), 200
+
+    db.session.delete(task)
+    db.session.commit()
     return jsonify(
         {
-            "message": "No tasks found."
+            "message": "Task deleted successfully."
         }
-    ), 204
+    ), 200
 
 
 # CATEGORIES
@@ -262,7 +318,7 @@ def addCategory():
                 "error": str(e)
             }
         ), 500
-    
+
     return jsonify(
         {
             "data": category.to_dict()
@@ -286,6 +342,40 @@ def getCategories():
             "message": "No categories found."
         }
     )
+
+
+# Retreiving task by Id from the database
+@app_routes.route("/category/<int:category_id>", methods=['PUT', 'DELETE'])
+def categoryById(category_id):
+    category = (db.session.query(Category)
+                .filter(Category.category_id == category_id)
+                .one_or_none())
+
+    if not category:
+        return jsonify(
+            {
+                "message": "No category found."
+            }
+        ), 204
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        category.name = data['name']
+        return jsonify(
+            {
+                "data": {
+                    "category": category.to_dict()
+                }
+            }
+        ), 200
+
+    db.session.delete(category)
+    db.session.commit()
+    return jsonify(
+        {
+            "message": "Category deleted successfully."
+        }
+    ), 200
 
 
 # SUBCATEGORIES
@@ -329,6 +419,43 @@ def getSubcategories():
             "message": "No subcategories found."
         }
     ), 204
+
+
+# Retreiving task by Id from the database
+@app_routes.route("/subcategory/<int:subcategory_id>",
+                  methods=['PUT', 'DELETE'])
+def subcategoryById(subcategory_id):
+    subcategory = (db.session.query(Subcategory)
+                   .filter(Subcategory.subcategory_id == subcategory_id)
+                   .one_or_none())
+
+    if not subcategory:
+        return jsonify(
+            {
+                "message": "No subcategory found."
+            }
+        ), 204
+
+    if request.method == 'PUT':
+        data = request.get_json()
+        subcategory.name = data['name']
+        subcategory.cateogry_id = data['category_id']
+        subcategory.color = data['color']
+        return jsonify(
+            {
+                "data": {
+                    "subcategory": subcategory.to_dict()
+                }
+            }
+        ), 200
+
+    db.session.delete(subcategory)
+    db.session.commit()
+    return jsonify(
+        {
+            "message": "Subcategory deleted successfully."
+        }
+    ), 200
 
 
 # Retreiving dictionary of subcategories names to id from the database
@@ -738,6 +865,7 @@ def getEventsBySubcategory():
             "message": "No events found."
         }
     ), 204
+
 
 # @app_routes.route("/addData")
 # def addData():

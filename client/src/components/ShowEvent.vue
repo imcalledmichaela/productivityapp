@@ -111,6 +111,17 @@ export default {
           console.log(error);
         });
     },
+    deleteEvent() {
+      const path = `api/event/${this.event_id}`;
+      axios
+        .delete(path)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     this.getEvent();

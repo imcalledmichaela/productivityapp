@@ -4,6 +4,7 @@
       <v-sheet id="today-card" class="rounded-lg pt-3 mt-n7" height="93vh">
         <v-calendar
           ref="today_calendar"
+          v-model="focus"
           color="primary"
           type="day"
           :events="today_events_tasks"
@@ -28,10 +29,18 @@
 import axios from 'axios';
 
 export default {
+  props: ['today'],
+  watch: {
+    today: {
+      async handler() {
+        this.setToday();
+      },
+    },
+  },
   data() {
     return {
       focus: '',
-      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
+      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().replace('T', ' ').substring(0, 19),
       today_events_tasks: [],
       cal: null,
     };
@@ -59,14 +68,25 @@ export default {
     getEventColor(event) {
       return event.color;
     },
+    // dateDiff(first, second) {
+    //   return Math.round((second - first) / (1000 * 60 * 60 * 24));
+    // },
     setToday() {
-      this.focus = '';
+      let formatDay = new Date();
+      const ymd = this.today.split('-');
+      formatDay.setFullYear(ymd[0]);
+      formatDay.setMonth(ymd[1] - 1);
+      formatDay.setDate(ymd[2]);
+      formatDay = new Date(formatDay.getTime() - (new Date().getTimezoneOffset() * 60 * 1000));
+      this.focus = formatDay.toISOString().replace('T', ' ').substring(0, 19);
+      this.today_day = this.focus;
+      this.updateToday();
     },
     updateToday() {
       const path = 'api/eventsAndTasksWithParams';
       const bodyParameters = {
-        start_time: this.today_day,
-        end_time: this.today_day,
+        start_time: this.today_day.split(' ')[0],
+        end_time: this.today_day.split(' ')[0],
         user: this.$store.getters.user.user,
       };
       axios
@@ -89,7 +109,7 @@ export default {
     },
   },
   mounted() {
-    console.log('mounting');
+    console.log(this.today_day);
     this.cal = this.$refs.today_calendar;
     this.scrollToTime();
     this.updateTime();

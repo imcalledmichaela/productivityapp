@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="orange lighten-5 fill-height">
     <v-row id="content" class="wrap justify-center">
-      <today-component></today-component>
+      <today-component :today=today_day></today-component>
 
       <v-col class="hidden-xs-only" id="calendar-view" sm="8" md="8">
         <v-card class="rounded-lg pt-3" style="overflow:hidden">
@@ -175,11 +175,8 @@ export default {
     },
     showDay(dayTime) {
       this.today_day = dayTime.date;
-      console.log(this.today_day);
-      this.updateToday();
     },
     updateRange({ start, end }) {
-      console.log(start.date);
       const min = start.date;
       const max = end.date;
       this.getEvents(min, max);

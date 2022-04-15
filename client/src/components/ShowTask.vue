@@ -101,6 +101,17 @@ export default {
           console.log(error);
         });
     },
+    deleteTask() {
+      const path = `api/task/${this.task_id}`;
+      axios
+        .delete(path)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     this.getTask();
