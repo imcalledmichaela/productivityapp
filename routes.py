@@ -154,7 +154,7 @@ def getEvents():
 def getEventById(event_id):
     event = (db.session.query(Event)
              .filter(Event.event_id == event_id).one_or_none())
-    if event:
+    if not event:
         return jsonify(
             {
                 "message": "No event found."
