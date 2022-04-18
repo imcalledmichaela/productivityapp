@@ -108,6 +108,7 @@
                 x-small
                 v-bind="attrs"
                 v-on="on"
+                @click="enableCreateSubcategory"
                 @click.stop>
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
@@ -157,7 +158,7 @@
             <span>Create</span>
             </v-tooltip>
           </v-list-item-action>
-      </v-list-item>
+        </v-list-item>
       </v-form>
 
           <!--Subcategory Cards-->
@@ -251,8 +252,8 @@ export default {
     user: {},
     categories: [],
     categoriesActive: [],
+    createSubcategoryActive: [],
     dialog: false,
-    createSubcategoryButton: false,
     createCategoryButton: false,
     categoryForm: {
       name: '',
@@ -275,6 +276,8 @@ export default {
       } else {
         this.$router.push('/error');
       }
+    },
+    onSubmitCategory(event) {
     },
     onSubmitSubCategory(event, specificCategory) {
       event.preventDefault();
@@ -350,9 +353,11 @@ export default {
             this.categories = res.data.data.categories;
             for (let i = 0; i < this.categories.length; i += 1) {
               this.categoriesActive[i] = false;
+              this.createSubcategoryActive[i] = false;
             }
             console.log(res);
             console.log(this.categoriesActive);
+            console.log(this.createSubcategoryActive);
           }
         })
         .catch((error) => {
@@ -367,6 +372,9 @@ export default {
     },
     enableCreateCategory() {
       this.createCategoryButton = !this.createCategoryButton;
+    },
+    enableCreateSubcategory() {
+      this.createSubcategoryButton = !this.createSubcategoryButton;
     },
   },
   created() {
