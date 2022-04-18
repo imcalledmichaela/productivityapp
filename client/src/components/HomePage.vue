@@ -87,24 +87,29 @@
           </v-icon>
         </v-btn>
       </template>
-      <v-btn
-        fab
-        dark
-        small
-        @click="goToCreateTask"
-        color="blue"
-      >
-        <v-icon>mdi-checkbox-marked-circle-plus-outline</v-icon>
-      </v-btn>
-      <v-btn
-        fab
-        small
-        dark
-        @click="goToCreateEvent"
-        color="purple"
-      >
-        <v-icon>mdi-calendar</v-icon>
-      </v-btn>
+        <v-tooltip left>
+          <template v-slot:activator="{ on, attrs}">
+          <v-btn
+            fab
+            color="blue"
+            dark
+            small
+            @click="goToCreateTask"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-checkbox-marked-circle-plus-outline</v-icon>
+          </v-btn>
+        </v-tooltip>
+          <v-btn
+            fab
+            small
+            dark
+            @click="goToCreateEvent"
+            color="purple"
+          >
+            <v-icon>mdi-calendar</v-icon>
+          </v-btn>
     </v-speed-dial>
   </v-container>
 </template>
