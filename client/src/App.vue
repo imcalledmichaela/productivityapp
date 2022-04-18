@@ -126,16 +126,17 @@
 
         <!--Create Subcategory Field-->
       <v-form
-      @submit="onSubmitSubCategory(event, category.name)"
+      @submit="onSubmitSubCategory(event)"
       v-if="createSubcategoryActive[index]">
-      <v-list-item >
+      <v-list-item>
         <v-list-item-content>
           <v-text-field
           label="Enter Subcategory Name"
           v-model="subcategoryForm.name"
-          class="rounded-lg"
+          class="rounded-lg mb-0"
           required
-          solo>
+          solo
+          >
           </v-text-field>
         </v-list-item-content>
 
@@ -276,12 +277,12 @@ export default {
         this.$router.push('/error');
       }
     },
-    onSubmitSubCategory(event, specificCategory) {
+    onSubmitSubCategory(event) {
       event.preventDefault();
       if (this.subcategoryForm.name !== '') {
         const payload = {
           name: this.subcategoryForm.name,
-          category_id: specificCategory,
+          category_id: event.category,
           color: 'blue',
         };
         this.addSubcategory(payload);
@@ -373,7 +374,6 @@ export default {
     enableCreateSubcategory(index) {
       if (this.createSubcategoryActive[index] === false) {
         this.createSubcategoryActive[index] = true;
-        this.categoriesActive[index] = true;
       } else {
         this.createSubcategoryActive[index] = false;
       }
@@ -384,6 +384,11 @@ export default {
   created() {
     this.getUser();
     this.getCategoriesByUserId();
+  },
+  computed: {
+    showCreateSubcategoryActive(index) {
+      return this.createSubcategoryActive[index];
+    },
   },
 };
 </script>
