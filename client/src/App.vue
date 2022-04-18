@@ -108,8 +108,8 @@
                 x-small
                 v-bind="attrs"
                 v-on="on"
-                @click="enableCreateSubcategory"
-                @click.stop>
+                @click="enableCreateSubcategory(index)"
+                >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
@@ -127,8 +127,8 @@
         <!--Create Subcategory Field-->
       <v-form
       @submit="onSubmitSubCategory(event, category.name)"
-      >
-      <v-list-item>
+      v-if="createSubcategoryActive[index]">
+      <v-list-item >
         <v-list-item-content>
           <v-text-field
           label="Enter Subcategory Name"
@@ -160,7 +160,6 @@
           </v-list-item-action>
         </v-list-item>
       </v-form>
-
           <!--Subcategory Cards-->
           <v-list-item-group
             :value="true"
@@ -277,8 +276,6 @@ export default {
         this.$router.push('/error');
       }
     },
-    onSubmitCategory(event) {
-    },
     onSubmitSubCategory(event, specificCategory) {
       event.preventDefault();
       if (this.subcategoryForm.name !== '') {
@@ -373,8 +370,15 @@ export default {
     enableCreateCategory() {
       this.createCategoryButton = !this.createCategoryButton;
     },
-    enableCreateSubcategory() {
-      this.createSubcategoryButton = !this.createSubcategoryButton;
+    enableCreateSubcategory(index) {
+      if (this.createSubcategoryActive[index] === false) {
+        this.createSubcategoryActive[index] = true;
+        this.categoriesActive[index] = true;
+      } else {
+        this.createSubcategoryActive[index] = false;
+      }
+      console.log('createSubcategoryActive array');
+      console.log(this.createSubcategoryActive);
     },
   },
   created() {

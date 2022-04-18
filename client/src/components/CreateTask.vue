@@ -12,6 +12,18 @@
                   >Create Task</v-card-title
                 >
               </v-col>
+              <v-col md="1" sm="1">
+                <v-btn class="mt-11"
+                  fab
+                  rounded
+                  tile
+                  x-small
+                  color="red"
+                  dark
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-col>
             </v-row>
 
             <v-row class="name justify-center">

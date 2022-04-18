@@ -87,29 +87,38 @@
           </v-icon>
         </v-btn>
       </template>
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs}">
+      <v-tooltip nudge-left="16" :disabled="tooltipsDisabled" left color="blue"
+      :value="tooltips">
+        <template>
           <v-btn
             fab
             color="blue"
             dark
             small
             @click="goToCreateTask"
-            v-bind="attrs"
-            v-on="on"
+            slot="activator"
           >
             <v-icon>mdi-checkbox-marked-circle-plus-outline</v-icon>
           </v-btn>
-        </v-tooltip>
+        </template>
+        <span>Create Task</span>
+      </v-tooltip>
+      <v-tooltip nudge-left="16" :disabled="tooltipsDisabled" left color="purple"
+      :value="tooltips">
+        <template>
           <v-btn
             fab
             small
             dark
             @click="goToCreateEvent"
             color="purple"
+            slot="activator"
           >
             <v-icon>mdi-calendar</v-icon>
           </v-btn>
+        </template>
+        <span>Create Event</span>
+      </v-tooltip>
     </v-speed-dial>
   </v-container>
 </template>
@@ -126,6 +135,8 @@ export default {
       today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
       today_events_tasks: [],
       fab: false,
+      tooltips: true,
+      tooltipsDisabled: false,
     };
   },
   methods: {
