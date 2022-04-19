@@ -88,7 +88,7 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-
+      <div v-html="this.getCategoriesByUserId()"></div>
       <!--Categories List-->
       <v-list expand nav>
         <v-list-group
@@ -381,7 +381,7 @@ export default {
       console.log(this.createSubcategoryActive);
     },
   },
-  created() {
+  mounted() {
     this.getUser();
     this.getCategoriesByUserId();
   },
