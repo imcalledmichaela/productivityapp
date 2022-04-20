@@ -16,6 +16,17 @@
                   >Create Event</v-card-title
                 >
               </v-col>
+              <v-btn
+                  class="mt-9 mr-11 pa-0"
+                  @click="returnHome"
+                  min-width=0
+                  height=36
+                  width=36
+                  color="red"
+                  dark
+                >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </v-row>
 
             <v-row class="name justify-center">
@@ -200,27 +211,14 @@
             </v-row>
             -->
           </v-card>
-          <v-speed-dial
-            class="mr-5 mb-5"
-            v-model="fab"
+          <v-btn
+            fab
             absolute
             bottom
             right
-            slide-y-reverse-transition
-          >
-            <template v-slot:activator>
-              <v-btn v-model="fab" color="green darken-2" dark fab>
-                <v-icon v-if="fab"> mdi-close </v-icon>
-                <v-icon v-else> mdi-content-save </v-icon>
-              </v-btn>
-            </template>
-            <v-btn fab dark small type="submit" color="green">
+            >
               <v-icon>mdi-content-save</v-icon>
-            </v-btn>
-            <v-btn fab small dark @click="returnHome" color="red">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-speed-dial>
+          </v-btn>
         </v-form>
       </v-col>
     </v-row>
