@@ -81,12 +81,15 @@
             color="red darken-2"
             dark
             fab
+            elevation="10"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-btn x-large rounded color="green darken-2" dark
             v-else
             v-model="fab"
+            elevation="10"
+            height=56
           >
             <v-icon class="mr-2">mdi-plus</v-icon>
             Create New
