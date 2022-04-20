@@ -79,6 +79,7 @@
       width="325"
       color="green lighten-5"
       v-if="this.$store.getters.user.isLoggedIn"
+      temporary
     >
       <div v-html="this.getCategoriesByUserId()"></div>
       <!--Heading-->

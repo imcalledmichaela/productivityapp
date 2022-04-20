@@ -96,7 +96,7 @@
           </v-btn>
         </v-fab-transition>
       </template>
-      <v-tooltip nudge-left="16" :disabled="tooltipsDisabled" left color="blue"
+      <v-tooltip nudge-left="6" :disabled="tooltipsDisabled" left color="blue"
       :value="tooltips">
         <template>
           <v-btn
@@ -112,7 +112,7 @@
         </template>
         <span>Create Task</span>
       </v-tooltip>
-      <v-tooltip nudge-left="16" :disabled="tooltipsDisabled" left color="purple"
+      <v-tooltip nudge-left="6" :disabled="tooltipsDisabled" left color="purple"
       :value="tooltips">
         <template>
           <v-btn
