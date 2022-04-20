@@ -73,19 +73,25 @@
       slide-y-reverse-transition
     >
       <template v-slot:activator>
-        <v-btn
-          v-model="fab"
-          color="green darken-2"
-          dark
-          fab
-        >
-          <v-icon v-if="fab">
-            mdi-close
-          </v-icon>
-          <v-icon v-else>
-            mdi-plus
-          </v-icon>
-        </v-btn>
+        <v-fab-transition>
+          <v-btn
+            v-show="!hidden"
+            v-if="fab"
+            v-model="fab"
+            color="red darken-2"
+            dark
+            fab
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-btn x-large rounded color="green darken-2" dark
+            v-else
+            v-model="fab"
+          >
+            <v-icon class="mr-2">mdi-plus</v-icon>
+            Create New
+          </v-btn>
+        </v-fab-transition>
       </template>
       <v-tooltip nudge-left="16" :disabled="tooltipsDisabled" left color="blue"
       :value="tooltips">

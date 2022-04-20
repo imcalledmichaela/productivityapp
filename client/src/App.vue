@@ -80,6 +80,7 @@
       color="green lighten-5"
       v-if="this.$store.getters.user.isLoggedIn"
     >
+      <div v-html="this.getCategoriesByUserId()"></div>
       <!--Heading-->
       <v-list-item>
         <v-list-item-content>
@@ -88,7 +89,7 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <div v-html="this.getCategoriesByUserId()"></div>
+
       <!--Categories List-->
       <v-list expand nav>
         <v-list-group
@@ -98,7 +99,6 @@
 
         <!--Categories Title-->
         <template v-slot:activator>
-          <!--Add Subcategory Button-->
           <v-list-item-action class="align-self-start">
             <v-tooltip right>
               <template v-slot:activator="{ on, attrs }">
@@ -124,15 +124,14 @@
           </v-list-item-content>
         </template>
 
-        <!--Create Subcategory Field-->
       <v-form
-      @submit="onSubmitSubCategory(event)"
+      @submit="onSubmitSubCategory"
       v-if="createSubcategoryActive[index]">
       <v-list-item>
         <v-list-item-content>
           <v-text-field
           label="Enter Subcategory Name"
-          v-model="this.subcategoryForm[index].name"
+          v-model="subcategoryForm.name"
           class="rounded-lg mb-0"
           required
           solo
@@ -161,6 +160,7 @@
           </v-list-item-action>
         </v-list-item>
       </v-form>
+
           <!--Subcategory Cards-->
           <v-list-item-group
             :value="true"
@@ -247,23 +247,25 @@ import { mapActions } from 'vuex';
 export default {
   name: 'App',
 
-  data: () => ({
-    drawer: false,
-    user: {},
-    categories: [],
-    categoriesActive: [],
-    createSubcategoryActive: [],
-    dialog: false,
-    createCategoryButton: false,
-    categoryForm: {
-      name: '',
-    },
-    subcategoryForm: {
-      name: '',
-      category: '',
-      color: '',
-    },
-  }),
+  data() {
+    return {
+      drawer: false,
+      user: {},
+      categories: [],
+      categoriesActive: [],
+      createSubcategoryActive: [],
+      dialog: false,
+      createCategoryButton: false,
+      categoryForm: {
+        name: '',
+      },
+      subcategoryForm: {
+        name: '',
+        category: '',
+        color: '',
+      },
+    };
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
@@ -282,7 +284,7 @@ export default {
       if (this.subcategoryForm.name !== '') {
         const payload = {
           name: this.subcategoryForm.name,
-          category_id: event.category,
+          category_id: this.subcategoryForm.category,
           color: 'blue',
         };
         this.addSubcategory(payload);
@@ -349,15 +351,12 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             this.categories = res.data.data.categories;
-            for (let i = 0; i < this.categories.length; i += 1) {
-              this.categoriesActive[i] = false;
-              this.createSubcategoryActive[i] = false;
+            if (this.categoriesActive.length === 0) {
+              for (let i = 0; i < this.categories.length; i += 1) {
+                this.categoriesActive[i] = false;
+                this.createSubcategoryActive[i] = false;
+              }
             }
-            console.log(res);
-            console.log(this.categoriesActive);
-            console.log(this.createSubcategoryActive);
-            console.log('Empty subcat form');
-            console.log(this.subcategoryForm);
           }
         })
         .catch((error) => {
@@ -376,35 +375,29 @@ export default {
     enableCreateSubcategory(index) {
       if (this.createSubcategoryActive[index] === false) {
         this.createSubcategoryActive[index] = true;
+        this.subcategoryForm.category = this.categories[index].category_id;
+        console.log('in enable create subcategory - setting subcategoryform category');
+        console.log(this.subcategoryForm.category);
       } else {
         this.createSubcategoryActive[index] = false;
       }
       console.log('createSubcategoryActive array');
       console.log(this.createSubcategoryActive);
     },
-    /*
-    setUpSubcategoriesForm() {
-      for (let i = 0; i < this.categories.length; i += 1) {
-        this.subcategoryForm[i] = {
-          name: '',
-          category: this.categories[i].name,
-          color: '',
-        };
-      }
-      console.log('filled subcat form');
-      console.log(this.subcategoryForm);
+    toggleCategoriesActive(index) {
+      this.categoriesActive[index] = !this.categoriesActive[index];
     },
-    */
   },
   mounted() {
     this.getUser();
     this.getCategoriesByUserId();
-    this.setUpSubcategoriesForm();
   },
   computed: {
+    /*
     showCreateSubcategoryActive(index) {
       return this.createSubcategoryActive[index];
     },
+    */
   },
 };
 </script>

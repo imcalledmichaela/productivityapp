@@ -211,13 +211,14 @@
             </v-row>
             -->
           </v-card>
-          <v-btn
-            fab
+          <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
             absolute
             bottom
             right
+            elevation="10"
             >
-              <v-icon>mdi-content-save</v-icon>
+              <v-icon class="mr-2">mdi-content-save</v-icon>
+              Save New Event
           </v-btn>
         </v-form>
       </v-col>

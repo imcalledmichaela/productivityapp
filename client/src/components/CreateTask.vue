@@ -193,27 +193,15 @@
             </v-row>
             -->
           </v-card>
-          <v-speed-dial
-            class="mr-5 mb-5"
-            v-model="fab"
+          <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
             absolute
             bottom
             right
-            slide-y-reverse-transition
-          >
-            <template v-slot:activator>
-              <v-btn v-model="fab" color="green darken-2" dark fab>
-                <v-icon v-if="fab"> mdi-close </v-icon>
-                <v-icon v-else> mdi-content-save </v-icon>
-              </v-btn>
-            </template>
-            <v-btn fab dark small type="submit" color="green">
-              <v-icon>mdi-content-save</v-icon>
-            </v-btn>
-            <v-btn fab small dark @click="returnHome" color="red">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-speed-dial>
+            elevation="10"
+            >
+              <v-icon class="mr-2">mdi-content-save</v-icon>
+              Save New Task
+          </v-btn>
         </v-form>
       </v-col>
     </v-row>
