@@ -132,7 +132,7 @@
         <v-list-item-content>
           <v-text-field
           label="Enter Subcategory Name"
-          v-model="subcategoryForm.name"
+          v-model="this.subcategoryForm[index].name"
           class="rounded-lg mb-0"
           required
           solo
@@ -356,6 +356,8 @@ export default {
             console.log(res);
             console.log(this.categoriesActive);
             console.log(this.createSubcategoryActive);
+            console.log('Empty subcat form');
+            console.log(this.subcategoryForm);
           }
         })
         .catch((error) => {
@@ -380,10 +382,24 @@ export default {
       console.log('createSubcategoryActive array');
       console.log(this.createSubcategoryActive);
     },
+    /*
+    setUpSubcategoriesForm() {
+      for (let i = 0; i < this.categories.length; i += 1) {
+        this.subcategoryForm[i] = {
+          name: '',
+          category: this.categories[i].name,
+          color: '',
+        };
+      }
+      console.log('filled subcat form');
+      console.log(this.subcategoryForm);
+    },
+    */
   },
   created() {
     this.getUser();
     this.getCategoriesByUserId();
+    this.setUpSubcategoriesForm();
   },
   computed: {
     showCreateSubcategoryActive(index) {
