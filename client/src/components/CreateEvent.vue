@@ -13,8 +13,8 @@
             <v-row>
               <v-col>
                 <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
-                  >Create Event</v-card-title
-                >
+                  >Create Event
+                </v-card-title>
               </v-col>
               <v-btn
                   class="mt-9 mr-11 pa-0"
@@ -193,23 +193,6 @@
                 ></v-textarea>
               </v-col>
             </v-row>
-            <!--
-            <v-row class="mt-n5">
-              <v-card-actions class="ma-auto">
-                <v-col class="justify-start">
-                  <v-btn type="cancel" plain @click="returnHome" color="red"
-                    >Cancel</v-btn
-                  >
-                </v-col>
-
-                <v-col class="justify-end">
-                  <v-btn type="submit" color="blue" dark variant="primary"
-                    >Submit</v-btn
-                  >
-                </v-col>
-              </v-card-actions>
-            </v-row>
-            -->
           </v-card>
           <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
             absolute
