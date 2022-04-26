@@ -48,8 +48,6 @@
                   :items="subcategories"
                   transition="slide-y-transition"
                   persistent-hint
-                  return-object
-                  single-line
                   require
                   filled
                 ></v-select>
@@ -284,9 +282,11 @@ export default {
     },
     saveChanges(payload) {
       const path = `api/event/${this.event_id}`;
+      console.log(payload);
       axios
         .put(path, payload)
-        .then(() => {
+        .then((res) => {
+          this.event_id = res.data.data.event.event_id;
           this.getEvent();
           this.$router.push('/success');
         })

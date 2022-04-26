@@ -81,7 +81,7 @@
       v-if="this.$store.getters.user.isLoggedIn"
       temporary
     >
-      <div v-html="this.getCategoriesByUserId()"></div>
+      <div v-if="userReady" v-html="this.getCategoriesByUserId()"></div>
       <!--Heading-->
       <v-list-item>
         <v-list-item-content>
@@ -259,6 +259,7 @@ export default {
       createSubcategoryActive: [],
       dialog: false,
       createCategoryButton: false,
+      userReady: true,
       categoryForm: {
         name: '',
       },
@@ -354,6 +355,7 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             this.categories = res.data.data.categories;
+            this.userReady = false;
             if (this.categoriesActive.length === 0) {
               for (let i = 0; i < this.categories.length; i += 1) {
                 this.categoriesActive[i] = false;
