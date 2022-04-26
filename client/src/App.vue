@@ -205,7 +205,8 @@
             <v-list-item-action class="mr-5">
               <v-btn
               icon
-              small>
+              small
+              @click=deleteSubcategory(subcategory.subcategory_id)>
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </v-list-item-action>
@@ -399,6 +400,19 @@ export default {
     },
     returnHome() {
       this.$router.push('/home');
+    },
+    deleteSubcategory(subcategoryID) {
+      const path = `api/subcategory/${subcategoryID}`;
+      axios
+        .delete(path)
+        .then((res) => {
+          console.log(res);
+          this.getCategoriesByUserId(); 
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$router.push('/error');
+        });
     },
     getUser() {
       const path = `api/user/${this.$store.getters.user.user}`;
