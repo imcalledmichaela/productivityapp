@@ -132,7 +132,7 @@
       <v-list-item class="mt-n4, mb-n5">
         <v-list-item-content>
           <v-text-field
-          label="Enter Subcategory Name"
+          label="Enter Subcategory"
           v-model="subcategoryForm.name"
           class="rounded-lg mb-0"
           required
@@ -141,6 +141,35 @@
           </v-text-field>
         </v-list-item-content>
 
+        <v-list-item-action class="mt-n4 ml-3">
+          <v-menu
+            bottom
+            left
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                rounded
+                dark
+                x-small
+                v-bind="attrs"
+                v-on="on"
+                :color="subcategoryForm.color"
+              >
+                <v-icon>mdi-palette</v-icon>
+              </v-btn>
+            </template>
+            <v-color-picker
+              v-model="subcategoryForm.color"
+              hide-canvas
+              hide-inputs
+              hide-sliders
+              :swatches="swatches"
+              show-swatches
+            ></v-color-picker>
+          </v-menu>
+        </v-list-item-action>
+
           <v-list-item-action class="mt-n4">
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs }">
@@ -148,11 +177,11 @@
                 fab
                 rounded
                 x-small
+                dark
                 v-bind="attrs"
                 v-on="on"
                 type="submit"
                 color="green"
-                dark
                 >
                   <v-icon>mdi-check</v-icon>
                 </v-btn>
@@ -266,8 +295,15 @@ export default {
       subcategoryForm: {
         name: '',
         category: '',
-        color: '',
+        color: 'blue',
       },
+      swatches: [
+        ['#F44336', '#4CAF50'],
+        ['#9C27B0', '#FFEB3B'],
+        ['#3F51B5', '#FF9800'],
+        ['#2196F3', '#607D8B'],
+        ['#009688', '#9E9E9E'],
+      ],
     };
   },
   methods: {
@@ -286,10 +322,34 @@ export default {
     onSubmitSubCategory(event) {
       event.preventDefault();
       if (this.subcategoryForm.name !== '') {
+        if (this.subcategoryForm.color === '#F44336') {
+          this.subcategoryForm.color = 'red';
+        } else if (this.subcategoryForm.color === '#9C27B0FF') {
+          this.subcategoryForm.color = 'purple';
+        } else if (this.subcategoryForm.color === '#3F51B5FF') {
+          this.subcategoryForm.color = 'indigo';
+        } else if (this.subcategoryForm.color === '#2196F3FF') {
+          this.subcategoryForm.color = 'blue';
+        } else if (this.subcategoryForm.color === '#009688FF') {
+          this.subcategoryForm.color = 'teal';
+        } else if (this.subcategoryForm.color === '#4CAF50FF') {
+          this.subcategoryForm.color = 'green';
+        } else if (this.subcategoryForm.color === '#FFEB3BFF') {
+          this.subcategoryForm.color = 'yellow';
+        } else if (this.subcategoryForm.color === '#FF9800FF') {
+          this.subcategoryForm.color = 'orange';
+        } else if (this.subcategoryForm.color === '#607D8BFF') {
+          this.subcategoryForm.color = 'blue-grey';
+        } else if (this.subcategoryForm.color === '#9E9E9EFF') {
+          this.subcategoryForm.color = 'grey';
+        }
+        console.log('subcat color to submit');
+        console.log(this.subcategoryForm.color);
+
         const payload = {
           name: this.subcategoryForm.name,
           category_id: this.subcategoryForm.category,
-          color: 'blue',
+          color: this.subcategoryForm.color,
         };
         this.addSubcategory(payload);
       } else {
@@ -314,6 +374,8 @@ export default {
       axios
         .post(path, payload)
         .then(() => {
+          this.subcategoryForm.name = '';
+          this.subcategoryForm.color = 'blue';
           this.getCategoriesByUserId();
         })
         .catch((error) => {
