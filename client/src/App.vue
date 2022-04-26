@@ -193,20 +193,29 @@
       </v-form>
 
           <!--Subcategory Cards-->
-          <v-list-item-group
+          <v-list-item
             :value="true"
             v-for="(subcategory, j) in category.subcategories"
             :key="j"
             no-action
             subgroup
-            class="mb-3"
+            dense
+            class="mb-0"
             >
+            <v-list-item-action class="mr-5">
+              <v-btn
+              icon
+              small>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-list-item-action>
+            <v-list-item-content>
             <v-card
               :color="subcategory.color"
               dark
-              width="275"
+              width="280"
               height="30"
-              class="ml-5 rounded-lg"
+              class="rounded-lg"
             >
               <v-card-title
                 v-text="subcategory.name"
@@ -214,7 +223,8 @@
               >
               </v-card-title>
             </v-card>
-          </v-list-item-group>
+            </v-list-item-content>
+            </v-list-item>
         </v-list-group>
       </v-list>
 
@@ -482,5 +492,9 @@ export default {
 <style scoped>
 .logo {
   cursor: pointer;
+}
+
+#subcategory-card {
+  height: 30px;
 }
 </style>
