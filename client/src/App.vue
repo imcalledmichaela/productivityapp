@@ -96,7 +96,8 @@
         <v-list-group
         v-for="(category, index) in categories"
         :key="index"
-        v-model="categoriesActive[index]">
+        v-model="categoriesActive[index]"
+        class="mb-2">
 
         <!--Categories Title-->
         <template v-slot:activator>
@@ -137,7 +138,6 @@
           required
           solo
           >
-          <v-btn>Hello</v-btn>
           </v-text-field>
         </v-list-item-content>
 
@@ -395,6 +395,7 @@ export default {
           this.categoriesActive[index] = true;
         }
       }
+      this.getCategoriesByUserId();
       console.log('createSubcategoryActive array');
       console.log(this.createSubcategoryActive);
     },
