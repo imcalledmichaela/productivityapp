@@ -7,12 +7,14 @@
         <v-form @submit="onSubmit" v-if="show">
           <v-card class="rounded-lg pt-3" height="91vh" style="overflow-y:scroll">
             <v-row>
+              <!--Title/Heading-->
               <v-col>
-                <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
+                <v-card-title class="ml-10 mb-3 mt-5 display-2 font-weight-bold"
                   >Create Task</v-card-title
                 >
               </v-col>
               <v-spacer></v-spacer>
+              <!--Cancel Button-->
               <v-btn
                   class="mt-9 mr-11 pa-0"
                   @click="returnHome"
@@ -26,6 +28,7 @@
               </v-btn>
             </v-row>
 
+            <!--Task Name-->
             <v-row class="name justify-center">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1" class="my-auto">
@@ -45,6 +48,7 @@
               <v-spacer></v-spacer>
             </v-row>
 
+            <!--Subcategory Selector-->
             <v-row class="subcategory justify-center">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1">
@@ -65,6 +69,7 @@
               <v-spacer></v-spacer>
             </v-row>
 
+            <!--Date Picker-->
             <v-row class="date justify-center mt-n4">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1">
@@ -101,6 +106,7 @@
               <v-spacer></v-spacer>
             </v-row>
 
+            <!--Start Time-->
             <v-row class="start_time justify-center mt-n4">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1">
@@ -139,6 +145,7 @@
               <v-spacer></v-spacer>
             </v-row>
 
+            <!--Duration-->
             <v-row class="duration justify-center mt-n4">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1">
@@ -157,6 +164,7 @@
               <v-spacer></v-spacer>
             </v-row>
 
+            <!--Details-->
             <v-row class="details justify-center mt-n4">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1">
@@ -175,24 +183,9 @@
               </v-col>
               <v-spacer></v-spacer>
             </v-row>
-<!--
-            <v-row class="mt-n5">
-              <v-card-actions class="ma-auto">
-                <v-col class="justify-start">
-                  <v-btn type="cancel" plain @click="returnHome" color="red"
-                    >Cancel</v-btn
-                  >
-                </v-col>
-
-                <v-col class="justify-end">
-                  <v-btn type="submit" color="blue" dark variant="primary"
-                    >Submit</v-btn
-                  >
-                </v-col>
-              </v-card-actions>
-            </v-row>
-            -->
           </v-card>
+
+          <!--Submit Button-->
           <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
             absolute
             bottom
@@ -205,16 +198,6 @@
         </v-form>
       </v-col>
     </v-row>
-
-<!--
-    <v-row>
-      <v-col md="7" sm="7" class="ma-auto">
-        <v-card class="mt-3" header="Form Data Result">
-          <pre class="m-0">{{ form }}</pre>
-        </v-card>
-      </v-col>
-    </v-row>
-    -->
   </v-container>
 </template>
 
@@ -250,8 +233,8 @@ export default {
         user_id: this.$store.getters.user.user,
         subcategory_id: this.form.subcategory,
         date: this.form.date,
-        duration: Number(this.form.duration),
         start_time: this.form.start_time,
+        duration: Number(this.form.duration),
         details: this.form.details,
       };
       this.addTask(payload);
@@ -276,7 +259,7 @@ export default {
         .post(path, payload)
         .then(() => {
           this.getTasks();
-          this.$router.push('/success');
+          this.$router.push('/home');
         })
         .catch((error) => {
           console.log(error);
@@ -305,7 +288,6 @@ export default {
       this.form.start_time = '';
       this.form.details = '';
     },
-
     returnHome() {
       this.$router.push('/home');
     },

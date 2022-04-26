@@ -12,7 +12,7 @@
           >
             <v-row>
               <v-col>
-                <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
+                <v-card-title class="ml-10 mb-3 mt-5 display-2 font-weight-bold"
                   >Create Event
                 </v-card-title>
               </v-col>

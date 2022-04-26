@@ -302,7 +302,7 @@ export default {
         .delete(path)
         .then((res) => {
           console.log(res);
-          console.log('Reached here');
+          // console.log('Reached here');
           this.returnHome();
         })
         .catch((error) => {
