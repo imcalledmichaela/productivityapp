@@ -209,7 +209,7 @@
                     </v-btn>
                   </template>
                   <v-card>
-                    <v-card-title class="justify-center ma-auto text-h3 red darken-2 white--text">
+                    <v-card-title class="justify-center ma-auto text-h4 red darken-2 white--text">
                       Confirm Delete
                     </v-card-title>
 
