@@ -73,7 +73,7 @@ class Event(db.Model):
     event_id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
     name = db.Column(db.String(64), nullable = False)
-    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id", ondelete="CASCADE"), nullable = False)
     date = db.Column(db.Date, nullable = False)
     start_time = db.Column(db.Time, nullable = False)
     end_time = db.Column(db.Time, nullable = False)
@@ -119,7 +119,7 @@ class Task(db.Model):
     task_id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable = False)
     name = db.Column(db.String(64), nullable = False)
-    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id"), nullable = False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey("subcategory.subcategory_id", ondelete="CASCADE"), nullable = False)
     date = db.Column(db.Date, nullable = False)
     duration = db.Column(db.Integer, nullable = False)
     start_time = db.Column(db.Time, nullable = False)
@@ -188,7 +188,7 @@ class Subcategory(db.Model):
 
     subcategory_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), nullable = False)
-    cateogry_id = db.Column(db.Integer, db.ForeignKey("category.category_id"), nullable = False)
+    cateogry_id = db.Column(db.Integer, db.ForeignKey("category.category_id", ondelete="CASCADE"), nullable = False)
     color = db.Column(db.String(64))
 
     def __init__(self, name, category_id, color):
