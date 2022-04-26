@@ -4,7 +4,7 @@
       <today-component class="hidden-xs-only"></today-component>
 
       <v-col md="8" sm="8">
-        <v-form @submit="onSubmit" v-if="show">
+        <v-form @submit="onSubmit" v-if="show" ref="form" v-model="valid" lazy-validation>
           <v-card class="rounded-lg pt-3" height="91vh" style="overflow-y:scroll">
             <v-row>
               <!--Title/Heading-->
@@ -41,6 +41,7 @@
                 <v-text-field
                   id="input-1"
                   v-model="form.name"
+                  :rules="nameRules"
                   placeholder="Enter Task Name"
                   required
                 ></v-text-field>
@@ -61,6 +62,7 @@
                 <v-select
                   v-model="form.subcategory"
                   :items="subcategories"
+                  :rules="subcatRules"
                   placeholder="Select Subcategory"
                   require
                   filled
@@ -88,6 +90,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.date"
+                      :rules="dateRules"
                       label="Select Date"
                       readonly
                       require
@@ -114,7 +117,6 @@
                   mdi-clock-time-four-outline
                 </v-icon>
               </v-col>
-
               <v-col sm="8" md="8">
                 <v-menu
                   v-model="menu3"
@@ -128,6 +130,7 @@
                     <v-text-field
                       v-model="form.start_time"
                       label="Select Start Time"
+                      :rules="startTimeRules"
                       filled
                       readonly
                       require
@@ -156,6 +159,7 @@
                 <v-text-field
                   id="input-1"
                   v-model="form.duration"
+                  :rules="durationRules"
                   placeholder="Enter Duration in Minutes"
                   filled
                   required
@@ -186,15 +190,18 @@
           </v-card>
 
           <!--Submit Button-->
-          <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
-            absolute
-            bottom
-            right
-            elevation="10"
-            >
-              <v-icon class="mr-2">mdi-content-save</v-icon>
-              Save New Task
-          </v-btn>
+          <v-expand-x-transition>
+            <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
+              absolute
+              bottom
+              right
+              elevation="10"
+              v-show="valid"
+              >
+                <v-icon class="mr-2">mdi-content-save</v-icon>
+                Save New Task
+            </v-btn>
+          </v-expand-x-transition>
         </v-form>
       </v-col>
     </v-row>
@@ -215,12 +222,29 @@ export default {
         start_time: '',
         details: '',
       },
+      nameRules: [
+        (v) => !!v || 'Name is required',
+        (v) => (v && v.length <= 25) || 'Name must be less than 25 characters',
+      ],
+      subcatRules: [
+        (v) => !!v || 'Must select a subcategory',
+      ],
+      dateRules: [
+        (v) => !!v || 'Must choose a valid date',
+      ],
+      startTimeRules: [
+        (v) => !!v || 'Must set a start time',
+      ],
+      durationRules: [
+        (v) => !!v || 'Must set a duration',
+      ],
       subcategories: [
         { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
       fab: false,
+      valid: false,
       menu2: false,
       menu3: false,
     };
@@ -290,6 +314,9 @@ export default {
     },
     returnHome() {
       this.$router.push('/home');
+    },
+    validate() {
+      this.$refs.form.validate();
     },
   },
 };

@@ -4,7 +4,7 @@
       <today-component class="hidden-xs-only"> </today-component>
 
       <v-col md="8" sm="8" xs="8">
-        <v-form @submit="onSubmit" v-if="show">
+        <v-form @submit="onSubmit" v-if="show" ref="form" v-model="valid" lazy-validation>
           <v-card
             class="rounded-lg pt-3"
             height="91vh"
@@ -29,6 +29,7 @@
               </v-btn>
             </v-row>
 
+            <!--Event Name Input-->
             <v-row class="name justify-center">
               <v-col sm="1" md="1" class="my-auto">
                 <v-icon class="ma-auto" x-large> mdi-pencil </v-icon>
@@ -38,12 +39,15 @@
                 <v-text-field
                   id="input-1"
                   v-model="form.name"
+                  :rules="nameRules"
+                  :counter="25"
                   placeholder="Enter Event Name"
                   required
                 ></v-text-field>
               </v-col>
             </v-row>
 
+            <!--Subcategory Selector-->
             <v-row class="subcategory justify-center">
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large>
@@ -54,6 +58,7 @@
               <v-col sm="8" md="8">
                 <v-select
                   v-model="form.subcategory"
+                  :rules="subcatRules"
                   :items="subcategories"
                   placeholder="Select Subcategory"
                   require
@@ -62,6 +67,7 @@
               </v-col>
             </v-row>
 
+            <!--Date Picker-->
             <v-row class="date justify-center mt-n4">
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large> mdi-calendar </v-icon>
@@ -79,6 +85,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.date"
+                      :rules="dateRules"
                       label="Select Date"
                       readonly
                       filled
@@ -95,14 +102,15 @@
               </v-col>
             </v-row>
 
+            <!--Start and End Time Row-->
             <v-row class="time justify-center mt-n4">
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large>
                   mdi-clock-time-four-outline
                 </v-icon>
               </v-col>
-              <!--Start Time-->
 
+              <!--Start Time-->
               <v-col sm="4" md="4">
                 <v-menu
                   v-model="menu3"
@@ -116,6 +124,7 @@
                     <v-text-field
                       v-model="form.start_time"
                       label="Select Start Time"
+                      :rules="startTimeRules"
                       readonly
                       filled
                       v-bind="attrs"
@@ -147,6 +156,7 @@
                     <v-text-field
                       v-model="form.end_time"
                       label="Select End Time"
+                      :rules="endTimeRules"
                       readonly
                       filled
                       v-bind="attrs"
@@ -165,6 +175,7 @@
               </v-col>
             </v-row>
 
+            <!--Location-->
             <v-row class="location justify-center mt-n4">
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large> mdi-map-marker </v-icon>
@@ -181,6 +192,7 @@
               </v-col>
             </v-row>
 
+            <!--Details-->
             <v-row class="details justify-center mt-n4">
               <v-col sm="1" md="1">
                 <v-icon class="mt-2" x-large>
@@ -198,15 +210,20 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
-            absolute
-            bottom
-            right
-            elevation="10"
-            >
-              <v-icon class="mr-2">mdi-content-save</v-icon>
-              Save New Event
-          </v-btn>
+
+          <!--Submit Button-->
+          <v-expand-x-transition>
+            <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
+              absolute
+              bottom
+              right
+              elevation="10"
+              v-if="valid"
+              >
+                <v-icon class="mr-2">mdi-content-save</v-icon>
+                Save New Event
+            </v-btn>
+          </v-expand-x-transition>
         </v-form>
       </v-col>
     </v-row>
@@ -228,12 +245,29 @@ export default {
         location: '',
         details: '',
       },
+      nameRules: [
+        (v) => !!v || 'Name is required',
+        (v) => (v && v.length <= 25) || 'Name must be less than 25 characters',
+      ],
+      subcatRules: [
+        (v) => !!v || 'Must select a subcategory',
+      ],
+      dateRules: [
+        (v) => !!v || 'Must choose a valid date',
+      ],
+      startTimeRules: [
+        (v) => !!v || 'Must set a start time',
+      ],
+      endTimeRules: [
+        (v) => !!v || 'Must set an end time',
+      ],
       subcategories: [
         { text: 'Select One', value: null },
         this.getSubcategories(),
       ],
       show: true,
       fab: false,
+      valid: false,
       menu2: false,
       menu3: false,
       menu4: false,
@@ -306,6 +340,9 @@ export default {
 
     returnHome() {
       this.$router.push('/home');
+    },
+    validate() {
+      this.$refs.form.validate();
     },
   },
 };

@@ -182,7 +182,7 @@
                     </v-btn>
                   </template>
                   <v-card>
-                    <v-card-title class="justify-center text-h3 red darken-2 white--text">
+                    <v-card-title class="justify-center text-h4 red darken-2 white--text">
                       Confirm Delete
                     </v-card-title>
 
@@ -205,8 +205,7 @@
                       </v-btn>
                       <v-spacer></v-spacer>
                       <v-btn
-                        :loading="loading"
-                        class="ma-1"
+                        class="ma-1 px-8 text-button"
                         color="red darken"
                         dark
                         @click="deleteTask"
