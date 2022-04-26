@@ -6,15 +6,17 @@
       <v-col md="8" sm="8">
         <v-form @submit="onSubmit" v-if="show">
           <v-card
-              class="rounded-lg pt-3"
-              height="91vh"
-              style="overflow-y: scroll"
+            class="rounded-lg pt-3"
+            height="91vh"
+            style="overflow-y: scroll"
           >
             <v-row>
               <v-col>
                 <v-card-title
-                  class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
-                ><v-text-field
+                  class="pa-0 ml-14 mb-3 mt-5 display-2 font-weight-bold"
+                >
+                <v-text-field
+                  class="text-h4"
                   id="input-1"
                   v-model="form.name"
                 ></v-text-field>
@@ -33,77 +35,183 @@
               </v-btn>
             </v-row>
 
+            <!--Subcategory Selector-->
             <v-row class="subcategory justify-center">
-              <v-col sm="2" md="2" class="my-auto">
-                <v-card-subtitle class="font-weight-bold">
-                  Subcategory:
-                </v-card-subtitle>
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-format-list-bulleted-type
+                </v-icon>
               </v-col>
-              <v-col sm="8" md="8" class="my-auto">
-                <v-card-subtitle>{{ event.subcategory }}</v-card-subtitle>
-              </v-col>
-            </v-row>
-
-            <v-row class="date justify-center">
-              <v-col sm="2" md="2" class="my-auto">
-                <v-card-subtitle class="font-weight-bold">
-                  Date:
-                </v-card-subtitle>
-              </v-col>
-
-              <v-col sm="8" md="8" class="my-auto">
-                <v-card-subtitle>{{ event.date }}</v-card-subtitle>
+              <v-col sm="8" md="8">
+                <v-select
+                  v-model="form.subcategory"
+                  :items="subcategories"
+                  transition="slide-y-transition"
+                  persistent-hint
+                  return-object
+                  single-line
+                  require
+                  filled
+                ></v-select>
               </v-col>
             </v-row>
 
-            <v-row class="start_time justify-center">
-              <v-col sm="2" md="2" class="my-auto">
-                <v-card-subtitle class="font-weight-bold">
-                  Start Time:
-                </v-card-subtitle>
+            <!--Date Selector-->
+            <v-row class="date justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large> mdi-calendar </v-icon>
               </v-col>
 
-              <v-col sm="8" md="8" class="my-auto">
-                <v-card-subtitle>{{ event.start_time }}</v-card-subtitle>
-              </v-col>
-            </v-row>
+              <v-col sm="8" md="8">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="form.date"
+                      readonly
+                      filled
+                      locale="current"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
 
-            <v-row class="end_time justify-center">
-              <v-col sm="2" md="2" class="my-auto">
-                <v-card-subtitle class="font-weight-bold">
-                  End Time:
-                </v-card-subtitle>
-              </v-col>
-
-              <v-col sm="8" md="8" class="my-auto">
-                <v-card-subtitle>{{ event.end_time }}</v-card-subtitle>
-              </v-col>
-            </v-row>
-
-            <v-row class="location justify-center">
-              <v-col sm="2" md="2" class="my-auto">
-                <v-card-subtitle class="font-weight-bold">
-                  Location:
-                </v-card-subtitle>
-              </v-col>
-
-              <v-col sm="8" md="8" class="my-auto">
-                <v-card-subtitle>{{ event.location }}</v-card-subtitle>
+                  <v-date-picker
+                    v-model="form.date"
+                    @input="menu2 = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
 
-            <v-row class="details justify-center">
-              <v-col sm="2" md="2" class="my-auto">
-                <v-card-subtitle class="font-weight-bold">
-                  Details:
-                </v-card-subtitle>
+            <v-row class="time justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-clock-time-four-outline
+                </v-icon>
               </v-col>
 
-              <v-col sm="8" md="8" class="my-auto">
-                <v-card-subtitle>{{ event.details }}</v-card-subtitle>
+              <!--Start Time-->
+              <v-col sm="4" md="4">
+                <v-menu
+                  v-model="menu3"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="form.start_time"
+                      readonly
+                      filled
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+
+                  <v-time-picker
+                    v-model="form.start_time"
+                    header-color="primary"
+                    @input="menu3 = false"
+                    format="ampm"
+                    scrollable
+                  ></v-time-picker>
+                </v-menu>
+              </v-col>
+
+              <!--End Time-->
+              <v-col sm="4" md="4">
+                <v-menu
+                  v-model="menu4"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="form.end_time"
+                      readonly
+                      filled
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+
+                  <v-time-picker
+                    v-model="form.end_time"
+                    header-color="primary"
+                    @input="menu4 = false"
+                    format="ampm"
+                    scrollable
+                  ></v-time-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+
+            <!--Location-->
+            <v-row class="location justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large> mdi-map-marker </v-icon>
+              </v-col>
+
+              <v-col sm="8" md="8">
+                <v-text-field
+                  id="input-6"
+                  v-model="form.location"
+                  filled
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <!--Details Section-->
+            <v-row class="details justify-center mt-n4">
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large>
+                  mdi-clipboard-edit-outline
+                </v-icon>
+              </v-col>
+
+              <v-col sm="8" md="8">
+                <v-textarea
+                  id="input-7"
+                  v-model="form.details"
+                  filled
+                ></v-textarea>
+              </v-col>
+            </v-row>
+
+            <!--Delete Button-->
+            <v-row class="justify-center mt-n4" sm="2" md="2">
+              <v-col sm="9" md="9">
+                <v-btn block color="red" dark @click="deleteEvent">
+                  <v-icon class="mr-2">mdi-delete</v-icon>
+                  Delete Event
+                </v-btn>
               </v-col>
             </v-row>
           </v-card>
+
+          <!--Save Changes FAB-->
+          <v-btn x-large rounded class="ma-6" type="submit" color="green darken-2" dark
+            absolute
+            bottom
+            right
+            elevation="10"
+            >
+              <v-icon class="mr-2">mdi-content-save</v-icon>
+              Save Changes
+          </v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -161,6 +269,13 @@ export default {
         .get(path)
         .then((res) => {
           this.event = res.data.data.event;
+          this.form.name = this.event.name;
+          this.form.subcategory = this.event.subcategory_id;
+          this.form.date = this.event.date;
+          this.form.start_time = this.event.start_time;
+          this.form.end_time = this.event.end_time;
+          this.form.location = this.event.location;
+          this.form.details = this.event.details;
           console.log(res);
         })
         .catch((error) => {
@@ -168,9 +283,9 @@ export default {
         });
     },
     saveChanges(payload) {
-      const path = 'api/events';
+      const path = `api/event/${this.event_id}`;
       axios
-        .post(path, payload)
+        .put(path, payload)
         .then(() => {
           this.getEvent();
           this.$router.push('/success');
@@ -187,9 +302,12 @@ export default {
         .delete(path)
         .then((res) => {
           console.log(res);
+          console.log('Reached here');
+          this.returnHome();
         })
         .catch((error) => {
           console.log(error);
+          this.$router.push('/error');
         });
     },
     getSubcategories() {
@@ -217,9 +335,25 @@ export default {
     returnHome() {
       this.$router.push('/home');
     },
+    formatDate(date) {
+      if (!date) {
+        return null;
+      }
+
+      const [year, month, day] = date.split('-');
+      return `${month}/${day}/${year}`;
+    },
   },
   mounted() {
     this.getEvent();
   },
+
 };
 </script>
+
+<style scoped>
+.subcategory select::placeholder{
+  color: black!important;
+}
+
+</style>

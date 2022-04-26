@@ -10,8 +10,9 @@
             flat
           >
             <v-btn
+              absolute
               outlined
-              class="mr-4"
+              class="mr-4 ml-3"
               color="grey darken-2"
               @click="setToday"
             >
@@ -22,18 +23,22 @@
               fab
               text
               small
-              color="grey darken-2"
+              color="grey darken-2 ma-0"
               @click="prev"
             >
               <v-icon small>
                 mdi-chevron-left
               </v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
-            <v-toolbar-title class="justify-center" v-if="$refs.calendar">
+
+            <v-toolbar-title
+              id="calendar-title"
+              class="flex text-center"
+              v-if="$refs.calendar"
+            >
               {{ $refs.calendar.title }}
             </v-toolbar-title>
-            <v-spacer></v-spacer>
+
             <v-btn
               fab
               text
@@ -223,6 +228,11 @@ export default {
 
 #calendar-card {
   height: 100vh;
+}
+
+#calendar-title {
+  width: 300px;
+  text-align: center;
 }
 
 /* .fab-text-custom {

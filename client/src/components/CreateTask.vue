@@ -101,24 +101,6 @@
               <v-spacer></v-spacer>
             </v-row>
 
-            <v-row class="duration justify-center mt-n4">
-              <v-spacer></v-spacer>
-              <v-col sm="1" md="1">
-                <v-icon class="mt-2" x-large> mdi-timer-cog-outline </v-icon>
-              </v-col>
-
-              <v-col sm="8" md="8">
-                <v-text-field
-                  id="input-1"
-                  v-model="form.duration"
-                  placeholder="Enter Duration in Minutes"
-                  filled
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-spacer></v-spacer>
-            </v-row>
-
             <v-row class="start_time justify-center mt-n4">
               <v-spacer></v-spacer>
               <v-col sm="1" md="1">
@@ -153,6 +135,24 @@
                     @input="menu3 = false"
                   ></v-time-picker>
                 </v-menu>
+              </v-col>
+              <v-spacer></v-spacer>
+            </v-row>
+
+            <v-row class="duration justify-center mt-n4">
+              <v-spacer></v-spacer>
+              <v-col sm="1" md="1">
+                <v-icon class="mt-2" x-large> mdi-timer-cog-outline </v-icon>
+              </v-col>
+
+              <v-col sm="8" md="8">
+                <v-text-field
+                  id="input-1"
+                  v-model="form.duration"
+                  placeholder="Enter Duration in Minutes"
+                  filled
+                  required
+                ></v-text-field>
               </v-col>
               <v-spacer></v-spacer>
             </v-row>

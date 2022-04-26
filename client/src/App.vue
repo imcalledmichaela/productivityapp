@@ -77,7 +77,7 @@
       app
       v-model="drawer"
       width="325"
-      color="green lighten-5"
+      color="purple lighten-5"
       v-if="this.$store.getters.user.isLoggedIn"
       temporary
     >
@@ -85,8 +85,8 @@
       <!--Heading-->
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-h5 text-center font-weight-bold">
-            Categories
+          <v-list-item-title class="text-h6 text-center font-weight-bold">
+            CATEGORIES
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -109,7 +109,7 @@
                 x-small
                 v-bind="attrs"
                 v-on="on"
-                @click="enableCreateSubcategory(index)"
+                @click.stop="enableCreateSubcategory(index)"
                 >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
@@ -128,7 +128,7 @@
       <v-form
       @submit="onSubmitSubCategory"
       v-if="createSubcategoryActive[index]">
-      <v-list-item>
+      <v-list-item class="mt-n4, mb-n5">
         <v-list-item-content>
           <v-text-field
           label="Enter Subcategory Name"
@@ -137,6 +137,7 @@
           required
           solo
           >
+          <v-btn>Hello</v-btn>
           </v-text-field>
         </v-list-item-content>
 
@@ -169,6 +170,7 @@
             :key="j"
             no-action
             subgroup
+            class="mb-3"
             >
             <v-card
               :color="subcategory.color"
@@ -376,11 +378,20 @@ export default {
     enableCreateSubcategory(index) {
       if (this.createSubcategoryActive[index] === false) {
         this.createSubcategoryActive[index] = true;
+        this.categoriesActive[index] = true;
+        for (let i = 0; i < this.createSubcategoryActive.length; i += 1) {
+          if (i !== index) {
+            this.createSubcategoryActive[i] = false;
+          }
+        }
         this.subcategoryForm.category = this.categories[index].category_id;
         console.log('in enable create subcategory - setting subcategoryform category');
         console.log(this.subcategoryForm.category);
       } else {
         this.createSubcategoryActive[index] = false;
+        if (this.categoriesActive[index] === true) {
+          this.categoriesActive[index] = true;
+        }
       }
       console.log('createSubcategoryActive array');
       console.log(this.createSubcategoryActive);

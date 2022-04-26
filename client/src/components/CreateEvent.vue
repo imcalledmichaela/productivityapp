@@ -127,6 +127,8 @@
                     v-model="form.start_time"
                     header-color="primary"
                     @input="menu3 = false"
+                    format="ampm"
+                    scrollable
                   ></v-time-picker>
                 </v-menu>
               </v-col>
@@ -156,6 +158,8 @@
                     v-model="form.end_time"
                     header-color="primary"
                     @input="menu4 = false"
+                    format="ampm"
+                    scrollable
                   ></v-time-picker>
                 </v-menu>
               </v-col>
