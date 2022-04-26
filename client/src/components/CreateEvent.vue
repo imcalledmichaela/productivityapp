@@ -210,16 +210,6 @@
         </v-form>
       </v-col>
     </v-row>
-
-    <!--
-    <v-row>
-      <v-col md="7" sm="7" class="ma-auto">
-        <v-card class="mt-3" header="Form Data Result">
-          <pre class="m-0">{{ form }}</pre>
-        </v-card>
-      </v-col>
-    </v-row>
-    -->
   </v-container>
 </template>
 
@@ -283,7 +273,7 @@ export default {
         .post(path, payload)
         .then(() => {
           this.getEvents();
-          this.$router.push('/success');
+          this.$router.push('/home');
         })
         .catch((error) => {
           console.log(error);

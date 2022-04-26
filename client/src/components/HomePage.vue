@@ -33,7 +33,7 @@
 
             <v-toolbar-title
               id="calendar-title"
-              class="flex text-center"
+              class="flex text-center text-h4"
               v-if="$refs.calendar"
             >
               {{ $refs.calendar.title }}

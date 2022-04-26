@@ -192,10 +192,58 @@
             <!--Delete Button-->
             <v-row class="justify-center mt-n4" sm="2" md="2">
               <v-col sm="9" md="9">
-                <v-btn block color="red" dark @click="deleteEvent">
-                  <v-icon class="mr-2">mdi-delete</v-icon>
-                  Delete Event
-                </v-btn>
+                <v-dialog
+                  v-model="dialog"
+                  width="500"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      block
+                      color="red"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon class="mr-2">mdi-delete</v-icon>
+                      Delete Event
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="justify-center ma-auto text-h3 red darken-2 white--text">
+                      Confirm Delete
+                    </v-card-title>
+
+                    <v-card-text class="justify-center pa-12 text-h5">
+                      Are you sure you want to delete this event?
+                    </v-card-text>
+
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        :disabled="loading"
+                        class="ma-1"
+                        color="grey"
+                        plain
+                        @click="dialog = false"
+                      >
+                        CANCEL
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        :loading="loading"
+                        class="ma-1"
+                        color="red darken"
+                        dark
+                        @click="deleteEvent"
+                      >
+                        DELETE
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
               </v-col>
             </v-row>
           </v-card>
@@ -239,6 +287,8 @@ export default {
       event_id: this.$route.query.event_id,
       show: true,
       fab: false,
+      dialog: false,
+      // changes: false,
       menu2: false,
       menu3: false,
       menu4: false,
@@ -297,6 +347,7 @@ export default {
         });
     },
     deleteEvent() {
+      // this.loading = true;
       const path = `api/event/${this.event_id}`;
       axios
         .delete(path)
@@ -309,6 +360,7 @@ export default {
           console.log(error);
           this.$router.push('/error');
         });
+      // this.loading = false;
     },
     getSubcategories() {
       const path = `api/subcategoriesNameId/${this.$store.getters.user.user}`;
