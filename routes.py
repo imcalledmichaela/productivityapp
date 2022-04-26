@@ -473,7 +473,8 @@ def getSubcategoriesNameId(user_id):
                     "subcategories": [
                         {
                             "text": subcategory.name,
-                            "value": subcategory.subcategory_id
+                            "value": subcategory.subcategory_id,
+                            "color": subcategory.color
                         } for subcategory in subcat_list]
                 }
             }
