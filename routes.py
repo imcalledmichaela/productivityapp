@@ -177,21 +177,15 @@ def getEventById(event_id):
         ), 200
 
     if request.method == 'PUT':
-        db.session.delete(event)
+        data = request.get_json()
+        event.name = data['name']
+        event.subcategory_id = data['subcategory_id']
+        event.date = data['date']
+        event.start_time = data['start_time']
+        event.end_time = data['end_time']
+        event.location = data['location']
+        event.details = data['details']
         db.session.commit()
-        try:
-            data = request.get_json()
-            event = Event(**data)
-            print(data)
-            created_event = event.add()
-        except Exception as e:
-            print(str(e))
-            return jsonify(
-                {
-                    "message": "An error has occured while updating an event",
-                    "error": str(e)
-                }
-            ), 500
         return jsonify(
             {
                 "data": {
@@ -282,21 +276,14 @@ def taskById(task_id):
         ), 200
 
     if request.method == 'PUT':
-        db.session.delete(task)
+        data = request.get_json()
+        task.name = data['name']
+        task.subcategory_id = data['subcategory_id']
+        task.date = data['date']
+        task.duration = data['duration']
+        task.start_time = data['start_time']
+        task.details = data['details']
         db.session.commit()
-        try:
-            data = request.get_json()
-            task = Task(**data)
-            print(data)
-            created_task = task.add()
-        except Exception as e:
-            print(str(e))
-            return jsonify(
-                {
-                    "message": "An error has occured while updating a task",
-                    "error": str(e)
-                }
-            ), 500
         return jsonify(
             {
                 "data": {
@@ -877,11 +864,9 @@ def getEventsBySubcategory():
         }
     ), 204
 
-
 # @app_routes.route("/addData")
 # def addData():
-#     subcat = Subcategory('TestClass', 1, 'Red')
-#     subcat.add()
+#     db.create_all()
 #     return jsonify(), 200
 
 
