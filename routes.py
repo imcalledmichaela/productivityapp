@@ -359,6 +359,7 @@ def categoryById(category_id):
     if request.method == 'PUT':
         data = request.get_json()
         category.name = data['name']
+        db.session.commit()
         return jsonify(
             {
                 "data": {
@@ -439,6 +440,7 @@ def subcategoryById(subcategory_id):
         subcategory.name = data['name']
         subcategory.cateogry_id = data['category_id']
         subcategory.color = data['color']
+        db.session.commit()
         return jsonify(
             {
                 "data": {
