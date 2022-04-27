@@ -42,8 +42,9 @@
               <v-divider class="my-3"></v-divider>
               <!--
               <v-btn depressed rounded text> Edit Account </v-btn>
-              -->
+
               <v-divider class="my-3"></v-divider>
+              -->
               <div class="text-center">
                 <v-dialog v-model="dialog" width="500">
                   <template v-slot:activator="{ on, attrs }">
@@ -103,7 +104,7 @@
 
         <!--Categories Title-->
         <template v-slot:activator>
-          <v-list-item-action class="align-self-start">
+          <v-list-item-action class="align-self-start mr-0">
             <v-tooltip right>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -123,7 +124,9 @@
 
           <!--Title-->
           <v-list-item-content>
-            <v-list-item-title v-text="category.name">
+            <v-list-item-title
+            class="ml-4"
+            v-text="category.name">
             </v-list-item-title>
           </v-list-item-content>
         </template>
@@ -194,39 +197,145 @@
         </v-list-item>
       </v-form>
 
+      <!-- Edit Subcategory Form -->
+      <v-form
+      @submit="editSubcategory"
+      v-if="editSubcategoryActive[index]">
+      <v-list-item class="mt-n4, mb-n5">
+        <v-list-item-content>
+          <v-text-field
+          v-model="subcategoryToEdit.name"
+          class="rounded-lg mb-0"
+          required
+          solo
+          >
+          </v-text-field>
+        </v-list-item-content>
+
+        <v-list-item-action class="mt-n4 ml-3">
+          <v-menu
+            bottom
+            left
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                fab
+                rounded
+                dark
+                x-small
+                v-bind="attrs"
+                v-on="on"
+                :color="subcategoryToEdit.color"
+              >
+                <v-icon>mdi-palette</v-icon>
+              </v-btn>
+            </template>
+            <v-color-picker
+              v-model="subcategoryToEdit.color"
+              hide-canvas
+              hide-inputs
+              hide-sliders
+              :swatches="swatches"
+              show-swatches
+            ></v-color-picker>
+          </v-menu>
+        </v-list-item-action>
+
+          <v-list-item-action class="mt-n4">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                dark
+                v-bind="attrs"
+                v-on="on"
+                type="submit"
+                color="green"
+                >
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+              </template>
+            <span>Save</span>
+            </v-tooltip>
+          </v-list-item-action>
+        </v-list-item>
+      </v-form>
+
           <!--Subcategory Cards-->
           <v-list-item
             :value="true"
+            no-action
             v-for="(subcategory, j) in category.subcategories"
             :key="j"
-            no-action
             subgroup
             dense
             class="mb-0"
             >
-            <v-list-item-action class="mr-5">
-              <v-btn
-              icon
-              small
-              @click=deleteSubcategory(subcategory.subcategory_id)>
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </v-list-item-action>
             <v-list-item-content>
+            <v-hover v-slot="{ hover }">
             <v-card
               :color="subcategory.color"
               dark
-              width="280"
-              height="30"
-              class="rounded-lg"
+              width="200"
+              height="40"
+              class="subcategory-card rounded-lg"
             >
+            <v-row class="ma-0" width="148">
               <v-card-title
                 v-text="subcategory.name"
-                class="font-weight-bold pt-0"
+                class="font-weight-bold text-body-1 pt-2"
               >
               </v-card-title>
+               <v-btn
+                fab
+                x-small
+                absolute
+                right
+                style="margin-right: 77px"
+                color="blue"
+                class="mt-1"
+                v-if="hover"
+                @click="deleteSubcategory(subcategory.subcategory_id)">
+                <v-icon>mdi-eye</v-icon>
+              </v-btn>
+               <v-btn
+                fab
+                x-small
+                absolute
+                right
+                style="margin-right: 35px"
+                color="green"
+                class="mt-1"
+                v-if="hover"
+                @click="enableEditSubcategory(index, subcategory)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+               <v-btn
+                fab
+                x-small
+                absolute
+                right
+                color="red"
+                style="margin-right: -5px"
+                class="mt-1"
+                v-if="hover"
+                @click="deleteSubcategory(subcategory.subcategory_id)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-row>
             </v-card>
+            </v-hover>
             </v-list-item-content>
+            </v-list-item>
+            <v-list-item
+            :value="true"
+            no-action>
+              <v-row class="justify-center rounded-lg">
+                <v-btn dark color="blue" class="mr-5">Edit</v-btn>
+                <v-btn dark color="red">Delete</v-btn>
+              </v-row>
             </v-list-item>
         </v-list-group>
       </v-list>
@@ -297,11 +406,19 @@ export default {
       drawer: false,
       user: {},
       categories: [],
+      subcategories: [],
       categoriesActive: [],
       createSubcategoryActive: [],
+      editSubcategoryActive: [],
       dialog: false,
       createCategoryButton: false,
       userReady: true,
+      subcategoryToEdit: {
+        subcategory_id: '',
+        name: '',
+        category_id: '',
+        color: '',
+      },
       categoryForm: {
         name: '',
       },
@@ -374,6 +491,8 @@ export default {
       axios
         .post(path, payload)
         .then(() => {
+          this.categoryForm.name = '';
+          this.enableCreateCategory();
           this.getCategoriesByUserId();
           this.createCategoryButton = false;
         })
@@ -387,9 +506,36 @@ export default {
       axios
         .post(path, payload)
         .then(() => {
+          this.getCategoriesByUserId();
           this.subcategoryForm.name = '';
           this.subcategoryForm.color = 'blue';
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$router.push('/error');
+        });
+    },
+    editSubcategory(event) {
+      event.preventDefault();
+      const path = `api/subcategory/${this.subcategoryToEdit.subcategory_id}`;
+      const payload = {
+        name: this.subcategoryToEdit.name,
+        category_id: this.subcategoryToEdit.category_id,
+        color: this.subcategoryToEdit.color,
+      };
+      console.log('edit subcat path');
+      console.log(path);
+      console.log('edit subcat payload');
+      console.log(payload);
+      axios
+        .put(path, payload)
+        .then(() => {
+          this.subcategoryToEdit.subcategory_id = '';
+          this.subcategoryToEdit.name = '';
+          this.subcategoryToEdit.category_id = '';
+          this.subcategoryToEdit.color = '';
           this.getCategoriesByUserId();
+          this.getSubcategoriesByUserId();
         })
         .catch((error) => {
           console.log(error);
@@ -448,8 +594,23 @@ export default {
               for (let i = 0; i < this.categories.length; i += 1) {
                 this.categoriesActive[i] = false;
                 this.createSubcategoryActive[i] = false;
+                this.editSubcategoryActive[i] = false;
               }
             }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getSubcategoriesByUserId() {
+      const path = `api/getSubcategoryByUserId/${this.$store.getters.user.user}`;
+      axios
+        .get(path)
+        .then((res) => {
+          if (res.status === 200) {
+            this.subcategories = res.data.data.subcategories;
+            this.userReady = false;
           }
         })
         .catch((error) => {
@@ -479,6 +640,7 @@ export default {
         console.log(this.subcategoryForm.category);
       } else {
         this.createSubcategoryActive[index] = false;
+        this.subcategoryForm.color = 'blue';
         if (this.categoriesActive[index] === true) {
           this.categoriesActive[index] = true;
         }
@@ -486,6 +648,35 @@ export default {
       this.getCategoriesByUserId();
       console.log('createSubcategoryActive array');
       console.log(this.createSubcategoryActive);
+    },
+    enableEditSubcategory(index, subcategory) {
+      if (this.editSubcategoryActive[index] === false) {
+        this.editSubcategoryActive[index] = true;
+        this.categoriesActive[index] = true;
+        for (let i = 0; i < this.editSubcategoryActive.length; i += 1) {
+          if (i !== index) {
+            this.editSubcategoryActive[i] = false;
+          }
+        }
+        this.subcategoryToEdit.subcategory_id = subcategory.subcategory_id;
+        this.subcategoryToEdit.category_id = subcategory.category_id;
+        this.subcategoryToEdit.name = subcategory.name;
+        this.subcategoryToEdit.color = subcategory.color;
+        console.log('in edit create subcategory - setting up filled subcategoryform category');
+        console.log(this.subcategoryForm.color);
+      } else {
+        this.editSubcategoryActive[index] = false;
+        this.subcategoryToEdit.subcategory_id = '';
+        this.subcategoryToEdit.category_id = '';
+        this.subcategoryToEdit.name = '';
+        this.subcategoryToEdit.color = '';
+        if (this.categoriesActive[index] === true) {
+          this.categoriesActive[index] = true;
+        }
+      }
+      this.getCategoriesByUserId();
+      console.log('subcategoryToEdit:');
+      console.log(this.subcategoryToEdit);
     },
     toggleCategoriesActive(index) {
       this.categoriesActive[index] = !this.categoriesActive[index];
@@ -495,22 +686,12 @@ export default {
     this.getUser();
     this.getCategoriesByUserId();
   },
-  computed: {
-    /*
-    showCreateSubcategoryActive(index) {
-      return this.createSubcategoryActive[index];
-    },
-    */
-  },
+
 };
 </script>
 
 <style scoped>
 .logo {
   cursor: pointer;
-}
-
-#subcategory-card {
-  height: 30px;
 }
 </style>
