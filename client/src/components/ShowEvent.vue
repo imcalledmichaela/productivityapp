@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="blue lighten-5 fill-height">
+  <v-container fluid class="purple lighten-5 fill-height">
     <v-row class="wrap justify-center">
       <today-component></today-component>
 
       <v-col md="8" sm="8">
-        <v-form @submit="onSubmit" v-if="show">
+        <v-form @submit="onSubmit" v-if="show" ref="form" v-model="valid" lazy-validation>
           <v-card
             class="rounded-lg pt-3"
             height="91vh"
@@ -19,6 +19,8 @@
                   class="text-h4"
                   id="input-1"
                   v-model="form.name"
+                  :rules="nameRules"
+                  :counter="50"
                 ></v-text-field>
                 </v-card-title>
               </v-col>
@@ -46,6 +48,7 @@
                 <v-select
                   v-model="form.subcategory"
                   :items="subcategories"
+                  :rules="subcatRules"
                   transition="slide-y-transition"
                   persistent-hint
                   require
@@ -72,6 +75,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.date"
+                      :rules="dateRules"
                       readonly
                       filled
                       locale="current"
@@ -108,6 +112,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.start_time"
+                      :rules="startTimeRules"
                       readonly
                       filled
                       v-bind="attrs"
@@ -138,6 +143,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.end_time"
+                      :rules="endTimeRules"
                       readonly
                       filled
                       v-bind="attrs"
@@ -209,7 +215,7 @@
                     </v-btn>
                   </template>
                   <v-card>
-                    <v-card-title class="justify-center ma-auto text-h3 red darken-2 white--text">
+                    <v-card-title class="justify-center ma-auto text-h4 red darken-2 white--text">
                       Confirm Delete
                     </v-card-title>
 
@@ -254,6 +260,7 @@
             bottom
             right
             elevation="10"
+            v-show="valid"
             >
               <v-icon class="mr-2">mdi-content-save</v-icon>
               Save Changes
@@ -279,6 +286,22 @@ export default {
         location: '',
         details: '',
       },
+      nameRules: [
+        (v) => !!v || 'Name is required',
+        (v) => (v && v.length <= 50) || 'Name must be less than 50 characters',
+      ],
+      subcatRules: [
+        (v) => !!v || 'Must select a subcategory',
+      ],
+      dateRules: [
+        (v) => !!v || 'Must choose a valid date',
+      ],
+      startTimeRules: [
+        (v) => !!v || 'Must set a start time',
+      ],
+      endTimeRules: [
+        (v) => !!v || 'Must set an end time',
+      ],
       subcategories: [
         { text: 'Select One', value: null },
         this.getSubcategories(),
@@ -288,6 +311,7 @@ export default {
       show: true,
       fab: false,
       dialog: false,
+      valid: false,
       // changes: false,
       menu2: false,
       menu3: false,
@@ -338,7 +362,7 @@ export default {
         .then((res) => {
           this.event_id = res.data.data.event.event_id;
           this.getEvent();
-          this.$router.push('/success');
+          this.$router.push('/home');
         })
         .catch((error) => {
           console.log(error);
@@ -386,6 +410,9 @@ export default {
     },
     returnHome() {
       this.$router.push('/home');
+    },
+    validate() {
+      this.$refs.form.validate();
     },
     formatDate(date) {
       if (!date) {

@@ -19,12 +19,13 @@
       </v-row>
       <v-row class="headline">
         <v-spacer></v-spacer>
-          <v-app-bar-text align="center">Making your world revolve around you</v-app-bar-text>
+          <v-app-bar-text align="center">
+            Because your world should revolve around you</v-app-bar-text>
         <v-spacer></v-spacer>
       </v-row>
     </v-col>
     </v-app-bar>
-  <v-container fluid class="orange lighten-5 fill-height">
+  <v-container fluid class="purple lighten-5 fill-height">
     <v-row class="wrap">
       <v-col md="5" sm="7" class="ma-auto">
         <v-alert
