@@ -1,71 +1,74 @@
 <template>
   <v-container fluid class="purple lighten-5 fill-height">
     <v-row id="content" class="wrap justify-center">
-      <today-component :today=today_day></today-component>
+      <today-component :today="today_day"></today-component>
 
       <v-col class="hidden-xs-only" id="calendar-view" sm="8" md="8">
-        <v-card class="rounded-lg pt-3" style="overflow:hidden">
-        <v-sheet height="8vh">
-          <v-toolbar
-            flat
-          >
-            <v-btn
-              absolute
-              outlined
-              class="mr-4 ml-3"
-              color="grey darken-2"
-              @click="setToday"
-            >
-              Today
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn
-              fab
-              text
-              small
-              color="grey darken-2 ma-0"
-              @click="prev"
-            >
-              <v-icon small>
-                mdi-chevron-left
-              </v-icon>
-            </v-btn>
+        <v-card class="rounded-lg pt-3" style="overflow: hidden">
+          <v-sheet height="8vh">
+            <v-toolbar flat>
+              <v-btn
+                absolute
+                outlined
+                class="mr-4 ml-3"
+                color="grey darken-2"
+                @click="setToday"
+              >
+                Today
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn fab text small color="grey darken-2 ma-0" @click="prev">
+                <v-icon small> mdi-chevron-left </v-icon>
+              </v-btn>
 
-            <v-toolbar-title
-              id="calendar-title"
-              class="flex text-center text-h4"
-              v-if="$refs.calendar"
-            >
-              {{ $refs.calendar.title }}
-            </v-toolbar-title>
+              <v-toolbar-title
+                id="calendar-title"
+                class="flex text-center text-h4"
+                v-if="$refs.calendar"
+              >
+                {{ $refs.calendar.title }}
+              </v-toolbar-title>
 
-            <v-btn
-              fab
-              text
-              small
-              color="grey darken-2"
-              @click="next"
-            >
-              <v-icon small>
-                mdi-chevron-right
-              </v-icon>
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-toolbar>
-        </v-sheet>
-        <v-sheet height="81.5vh">
-          <v-calendar
-            ref="calendar"
-            v-model="focus"
-            color="primary"
-            :events="events"
-            :event-color="getEventColor"
-            :type="type"
-            @click:event="showEvent"
-            @click:date="showDay"
-            @change="updateRange"
-          ></v-calendar>
-        </v-sheet>
+              <v-btn fab text small color="grey darken-2" @click="next">
+                <v-icon small> mdi-chevron-right </v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-menu bottom right>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    outlined
+                    color="grey darken-2"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <span>{{ typeToLabel[type] }}</span>
+                    <v-icon right> mdi-menu-down </v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="type = 'week'">
+                    <v-list-item-title>Week</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="type = 'month'">
+                    <v-list-item-title>Month</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-toolbar>
+          </v-sheet>
+          <v-sheet height="81.5vh">
+            <v-calendar
+              ref="calendar"
+              v-model="focus"
+              color="primary"
+              :events="events"
+              :event-color="getEventColor"
+              :type="type"
+              @click:event="showEvent"
+              @click:date="showDay"
+              @change="updateRange"
+            ></v-calendar>
+          </v-sheet>
         </v-card>
       </v-col>
     </v-row>
@@ -90,19 +93,28 @@
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-btn x-large rounded color="green darken-2" dark
+          <v-btn
+            x-large
+            rounded
+            color="green darken-2"
+            dark
             v-else
             v-model="fab"
             elevation="10"
-            height=56
+            height="56"
           >
             <v-icon class="mr-2">mdi-plus</v-icon>
             Create New
           </v-btn>
         </v-fab-transition>
       </template>
-      <v-tooltip nudge-left="6" :disabled="tooltipsDisabled" left color="blue"
-      :value="tooltips">
+      <v-tooltip
+        nudge-left="6"
+        :disabled="tooltipsDisabled"
+        left
+        color="blue"
+        :value="tooltips"
+      >
         <template>
           <v-btn
             fab
@@ -117,8 +129,13 @@
         </template>
         <span>Create Task</span>
       </v-tooltip>
-      <v-tooltip nudge-left="6" :disabled="tooltipsDisabled" left color="purple"
-      :value="tooltips">
+      <v-tooltip
+        nudge-left="6"
+        :disabled="tooltipsDisabled"
+        left
+        color="purple"
+        :value="tooltips"
+      >
         <template>
           <v-btn
             fab
@@ -146,11 +163,20 @@ export default {
       events: [],
       focus: '',
       type: 'month',
-      today_day: new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60 * 1000)).toISOString().split('T')[0],
+      typeToLabel: {
+        month: 'Month',
+        week: 'Week',
+      },
+      today_day: new Date(
+        new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
+      )
+        .toISOString()
+        .split('T')[0],
       today_events_tasks: [],
       fab: false,
       tooltips: true,
       tooltipsDisabled: false,
+      cal: null,
     };
   },
   methods: {
@@ -170,21 +196,6 @@ export default {
           console.error(error);
         });
     },
-    getCurrentTime() {
-      return this.cal
-        ? this.cal.times.now.hour * 60 + this.cal.times.now.minute
-        : 0;
-    },
-    scrollToTime() {
-      const time = this.getCurrentTime();
-      const first = Math.max(0, time - (time % 30) - 30);
-
-      this.cal.scrollToTime(first);
-    },
-    updateTime() {
-      setInterval(() => this.cal.updateTimes(), 60 * 1000);
-    },
-    fetchEvents() {},
     getEventColor(event) {
       return event.color;
     },
@@ -200,7 +211,10 @@ export default {
     showEvent({ event }) {
       console.log(event.event);
       if (typeof event.event !== 'undefined') {
-        this.$router.push({ name: 'ShowEvent', query: { event_id: event.event } });
+        this.$router.push({
+          name: 'ShowEvent',
+          query: { event_id: event.event },
+        });
       }
     },
     showDay(dayTime) {
@@ -209,6 +223,8 @@ export default {
     updateRange({ start, end }) {
       const min = start.date;
       const max = end.date;
+      console.log(min);
+      console.log(max);
       this.getEvents(min, max);
     },
     goToCreateTask() {
