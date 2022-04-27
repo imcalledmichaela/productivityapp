@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="blue lighten-5 fill-height">
+  <v-container fluid class="purple lighten-5 fill-height">
     <v-row class="wrap justify-center">
       <today-component></today-component>
       <v-col md="8" sm="8">
-        <v-form @submit="onSubmit" v-if="show">
+        <v-form @submit="onSubmit" v-if="show" ref="form" v-model="valid" lazy-validation>
           <v-card
             class="rounded-lg pt-3"
             height="91vh"
@@ -18,6 +18,8 @@
                   class="text-h4"
                   id="input-1"
                   v-model="form.name"
+                  :rules="nameRules"
+                  :counter="50"
                 ></v-text-field>
                 </v-card-title>
               </v-col>
@@ -45,6 +47,7 @@
                 <v-select
                   v-model="form.subcategory"
                   :items="subcategories"
+                  :rules="subcatRules"
                   transition="slide-y-transition"
                   persistent-hint
                   require
@@ -71,6 +74,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.date"
+                      :rules="dateRules"
                       readonly
                       filled
                       locale="current"
@@ -108,6 +112,7 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.start_time"
+                      :rules="startTimeRules"
                       readonly
                       filled
                       v-bind="attrs"
@@ -138,6 +143,7 @@
                 <v-text-field
                   id="input-1"
                   v-model="form.duration"
+                  :rules="durationRules"
                   filled
                   required
                 ></v-text-field>
@@ -226,6 +232,7 @@
             bottom
             right
             elevation="10"
+            v-show="valid"
             >
               <v-icon class="mr-2">mdi-content-save</v-icon>
               Save Changes
@@ -250,6 +257,22 @@ export default {
         start_time: '',
         details: '',
       },
+      nameRules: [
+        (v) => !!v || 'Name is required',
+        (v) => (v && v.length <= 50) || 'Name must be less than 50 characters',
+      ],
+      subcatRules: [
+        (v) => !!v || 'Must select a subcategory',
+      ],
+      dateRules: [
+        (v) => !!v || 'Must choose a valid date',
+      ],
+      startTimeRules: [
+        (v) => !!v || 'Must set a start time',
+      ],
+      durationRules: [
+        (v) => !!v || 'Must set a duration',
+      ],
       subcategories: [
         { text: 'Select One', value: null },
         this.getSubcategories(),
@@ -258,6 +281,7 @@ export default {
       task_id: this.$route.query.task_id,
       show: true,
       fab: false,
+      valid: false,
       dialog: false,
       menu2: false,
       menu3: false,
@@ -309,7 +333,7 @@ export default {
         .then((res) => {
           this.task_id = res.data.data.event.task_id;
           this.getTask();
-          this.$router.push('/success');
+          this.$router.push('/home');
         })
         .catch((error) => {
           console.log(error);
@@ -352,6 +376,9 @@ export default {
     },
     returnHome() {
       this.$router.push('/home');
+    },
+    validate() {
+      this.$refs.form.validate();
     },
   },
   mounted() {

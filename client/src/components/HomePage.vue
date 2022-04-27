@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="orange lighten-5 fill-height">
+  <v-container fluid class="purple lighten-5 fill-height">
     <v-row id="content" class="wrap justify-center">
       <today-component :today=today_day></today-component>
 

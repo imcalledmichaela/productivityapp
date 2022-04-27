@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="blue lighten-5 fill-height">
+  <v-container fluid class="purple lighten-5 fill-height">
     <v-row class="wrap justify-center fill-height">
       <today-component class="hidden-xs-only"></today-component>
 
@@ -42,6 +42,7 @@
                   id="input-1"
                   v-model="form.name"
                   :rules="nameRules"
+                  :counter="50"
                   placeholder="Enter Task Name"
                   required
                 ></v-text-field>
@@ -90,8 +91,8 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.date"
-                      :rules="dateRules"
                       label="Select Date"
+                      :rules="dateRules"
                       readonly
                       require
                       filled
@@ -224,7 +225,7 @@ export default {
       },
       nameRules: [
         (v) => !!v || 'Name is required',
-        (v) => (v && v.length <= 25) || 'Name must be less than 25 characters',
+        (v) => (v && v.length <= 50) || 'Name must be less than 50 characters',
       ],
       subcatRules: [
         (v) => !!v || 'Must select a subcategory',

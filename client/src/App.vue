@@ -409,7 +409,7 @@ export default {
         .delete(path)
         .then((res) => {
           console.log(res);
-          this.getCategoriesByUserId(); 
+          this.getCategoriesByUserId();
         })
         .catch((error) => {
           console.log(error);

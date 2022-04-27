@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid class="red lighten-5 fill-height">
+  <v-container fluid class="purple lighten-5 fill-height">
     <v-row class="wrap">
-      <v-col md="7" sm="7" class="ma-auto">
+      <v-col md="3" sm="3" class="ma-auto">
         <v-card class="rounded-lg pt-3">
           <v-row>
             <v-col>
               <v-card-title class="ml-6 mb-3 mt-5 display-2 font-weight-bold"
-                >Error! Please Try Again.</v-card-title
+                >Error! </v-card-title
               >
             </v-col>
           </v-row>

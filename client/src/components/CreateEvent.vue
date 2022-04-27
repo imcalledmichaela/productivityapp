@@ -40,7 +40,7 @@
                   id="input-1"
                   v-model="form.name"
                   :rules="nameRules"
-                  :counter="25"
+                  :counter="50"
                   placeholder="Enter Event Name"
                   required
                 ></v-text-field>
@@ -58,8 +58,8 @@
               <v-col sm="8" md="8">
                 <v-select
                   v-model="form.subcategory"
-                  :rules="subcatRules"
                   :items="subcategories"
+                  :rules="subcatRules"
                   placeholder="Select Subcategory"
                   require
                   filled
@@ -85,8 +85,8 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="form.date"
-                      :rules="dateRules"
                       label="Select Date"
+                      :rules="dateRules"
                       readonly
                       filled
                       v-bind="attrs"
@@ -218,7 +218,7 @@
               bottom
               right
               elevation="10"
-              v-if="valid"
+              v-show="valid"
               >
                 <v-icon class="mr-2">mdi-content-save</v-icon>
                 Save New Event
@@ -247,7 +247,7 @@ export default {
       },
       nameRules: [
         (v) => !!v || 'Name is required',
-        (v) => (v && v.length <= 25) || 'Name must be less than 25 characters',
+        (v) => (v && v.length <= 50) || 'Name must be less than 50 characters',
       ],
       subcatRules: [
         (v) => !!v || 'Must select a subcategory',
