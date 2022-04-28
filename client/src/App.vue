@@ -409,6 +409,7 @@
                 class="font-weight-bold text-body-1 pt-2"
               >
               </v-card-title>
+              <!--
                <v-btn
                 fab
                 x-small
@@ -421,6 +422,7 @@
                 @click="deleteSubcategory(subcategory.subcategory_id)">
                 <v-icon>mdi-eye</v-icon>
               </v-btn>
+              -->
                <v-btn
                 fab
                 x-small
