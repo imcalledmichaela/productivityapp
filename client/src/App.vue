@@ -105,7 +105,7 @@
         <!--Categories Title-->
         <template v-slot:activator>
           <v-list-item-action class="align-self-start mr-0">
-            <v-tooltip right>
+            <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                 fab
@@ -113,13 +113,33 @@
                 x-small
                 v-bind="attrs"
                 v-on="on"
-                @click.stop="enableCreateSubcategory(index)"
                 >
-                  <v-icon>mdi-plus</v-icon>
+                  <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
               </template>
-            <span>Create Subcategory</span>
-            </v-tooltip>
+              <v-list nav dense>
+                <v-list-item
+                style="background-color:#4CAF50; color: white !important"
+                @click="enableCreateSubcategory(index)">
+                  <v-icon dark class="mr-3">mdi-plus</v-icon>
+                <v-list-item-title class="mr-2">Add Subcategory</v-list-item-title>
+                </v-list-item>
+
+                <v-list-item
+                style="background-color:#F57F17; color: white !important"
+                @click="enableEditCategory(index)">
+                  <v-icon dark class="mr-3">mdi-pencil</v-icon>
+                  <v-list-item-title class="mr-2">Edit Category</v-list-item-title>
+                </v-list-item>
+
+                <v-list-item
+                style="background-color:#F44336; color: white !important"
+                @click="deleteCategory(index)">
+                <v-icon dark class="mr-3">mdi-delete</v-icon>
+                  <v-list-item-title>Delete Category</v-list-item-title>
+                </v-list-item>
+              </v-list>
+              </v-menu>
           </v-list-item-action>
 
           <!--Title-->
@@ -146,7 +166,7 @@
           </v-text-field>
         </v-list-item-content>
 
-        <v-list-item-action class="mt-n4 ml-3">
+        <v-list-item-action class="mt-n4 ml-2">
           <v-menu
             bottom
             left
@@ -175,7 +195,66 @@
           </v-menu>
         </v-list-item-action>
 
-          <v-list-item-action class="mt-n4">
+          <v-list-item-action class="mt-n4 mr-0 ml-2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                dark
+                v-bind="attrs"
+                v-on="on"
+                type="submit"
+                color="green"
+                class="mr-0"
+                >
+                  <v-icon>mdi-check</v-icon>
+                </v-btn>
+              </template>
+            <span>Create</span>
+            </v-tooltip>
+          </v-list-item-action>
+
+        <v-list-item-action class="mt-n4 ml-2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                dark
+                v-bind="attrs"
+                v-on="on"
+                color="red"
+                class="ml-0"
+                @click="enableCreateSubcategory(index)"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+            <span>Cancel</span>
+            </v-tooltip>
+          </v-list-item-action>
+          </v-list-item>
+      </v-form>
+
+      <!-- Edit Category Form -->
+      <v-form
+      @submit="editCategory"
+      v-if="editCategoryActive[index]">
+      <v-list-item class="mt-n4, mb-n5">
+        <v-list-item-content>
+          <v-text-field
+          v-model="categoryToEdit.name"
+          class="rounded-lg mb-0"
+          required
+          solo
+          >
+          </v-text-field>
+        </v-list-item-content>
+
+          <v-list-item-action class="mt-n4 ml-2">
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -191,7 +270,28 @@
                   <v-icon>mdi-check</v-icon>
                 </v-btn>
               </template>
-            <span>Create</span>
+            <span>Save</span>
+            </v-tooltip>
+          </v-list-item-action>
+
+          <v-list-item-action class="mt-n4 ml-2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                dark
+                v-bind="attrs"
+                v-on="on"
+                color="red"
+                class="ml-0"
+                @click="enableEditCategory(index)"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+            <span>Cancel</span>
             </v-tooltip>
           </v-list-item-action>
         </v-list-item>
@@ -212,7 +312,7 @@
           </v-text-field>
         </v-list-item-content>
 
-        <v-list-item-action class="mt-n4 ml-3">
+        <v-list-item-action class="mt-n4 ml-2">
           <v-menu
             bottom
             left
@@ -241,7 +341,7 @@
           </v-menu>
         </v-list-item-action>
 
-          <v-list-item-action class="mt-n4">
+          <v-list-item-action class="mt-n4 ml-2">
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -258,6 +358,27 @@
                 </v-btn>
               </template>
             <span>Save</span>
+            </v-tooltip>
+          </v-list-item-action>
+
+          <v-list-item-action class="mt-n4 ml-2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                dark
+                v-bind="attrs"
+                v-on="on"
+                color="red"
+                class="ml-0"
+                @click="enableEditSubcategory(index)"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+            <span>Cancel</span>
             </v-tooltip>
           </v-list-item-action>
         </v-list-item>
@@ -329,14 +450,6 @@
             </v-hover>
             </v-list-item-content>
             </v-list-item>
-            <v-list-item
-            :value="true"
-            no-action>
-              <v-row class="justify-center rounded-lg">
-                <v-btn dark color="blue" class="mr-5">Edit</v-btn>
-                <v-btn dark color="red">Delete</v-btn>
-              </v-row>
-            </v-list-item>
         </v-list-group>
       </v-list>
 
@@ -355,7 +468,7 @@
           </v-text-field>
         </v-list-item-content>
 
-          <v-list-item-action class="mt-n4">
+          <v-list-item-action class="mt-n4 ml-2">
             <v-tooltip left>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -372,6 +485,27 @@
                 </v-btn>
               </template>
             <span>Create</span>
+            </v-tooltip>
+          </v-list-item-action>
+
+          <v-list-item-action class="mt-n4 ml-2">
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                fab
+                rounded
+                x-small
+                dark
+                v-bind="attrs"
+                v-on="on"
+                color="red"
+                class="ml-0"
+                @click="createCategoryButton = false"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+            <span>Cancel</span>
             </v-tooltip>
           </v-list-item-action>
       </v-list-item>
@@ -409,10 +543,15 @@ export default {
       subcategories: [],
       categoriesActive: [],
       createSubcategoryActive: [],
+      editCategoryActive: [],
       editSubcategoryActive: [],
       dialog: false,
       createCategoryButton: false,
       userReady: true,
+      categoryToEdit: {
+        category_id: '',
+        name: '',
+      },
       subcategoryToEdit: {
         subcategory_id: '',
         name: '',
@@ -515,6 +654,29 @@ export default {
           this.$router.push('/error');
         });
     },
+    editCategory(event) {
+      event.preventDefault();
+      const path = `api/category/${this.categoryToEdit.category_id}`;
+      const payload = {
+        name: this.categoryToEdit.name,
+      };
+      console.log('edit cat path');
+      console.log(path);
+      console.log('edit cat payload');
+      console.log(payload);
+      axios
+        .put(path, payload)
+        .then(() => {
+          this.categoryToEdit.category_id = '';
+          this.subcategoryToEdit.name = '';
+          this.getCategoriesByUserId();
+          this.getSubcategoriesByUserId();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$router.push('/error');
+        });
+    },
     editSubcategory(event) {
       event.preventDefault();
       const path = `api/subcategory/${this.subcategoryToEdit.subcategory_id}`;
@@ -562,6 +724,21 @@ export default {
           this.$router.push('/error');
         });
     },
+    deleteCategory(index) {
+      console.log('categoriesActive');
+      console.log(this.categoriesActive);
+      const path = `api/category/${this.categories[index].category_id}`;
+      axios
+        .delete(path)
+        .then((res) => {
+          console.log(res);
+          this.getCategoriesByUserId();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$router.push('/error');
+        });
+    },
     getUser() {
       const path = `api/user/${this.$store.getters.user.user}`;
       axios
@@ -594,6 +771,7 @@ export default {
               for (let i = 0; i < this.categories.length; i += 1) {
                 this.categoriesActive[i] = false;
                 this.createSubcategoryActive[i] = false;
+                this.editCategoryActive[i] = false;
                 this.editSubcategoryActive[i] = false;
               }
             }
@@ -626,6 +804,27 @@ export default {
     enableCreateCategory() {
       this.createCategoryButton = !this.createCategoryButton;
     },
+    enableEditCategory(index) {
+      if (this.editCategoryActive[index] === false) {
+        this.editCategoryActive[index] = true;
+        this.categoriesActive[index] = true;
+        for (let i = 0; i < this.editCategoryActive.length; i += 1) {
+          if (i !== index) {
+            this.editCategoryActive[i] = false;
+          }
+        }
+        this.categoryToEdit.category_id = this.categories[index].category_id;
+        this.categoryToEdit.name = this.categories[index].name;
+      } else if (this.editCategoryActive[index] === true) {
+        this.editCategoryActive[index] = false;
+        if (this.categoriesActive[index] === true) {
+          this.categoriesActive[index] = true;
+        }
+      }
+      this.getCategoriesByUserId();
+      console.log('editCategoryActive array');
+      console.log(this.editCategoryActive);
+    },
     enableCreateSubcategory(index) {
       if (this.createSubcategoryActive[index] === false) {
         this.createSubcategoryActive[index] = true;
@@ -638,7 +837,7 @@ export default {
         this.subcategoryForm.category = this.categories[index].category_id;
         console.log('in enable create subcategory - setting subcategoryform category');
         console.log(this.subcategoryForm.category);
-      } else {
+      } else if (this.createSubcategoryActive[index] === true) {
         this.createSubcategoryActive[index] = false;
         this.subcategoryForm.color = 'blue';
         if (this.categoriesActive[index] === true) {

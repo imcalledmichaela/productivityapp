@@ -10,34 +10,37 @@
               <v-btn
                 absolute
                 outlined
-                class="mr-4 ml-3"
+                class="mr-4 ml-3 mt-n3"
                 color="grey darken-2"
                 @click="setToday"
               >
                 Today
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn fab text small color="grey darken-2 ma-0" @click="prev">
+              <v-btn fab text small color="grey darken-2 ma-0 mt-n4" @click="prev">
                 <v-icon small> mdi-chevron-left </v-icon>
               </v-btn>
 
               <v-toolbar-title
                 id="calendar-title"
-                class="flex text-center text-h4"
+                class="flex text-center text-h4 mt-n3"
                 v-if="$refs.calendar"
               >
                 {{ $refs.calendar.title }}
               </v-toolbar-title>
 
-              <v-btn fab text small color="grey darken-2" @click="next">
+              <v-btn fab text small color="grey darken-2 mt-n4" @click="next">
                 <v-icon small> mdi-chevron-right </v-icon>
               </v-btn>
               <v-spacer></v-spacer>
               <v-menu bottom right>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
+                    absolute
+                    right
                     outlined
                     color="grey darken-2"
+                    class="mr-3 mt-n3"
                     v-bind="attrs"
                     v-on="on"
                   >
